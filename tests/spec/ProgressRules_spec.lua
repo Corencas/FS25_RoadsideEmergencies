@@ -1,0 +1,45 @@
+describe("RseProgressRules", function()
+    it("shows nothing before you get there", function()
+        expectEqual(RseProgressRules.scene(false, { 1 }, RseConfig), 0)
+    end)
+
+    it("shows a little for getting there, not half", function()
+        expectEqual(RseProgressRules.scene(true, { 0 }, RseConfig), RseConfig.PROGRESS_ARRIVED)
+        expectTrue(RseConfig.PROGRESS_ARRIVED <= 0.15, "a small part of the job")
+    end)
+
+    it("moves with each animal", function()
+        local one = RseProgressRules.scene(true, { RseProgressRules.share(1, 5) }, RseConfig)
+        local two = RseProgressRules.scene(true, { RseProgressRules.share(2, 5) }, RseConfig)
+        local step = two - one
+        expectNear(step, (1 - RseConfig.PROGRESS_ARRIVED) / 5, 0.0001, "the same step each time")
+        expectTrue(one < 0.5, "one sheep out of five is not half the job")
+    end)
+
+    it("doesn't say done before the job is over", function()
+        expectEqual(RseProgressRules.scene(true, { 1, 1 }, RseConfig), RseConfig.PROGRESS_MOST)
+        expectTrue(RseConfig.PROGRESS_MOST < 1, "the job itself finishes it")
+    end)
+
+    it("counts the parts of a job the same", function()
+        local half = RseProgressRules.scene(true, { 1, 0 }, RseConfig)
+        expectNear(half, RseConfig.PROGRESS_ARRIVED + (1 - RseConfig.PROGRESS_ARRIVED) / 2, 0.0001)
+    end)
+
+    it("follows a wreck through its stages", function()
+        local function wreck(state, delivered, towed, tipped)
+            return RseProgressRules.wreck(state, delivered, towed, tipped, RseConfig)
+        end
+        expectEqual(wreck("locked", false, 0, true), 0)
+        expectEqual(wreck("tipped", false, 0, true), RseConfig.PROGRESS_PREPARED)
+        expectEqual(wreck("ready", false, 0, true), RseConfig.PROGRESS_RIGHTED)
+        expectEqual(wreck("ready", false, 0, false), RseConfig.PROGRESS_PREPARED, "nothing to right")
+        expectNear(wreck("ready", false, 0.5, false), RseConfig.PROGRESS_PREPARED + (1 - RseConfig.PROGRESS_PREPARED) / 2, 0.0001, "halfway there")
+        expectEqual(wreck("ready", true, 0, false), 1)
+    end)
+
+    it("handles nothing to do", function()
+        expectEqual(RseProgressRules.share(0, 0), 1)
+        expectEqual(RseProgressRules.share(9, 3), 1, "never more than all")
+    end)
+end)

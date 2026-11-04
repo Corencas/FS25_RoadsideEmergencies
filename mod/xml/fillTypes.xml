@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- One fill type per carcass animal, each with its own name and picture (Z, M1). No selling station, feeding trough, mixer or
+     baler accepts them, so a carcass can only be delivered at our disposal points. -->
+<map>
+    <fillTypes>
+        <fillType name="RSE_CARCASS_DEER" title="$l10n_rse_fillType_deer" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_deer.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_BOAR" title="$l10n_rse_fillType_boar" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_boar.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_PIG" title="$l10n_rse_fillType_pig" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_pig.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_SHEEP" title="$l10n_rse_fillType_sheep" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_sheep.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_GOAT" title="$l10n_rse_fillType_goat" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_goat.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_COW" title="$l10n_rse_fillType_cow" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_cow.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_BUFFALO" title="$l10n_rse_fillType_buffalo" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_buffalo.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_HORSE" title="$l10n_rse_fillType_horse" showOnPriceTable="false" isBulkType="false"
+                  isBaleType="true" unitShort="$l10n_unit_literShort">
+            <physics massPerLiter="1.0" maxPhysicalSurfaceAngle="30"/>
+            <economy pricePerLiter="0"/>
+            <image hud="icons/hud_fill_horse.dds"/>
+        </fillType>
+    </fillTypes>
+</map>

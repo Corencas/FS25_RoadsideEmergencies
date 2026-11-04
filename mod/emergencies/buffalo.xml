@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- Hit livestock: water buffalo, one to three (too heavy to drag). The Emergency Pack runs it: pager, map marker, progress and hints. It starts on a road lane (spline).
+     Steps: drive there (RseStepArrive lays the animals in the road when the pack has placed the emergency; the count comes
+     from the range in animals and the job size setting), clear the road (RseStepClearRoad: every animal on the verge,
+     loaded, towed away or delivered). Cones and barricades are optional (the scene kit, Kit.lua). The animal bodies stop
+     the traffic until then. Pay: our call reward (PayRules.lua) when the road is clear; the disposal fee on top for every
+     animal delivered at a disposal point. -->
+<scenario description="rse_ep_buffalo_description" postMessage="rse_ep_done" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="10" height="5" length="12">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="20" animals="buffalo:1-3" emergency="buffalo"/>
+        </checkpoint>
+        <checkpoint hint="rse_ep_hint_clear_heavy" actionClass="FS25_RoadsideEmergencies.RseStepClearRoad">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <texts>
+        <!-- keys -->
+        <text name="input_RSE_STRAP" text="RSE recovery strap"/>
+
+        <!-- animals -->
+        <text name="rse_animal_deer" text="deer"/>
+        <text name="rse_animal_boar" text="wild boar"/>
+        <text name="rse_animal_pig" text="pig"/>
+        <text name="rse_animal_sheep" text="sheep"/>
+        <text name="rse_animal_goat" text="goat"/>
+        <text name="rse_animal_cow" text="cow"/>
+        <text name="rse_animal_buffalo" text="water buffalo"/>
+        <text name="rse_animal_horse" text="horse"/>
+
+        <!-- carcasses -->
+        <text name="rse_fillType_deer" text="Dead deer"/>
+        <text name="rse_fillType_boar" text="Dead wild boar"/>
+        <text name="rse_fillType_pig" text="Dead pig"/>
+        <text name="rse_fillType_sheep" text="Dead sheep"/>
+        <text name="rse_fillType_goat" text="Dead goat"/>
+        <text name="rse_fillType_cow" text="Dead cow"/>
+        <text name="rse_fillType_buffalo" text="Dead water buffalo"/>
+        <text name="rse_fillType_horse" text="Dead horse"/>
+        <text name="rse_info_deadAnimal" text="Dead animal"/>
+        <text name="rse_info_mass" text="Mass"/>
+        <text name="rse_info_massValue" text="%d kg"/>
+        <text name="rse_action_drag" text="Drag the %s"/>
+        <text name="rse_action_letGo" text="Let go of the %s"/>
+        <text name="rse_action_tooHeavy" text="The %s is too heavy to drag by hand. Use a strap or a machine."/>
+
+        <!-- recovery strap -->
+        <text name="rse_strap_hook" text="RSE: Hook the strap here"/>
+        <text name="rse_strap_attach" text="RSE: Attach the strap here"/>
+        <text name="rse_strap_drop" text="RSE: Put the strap away"/>
+        <text name="rse_strap_remove" text="RSE: Remove the strap"/>
+        <text name="rse_strap_hooked" text="Strap hooked to the %s. Now hook the other end to a vehicle."/>
+        <text name="rse_strap_attached" text="Strap attached from the %s to the %s."/>
+        <text name="rse_strap_tooFar" text="Too far apart: %.1f m. The strap reaches %d m."/>
+        <text name="rse_strap_removed" text="Strap removed."/>
+
+        <!-- disposal points -->
+        <text name="rse_point_shop" text="Shop"/>
+        <text name="rse_point_player" text="My point %d"/>
+        <text name="rse_point_hotspot" text="Drop-off point %d: %s"/>
+        <text name="rse_marker_loose" text="Loose %s"/>
+        <text name="rse_marker_left" text="Dead %s left behind"/>
+        <text name="rse_delivered" text="The %s was delivered (%s). Haul-off pay: $%d. Disposal fee: $%d."/>
+        <text name="rse_finance_haulPay" text="Carcass haul-off pay"/>
+        <text name="rse_collectedUnearned" text="County dispatch: the road crew collected a dead %s you never delivered. You were billed $%d, including the $%d you were paid for hauling it."/>
+        <text name="rse_collected" text="County dispatch: the road crew collected a dead %s you left behind. You were billed $%d."/>
+        <text name="rse_finance_collection" text="Carcass collection bills"/>
+        <text name="rse_finance_disposalFee" text="Carcass disposal fees"/>
+
+        <!-- settings panel -->
+        <text name="input_RSE_SETTINGS" text="Roadside Emergencies settings"/>
+        <text name="rse_set_title" text="Roadside Emergencies settings"/>
+        <text name="rse_set_on" text="On"/>
+        <text name="rse_set_off" text="Off"/>
+        <text name="rse_set_size_small" text="Small"/>
+        <text name="rse_set_size_normal" text="Normal"/>
+        <text name="rse_set_size_large" text="Large"/>
+        <text name="rse_set_size_random" text="Random"/>
+        <text name="rse_set_calls" text="County dispatch calls by itself"/>
+        <text name="rse_set_animalCalls" text="Animal calls"/>
+        <text name="rse_set_wreckCalls" text="Wreck and spilled load calls"/>
+        <text name="rse_set_jobSize" text="Job size (how many animals or bales)"/>
+        <text name="rse_set_pay" text="Income from calls and hauling"/>
+        <text name="rse_set_fees" text="Disposal fees and county bills"/>
+        <text name="rse_set_left" text="County collects what you leave behind after"/>
+        <text name="rse_set_expire" text="Another contractor takes over after"/>
+        <text name="rse_set_markers" text="Map markers"/>
+        <text name="rse_set_addPoint" text="Add a drop-off point where you stand"/>
+        <text name="rse_set_removePoint" text="Remove your nearest drop-off point"/>
+        <text name="rse_point_added" text="Drop-off point added where you stand: %s."/>
+        <text name="rse_point_removed" text="Your drop-off point was removed: %s."/>
+        <text name="rse_point_noneOwn" text="You have no drop-off point of your own."/>
+
+        <!-- scene kit -->
+        <text name="input_RSE_KIT_MENU" text="Scene kit: open or close"/>
+        <text name="input_RSE_KIT_USE" text="Scene kit: place or pick up"/>
+        <text name="input_RSE_KIT_TURN" text="Scene kit: rotate"/>
+        <text name="input_RSE_KIT_NEXT" text="Scene kit: next item"/>
+        <text name="rse_kit_next" text="Next item"/>
+        <text name="rse_kit_cone" text="Traffic cone"/>
+        <text name="rse_kit_barricade" text="Wooden barricade"/>
+        <text name="rse_kit_coneTape" text="Cone with barrier tape"/>
+        <text name="rse_kit_stop" text="Close scene kit"/>
+        <text name="rse_kit_open" text="Open scene kit"/>
+        <text name="rse_kit_place" text="Place: %s"/>
+        <text name="rse_kit_pickup" text="Pick up: %s"/>
+        <text name="rse_kit_turn" text="Rotate"/>
+        <text name="rse_kit_loadFailed" text="This item could not be loaded: %s."/>
+        <text name="rse_kit_limit" text="You can't have more than %d items out at once."/>
+        <text name="rse_kit_collect" text="Pick up your cones and barricades (%d left). There are no new jobs until you do."/>
+        <text name="rse_kit_allCollected" text="All your cones and barricades are picked up. You can take new jobs again."/>
+        <text name="rse_kit_reminder" text="County dispatch called: your company's cones and barricades are still blocking traffic (%d left). Pick them up. There are no new jobs until you do."/>
+
+        <!-- Emergency Pack -->
+        <text name="rse_ep_deer_description" text="County dispatch: a car has hit deer on the road. Traffic is stopping. Can you clear the road?"/>
+        <text name="rse_ep_boar_description" text="County dispatch: a car has hit wild boar on the road. Traffic is stopping. Can you clear the road?"/>
+        <text name="rse_ep_pig_description" text="County dispatch: a car has hit one or more escaped pigs on the road. Traffic is stopping. Can you clear the road?"/>
+        <text name="rse_ep_sheep_description" text="County dispatch: sheep got through a fence, and a car has hit them on the road. Traffic is stopping. Can you clear the road?"/>
+        <text name="rse_ep_goat_description" text="County dispatch: a car has hit one or more escaped goats on the road. Traffic is stopping. Can you clear the road?"/>
+        <text name="rse_ep_cow_description" text="County dispatch: a truck has hit one or more cows on the road. Traffic is stopping. Cows are too heavy to drag by hand, so bring a vehicle to pull them or a machine to lift them. Can you clear the road?"/>
+        <text name="rse_ep_horse_description" text="County dispatch: a car has hit one or more loose horses on the road. Traffic is stopping. Horses are too heavy to drag by hand, so bring a vehicle to pull them or a machine to lift them. Can you clear the road?"/>
+        <text name="rse_ep_buffalo_description" text="County dispatch: a truck has hit one or more water buffalo on the road. Traffic is stopping. Water buffalo are too heavy to drag by hand, so bring a vehicle to pull them or a machine to lift them. Can you clear the road?"/>
+        <text name="rse_ep_hint_arrive" text="Drive to the marked spot."/>
+        <text name="rse_ep_hint_clear_small" text="Clear the road. Load the animals on any vehicle for full pay, then take them to a disposal point. The roadside pays very little, and the county bills you if it collects them. Cones and barricades are optional (U)."/>
+        <text name="rse_ep_hint_clear_heavy" text="Clear the road. Strap the animals to a vehicle (K) or lift them for full pay, then take them to a disposal point. The roadside pays very little, and the county bills you if it collects them. Cones are optional (U)."/>
+        <text name="rse_ep_done" text="The road is clear. Thank you!"/>
+        <text name="rse_scene_resumed" text="You have an emergency call in progress. Follow the map marker."/>
+        <text name="rse_scene_resumeFailed" text="The emergency call could not resume after loading, so it was canceled."/>
+        <text name="rse_left_warn" text="County dispatch: you left a dead %s behind. Pick it up within %s, or the county will collect it and bill you. It is marked on your map."/>
+        <text name="rse_left_warnMany" text="County dispatch: you left %d dead animals behind. Pick them up within %s, or the county will collect them and bill you. They are marked on your map."/>
+        <text name="rse_unit_minute" text="1 minute"/>
+        <text name="rse_unit_minutes" text="%d minutes"/>
+        <text name="rse_caller_driver" text="A passing driver"/>
+        <text name="rse_caller_bus" text="A school bus driver"/>
+        <text name="rse_caller_mail" text="A mail carrier"/>
+        <text name="rse_caller_neighbor" text="A neighbor"/>
+        <text name="rse_caller_sheriff" text="The sheriff's office"/>
+        <text name="rse_call_details" text="%s called it in. It is %s from you."/>
+        <text name="rse_call_detailsNear" text="%s called it in near farmland %d, %s from you."/>
+        <text name="rse_call_arrivedOne" text="One animal is in the road."/>
+        <text name="rse_call_arrivedMany" text="%d animals are in the road."/>
+        <text name="rse_call_expiring" text="County dispatch: if you are not at the scene within %s, another contractor will take over."/>
+        <text name="rse_call_expired" text="County dispatch: another contractor took over the call because you did not get there in time. There is no pay and no penalty."/>
+        <text name="rse_call_lightsBonus" text="Your warning lights kept the scene safe: %d%% extra pay."/>
+        <text name="rse_ep_wreck_description" text="County dispatch: a truck has crashed and is blocking the road. Traffic is stopping. It has to be towed to a recovery point. Can you take the job?"/>
+        <text name="rse_ep_rollover_description" text="County dispatch: a tractor has rolled over in a ditch, and the driver is still inside. It has to be righted and taken to a recovery point. Can you take the job?"/>
+        <text name="rse_ep_doneWreck" text="The job is done. Thank you!"/>
+        <text name="rse_wreck_hint_prepare" text="Walk up to the wreck and prepare it for recovery. Cones and barricades are optional (U)."/>
+        <text name="rse_wreck_hint_driver" text="Walk up to the tractor and help the driver out. Cones and barricades are optional (U)."/>
+        <text name="rse_wreck_hint_upright" text="Get it back on its wheels: hook a strap high on its upper side (K), attach the other end to a vehicle, and pull it over."/>
+        <text name="rse_wreck_prepare" text="Prepare the wreck for recovery"/>
+        <text name="rse_wreck_driver" text="Help the driver out"/>
+        <text name="rse_wreck_driverOut" text="The driver is out and unhurt."/>
+        <text name="rse_wreck_upright" text="It is back on its wheels."/>
+        <text name="rse_wreck_delivered" text="The wreck is at the recovery point."/>
+        <text name="rse_wreck_locked" text="This wreck has to be prepared for recovery first."/>
+        <text name="rse_wreck_noEngine" text="The engine of this wreck can't be started."/>
+        <text name="rse_load_delivered" text="A bale was delivered. Bales left: %d."/>
+        <text name="rse_call_cancelled" text="County dispatch: the call was canceled."/>
+        <text name="rse_ep_storm_description" text="County dispatch: a twister has blown bales across the road. Traffic is stopping. They have to go to a drop-off point. Can you take the job?"/>
+        <text name="rse_storm_hint" text="Take all the bales to the marked drop-off point. The bales can go on any vehicle."/>
+        <text name="rse_ep_livestock_description" text="County dispatch: a livestock trailer has overturned on the road. Some animals are dead, and others are loose and wandering off. You can take the animals, the trailer or both, with a bonus for both. A livestock trailer of your own is needed for the live ones. Can you take the job?"/>
+        <text name="rse_crash_hint" text="Two jobs, do one or both: catch the loose animals and walk them to your own livestock trailer, and clear the dead; or prepare, right and tow in the wrecked trailer. Both earn a bonus."/>
+        <text name="rse_crash_arrived" text="Dead animals: %d. Loose animals: %d. They are walking off, so don't wait too long."/>
+        <text name="rse_crash_animalsDone" text="The animals are taken care of. Bring in the trailer too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand it over sooner."/>
+        <text name="rse_crash_trailerDone" text="The trailer is in. Take care of the animals too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand them over sooner."/>
+        <text name="rse_crash_warn" text="County dispatch: another contractor takes over the rest of this job in %s."/>
+        <text name="rse_crash_handedOver" text="County dispatch: another contractor is taking care of the rest. You are paid for what you did."/>
+        <text name="rse_crash_bonus" text="You did both parts of the job: %d%% bonus."/>
+        <text name="rse_survivor_catch" text="Catch the %s"/>
+        <text name="rse_survivor_load" text="Load the %s into your trailer"/>
+        <text name="rse_survivor_caught" text="You have the %s on a lead. Walk it to your own livestock trailer."/>
+        <text name="rse_survivor_gotAway" text="The %s got away from you."/>
+        <text name="rse_survivor_noRoom" text="Your livestock trailer can't take this animal: it is full, or it already carries another kind of animal."/>
+        <text name="rse_survivor_loaded" text="The %s is in your trailer. Loose animals left: %d."/>
+        <text name="rse_set_help" text="Up and Down: choose. Left and Right: change. Enter: confirm. H or Esc: close."/>
+        <text name="rse_set_defaults" text="Return all settings to default"/>
+        <text name="rse_set_defaultsDone" text="All settings are back to their defaults. Your drop-off points were kept."/>
+        <text name="rse_set_none" text="None"/>
+        <text name="rse_set_handOver" text="Hand this job to another contractor"/>
+        <text name="rse_set_handOverPaid" text="Paid for what you did"/>
+        <text name="rse_set_handOverNone" text="No pay"/>
+        <text name="rse_call_handedOver" text="County dispatch: another contractor took over the job. There is no pay."/>
+        <text name="rse_call_cantHandOver" text="The job could not be handed over."/>
+        <text name="rse_map_teleport" text="Teleport here"/>
+        <text name="rse_map_collect" text="Have the county collect it now (you are billed)"/>
+        <text name="rse_map_removePoint" text="Remove this drop-off point"/>
+        <text name="input_RSE_STRAP_IN" text="RSE recovery strap: reel in"/>
+        <text name="input_RSE_STRAP_OUT" text="RSE recovery strap: let out"/>
+        <text name="rse_strap_reelIn" text="RSE: Reel in the strap"/>
+        <text name="rse_strap_reelOut" text="RSE: Let out the strap"/>
+        <text name="rse_call_lightsHint" text="Turn on your hazards or beacons while you work here for %d%% extra pay."/>
+        <text name="rse_ep_trailer_description" text="County dispatch: a trailer has overturned and spilled its bales on the road. Traffic is stopping. You can take the trailer, the bales or both, with a bonus for both. Can you take the job?"/>
+        <text name="rse_ep_powerline_description" text="County dispatch: a car has hit a utility pole. The pole and the wires are down across the road, and the driver is still in the car. Traffic is stopping. The utility crew is on its way. Can you help?"/>
+        <text name="rse_line_hint_wait" text="Stay back: the wires may be live. Set up cones and warning lights. The utility crew needs about a minute and a half to cut the power."/>
+        <text name="rse_line_hint_work" text="Help the driver out and take the car to a recovery point. Walk up to each wire (look for the pins) and roll it up. Bring the pole in, cut with a chainsaw if it has to fit. Both parts earn a bonus."/>
+        <text name="rse_line_danger" text="Keep back! Those wires may be live. If you stay this close, it will cut your pay."/>
+        <text name="rse_line_dangerCut" text="You stayed too close to live wires, so the county has cut your pay by %d%%."/>
+        <text name="rse_line_powerOff" text="Utility crew: the power is off, and it is safe to work."/>
+        <text name="rse_line_rollUp" text="Hold to roll up the wire"/>
+        <text name="rse_line_stillLive" text="Not yet: the power is still on. The utility crew needs about %d more seconds."/>
+        <text name="rse_line_wireDone" text="The wire is rolled up. Wires left: %d."/>
+        <text name="rse_line_pieceIn" text="That piece of the pole is in. Pieces left: %d."/>
+        <text name="rse_line_poleIn" text="The pole is in."/>
+        <text name="rse_crash_carDone" text="The car is in. Clear the pole and the wires too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand them over sooner."/>
+        <text name="rse_crash_lineDone" text="The pole and the wires are cleared. Bring in the car too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand it over sooner."/>
+        <text name="rse_strap_log" text="log"/>
+        <text name="rse_guide_title_line" text="Downed power lines"/>
+        <text name="rse_guide_line_1" text="A car has hit a utility pole. Stay back until the utility crew has cut the power: the wires may be live, and staying too close costs you pay. Set up your cones and lights while you wait."/>
+        <text name="rse_guide_line_2" text="Once the power is off, help the driver out and take the car to a recovery point. A pin shows each wire: walk up to it, anywhere along it, and hold the key to roll it up."/>
+        <text name="rse_guide_line_3" text="The pole is a real log. If it has to fit on something, cut it with a chainsaw: stand beside it and aim across it. Bring every piece to a recovery point. Do both parts for a bonus."/>
+        <text name="rse_crash_hint_load" text="Two jobs, do one or both: prepare, right and tow in the wrecked trailer; or bring the bales to the marked recovery point. Both earn a bonus."/>
+        <text name="rse_crash_arrivedLoad" text="Bales on the road: %d."/>
+        <text name="rse_load_call_small" text="The load is small bales, so a pickup truck and your own hands can handle it."/>
+        <text name="rse_load_call_big" text="The load is big bales, so bring a front loader or a telehandler and something to carry them on."/>
+        <text name="rse_load_arrived_small" text="Carry the small bales by hand into a pickup bed, or into the trailer once it is back on its wheels. Each one that reaches a recovery point pays."/>
+        <text name="rse_load_arrived_big" text="The big bales need a front loader or a telehandler. Each one that reaches a recovery point pays."/>
+        <text name="rse_crash_trailerDoneBales" text="The trailer is in. Bring in the bales too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand them over sooner."/>
+        <text name="rse_crash_balesDone" text="The bales are in. Bring in the trailer too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel (H) can hand it over sooner."/>
+        <text name="rse_wreck_hint_deliver" text="Take it to the marked recovery point. Its engine stays off. Strap it to a vehicle (K) and it follows you, or use a winch. For a rollback, strap it to the bed and reel it on (N)."/>
+        <text name="rse_set_open" text="Roadside settings and guide"/>
+        <text name="rse_set_guide" text="Open the guide"/>
+        <text name="rse_guide_title" text="Roadside Emergencies guide"/>
+        <text name="rse_guide_help" text="Left and Right: page. Enter: next page. H or Esc: close."/>
+        <text name="rse_guide_page" text="Page %d of %d"/>
+        <text name="rse_guide_title_welcome" text="Welcome"/>
+        <text name="rse_guide_welcome_1" text="You are the local contractor county dispatch calls when something goes wrong on the road: animals hit by traffic, wrecks, rollovers, spilled loads and storm damage."/>
+        <text name="rse_guide_welcome_2" text="Calls come by themselves every so often, from anywhere on the map's roads. A pager asks whether you will take the job. Saying no costs nothing. Say yes and follow the marker."/>
+        <text name="rse_guide_welcome_3" text="You can come back to this guide at any time: press H on foot and choose &quot;Open the guide&quot;. The same menu has all the settings."/>
+        <text name="rse_guide_title_calls" text="Calls and pay"/>
+        <text name="rse_guide_calls_1" text="A job pays when it is done, and the progress bar shows how far along you are. Only one job runs at a time."/>
+        <text name="rse_guide_calls_2" text="Turn on your hazards or beacons at the scene for extra pay."/>
+        <text name="rse_guide_calls_3" text="A call you don't reach in time goes to another contractor, with no pay and no penalty. You can also hand any job over from the settings (H), for example if a wreck gets stuck."/>
+        <text name="rse_guide_calls_4" text="You can save during a job. It comes back when you load."/>
+        <text name="rse_guide_title_animals" text="Dead animals"/>
+        <text name="rse_guide_animals_1" text="Clear the road. Small animals can be dragged by hand with the activate key. Heavy ones need a strap or a machine."/>
+        <text name="rse_guide_animals_2" text="Load an animal on any vehicle for the full pay, then take it to a drop-off point. That pays for the haul-off, minus a disposal fee. The shop is always a drop-off point."/>
+        <text name="rse_guide_animals_3" text="Only moving it to the roadside pays very little. An animal left behind is marked on your map, and you get reminders. If you leave it too long, the county collects it and bills you."/>
+        <text name="rse_guide_animals_4" text="Animal bodies work like bales, so front loaders, forks, cranes, trailers, tension belts and autoload mods can all handle them. A cow is heavy, so a small crane can't lift one."/>
+        <text name="rse_guide_title_strap" text="The recovery strap"/>
+        <text name="rse_guide_strap_1" text="On foot, aim at a dead animal or a prepared wreck and press K to hook the strap there. Then aim at a vehicle and press K again to attach the other end. Aim at nothing to put the strap away."/>
+        <text name="rse_guide_strap_2" text="While you are near a strap, hold N to reel it in and M to let it out. Reeling in pulls a wreck up onto a rollback, and letting out lets it roll back down."/>
+
+        <text name="rse_guide_strap_3" text="To right a wreck lying on its side, hook it high on its upper side, attach the strap to a vehicle, and pull it over."/>
+        <text name="rse_guide_title_wrecks" text="Wrecks"/>
+        <text name="rse_guide_wrecks_1" text="Walk up to a wreck and prepare it for recovery first. Its engine stays off, because it is wrecked, so you tow it or load it."/>
+        <text name="rse_guide_wrecks_2" text="Once it stands on its wheels, strap it to a vehicle. The strap hooks where you aim and pulls nothing until you reel it or drive off. It pulls along the line, and the front wheels turn toward the pull, so a pull at an angle swings the wreck around. A trailer can't steer, so while you reel, it moves over toward the line. When you tow, the strap moves to the end of the wreck, the line shortens by itself unless you reeled it by hand, and the wreck brakes when you stop."/>
+        <text name="rse_guide_wrecks_3" text="Wrecks and bales must reach a recovery point before you are paid for them. The marker shows the way."/>
+        <text name="rse_guide_wrecks_4" text="Some jobs have two parts, such as a trailer and its bales. Do one and another contractor takes the other after a while, or do both for a bonus."/>
+        <text name="rse_guide_title_loads" text="Spilled bales"/>
+        <text name="rse_guide_loads_1" text="The call tells you what the load is. Small bales can be carried by hand, so a pickup truck is enough. Big bales pay more per bale, but they need a front loader or a telehandler."/>
+        <text name="rse_guide_loads_2" text="You don't need a second trip for a trailer job. Get the trailer back on its wheels, put the bales in it, and tow it all to the recovery point. A storm job has no trailer, so bring your own and make as many trips as you need."/>
+        <text name="rse_guide_loads_3" text="Each bale that reaches a recovery point pays, even if you hand over the rest of the job in the settings (H). A bale pays more when the bales are all you bring in."/>
+        <text name="rse_guide_title_loose" text="Loose animals"/>
+        <text name="rse_guide_loose_1" text="At a livestock trailer crash, live animals wander off. They stop to graze, and they shy away when you come at them."/>
+        <text name="rse_guide_loose_2" text="Walk up to one and use the activate key to catch it. It follows you on a lead. Bring it next to your own livestock trailer and use the key again to load it."/>
+        <text name="rse_guide_loose_3" text="You lead one at a time. It gets away if you run too far ahead, and it stays behind if you get in a vehicle. Once loaded, the animals are yours to sell at the animal dealer."/>
+        <text name="rse_guide_title_kit" text="Cones and barricades"/>
+        <text name="rse_guide_kit_1" text="At a call, press U on foot to open the scene kit. I picks the next item, L places it or picks up what you aim at, and holding O turns it. They are free, and they stop traffic."/>
+        <text name="rse_guide_kit_2" text="Whatever you place, you pick up again. Until you do, the county keeps calling and no new call comes."/>
+        <text name="rse_guide_title_markers" text="Map markers"/>
+        <text name="rse_guide_markers_1" text="A green animal is a loose animal, a red ! is a dead animal left behind, and an orange cone is one of your cones or barricades. A blue number is your own drop-off point, shown while you have something to bring."/>
+        <text name="rse_guide_markers_2" text="Click a marker on the map to see what it is and teleport there. You can also have the county collect a dead animal, for the usual bill, or remove a drop-off point."/>
+        <text name="rse_guide_markers_3" text="Add your own drop-off points in the settings (H)."/>
+        <text name="rse_guide_title_mods" text="Works well with"/>
+        <text name="rse_guide_mods_1" text="You don't need any of these mods, but they suit the work. The ones named here have been tested with Roadside Emergencies."/>
+        <text name="rse_guide_mods_2" text="T880 Rollback by Roughneck Modding Crew: pull a wreck onto the bed with the strap (K) and the reel keys (N and M), belt it down, and drive it in."/>
+        <text name="rse_guide_mods_3" text="Better Winch by ThundR: its winch hooks dead animals and wrecks. UniversalAutoload by loki_79: it loads them onto the trailers it supports."/>
+        <text name="rse_guide_mods_4" text="Front loaders, bale grabs and crane trailers all handle dead animals, but a small crane can't lift a cow."/>
+        <text name="rse_scene_deliver" text="Take the animals you removed to a disposal point for extra pay."/>
+        <text name="rse_ep_missing" text="Roadside Emergencies: the Emergency Pack DLC is missing, so there are no emergencies."/>
+    </texts>
+</l10n>

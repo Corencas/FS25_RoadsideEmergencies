@@ -1,0 +1,11 @@
+name: Idea
+description: Something you'd like the mod to do
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      description: What would happen in the game, and why would it be fun?
+    validations:
+      required: true

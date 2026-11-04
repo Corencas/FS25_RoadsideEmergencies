@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Lua 5.1 and luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 liblua5.1-0-dev luarocks
+          sudo luarocks install luacheck
+
+      - name: luacheck (mod and tests)
+        run: luacheck mod tests
+
+      - name: Unit tests (Lua 5.1)
+        run: lua5.1 tests/run.lua
+
+      - name: XML, modDesc and translations
+        run: python3 tools/build.py --check
+
+      - name: Build the zip, with modDesc.xml at its root
+        run: |
+          python3 tools/build.py
+          unzip -l dist/FS25_RoadsideEmergencies.zip | grep -q " modDesc.xml$"

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A downed wire: the base-game forestry rope model, by path, thinner than the strap. -->
+<strapRope>
+    <rope filename="$data/shared/forestry/ropes.i3d" ropeNode="4" diameter="0.02" uvScale="4"/>
+</strapRope>

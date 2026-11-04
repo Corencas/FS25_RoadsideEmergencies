@@ -1,0 +1,21 @@
+# Build output and local tools
+dist/
+_tools/
+
+# Machine-specific paths (see local.config.example.json)
+local.config.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editors
+.idea/
+*.swp
+*~

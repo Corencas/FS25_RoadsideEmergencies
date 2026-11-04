@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A car has hit a utility pole. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road lane (spline), and RseStepArrive
+     moves it to a random spot on the road network. You stay back until the crew has cut the power, then two parts in any order: the car, and the pole and wires.
+     The car and every piece of the pole go to a recovery point (Z): no roadside ending. Pay: our amount for each part done (Config.lua, WRECKS), and a bonus for both. -->
+<scenario description="rse_ep_powerline_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="60" wreck="powerline" emergency="powerline"/>
+        </checkpoint>
+        <checkpoint hint="rse_line_hint_wait" actionClass="FS25_RoadsideEmergencies.RseStepPower">
+            <action/>
+        </checkpoint>
+        <checkpoint hint="rse_line_hint_work" actionClass="FS25_RoadsideEmergencies.RseStepCrash">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

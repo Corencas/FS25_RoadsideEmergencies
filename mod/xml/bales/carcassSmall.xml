@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- Body of a small carcass (deer, boar, pig, sheep, goat): the base-game 1.2 m square bale model, used by path and kept
+     hidden; the animal model follows it. Only the carcass fill types of these animals fit. -->
+<bale>
+    <filename>$data/objects/bales/squarebales/squarebale120/squarebale120.i3d</filename>
+    <size isRoundbale="false" width="0.45" height="0.35" length="1.2"/>
+    <mountableObject triggerNode="0" forceAcceleration="5" forceLimitScale="1" axisFreeY="false" axisFreeX="false"/>
+    <uvId>DEFAULT</uvId>
+    <baleMeshes>
+        <baleMesh node="1" supportsWrapping="false" isTensionBeltMesh="true"/>
+    </baleMeshes>
+    <variations>
+        <variation id="DEFAULT"/>
+    </variations>
+    <fillTypes>
+        <fillType name="RSE_CARCASS_DEER" capacity="1" mass="80" forceAcceleration="5" supportsWrapping="false" materialName="wrapBale" alphaMaterialName="wrapBaleAlpha">
+            <diffuse filename="$data/objects/bales/squarebales/squarebale120/fillTypes/straw_diffuse.dds"/>
+            <normal filename="$data/objects/bales/squarebales/squarebale120/fillTypes/shared_normal.dds"/>
+            <alpha filename="$data/objects/bales/squarebales/squarebale120/bale_alpha.dds"/>
+            <baleNormal filename="$data/shared/default_normal.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_BOAR" capacity="1" mass="80" forceAcceleration="5" supportsWrapping="false" materialName="wrapBale" alphaMaterialName="wrapBaleAlpha">
+            <diffuse filename="$data/objects/bales/squarebales/squarebale120/fillTypes/straw_diffuse.dds"/>
+            <normal filename="$data/objects/bales/squarebales/squarebale120/fillTypes/shared_normal.dds"/>
+            <alpha filename="$data/objects/bales/squarebales/squarebale120/bale_alpha.dds"/>
+            <baleNormal filename="$data/shared/default_normal.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_PIG" capacity="1" mass="80" forceAcceleration="5" supportsWrapping="false" materialName="wrapBale" alphaMaterialName="wrapBaleAlpha">
+            <diffuse filename="$data/objects/bales/squarebales/squarebale120/fillTypes/straw_diffuse.dds"/>
+            <normal filename="$data/objects/bales/squarebales/squarebale120/fillTypes/shared_normal.dds"/>
+            <alpha filename="$data/objects/bales/squarebales/squarebale120/bale_alpha.dds"/>
+            <baleNormal filename="$data/shared/default_normal.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_SHEEP" capacity="1" mass="80" forceAcceleration="5" supportsWrapping="false" materialName="wrapBale" alphaMaterialName="wrapBaleAlpha">
+            <diffuse filename="$data/objects/bales/squarebales/squarebale120/fillTypes/straw_diffuse.dds"/>
+            <normal filename="$data/objects/bales/squarebales/squarebale120/fillTypes/shared_normal.dds"/>
+            <alpha filename="$data/objects/bales/squarebales/squarebale120/bale_alpha.dds"/>
+            <baleNormal filename="$data/shared/default_normal.dds"/>
+        </fillType>
+        <fillType name="RSE_CARCASS_GOAT" capacity="1" mass="80" forceAcceleration="5" supportsWrapping="false" materialName="wrapBale" alphaMaterialName="wrapBaleAlpha">
+            <diffuse filename="$data/objects/bales/squarebales/squarebale120/fillTypes/straw_diffuse.dds"/>
+            <normal filename="$data/objects/bales/squarebales/squarebale120/fillTypes/shared_normal.dds"/>
+            <alpha filename="$data/objects/bales/squarebales/squarebale120/bale_alpha.dds"/>
+            <baleNormal filename="$data/shared/default_normal.dds"/>
+        </fillType>
+    </fillTypes>
+</bale>

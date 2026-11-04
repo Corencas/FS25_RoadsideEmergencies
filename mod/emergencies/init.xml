@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- The Emergency Pack reads this list from the folder named in modDesc (emergencyPack/scenarioDirectory). Every emergency
+     has its own pool rse_<id>, so county dispatch (Calls.lua) and rseStart ask for one by name; our pools keep them out of
+     the pack's own pool. One pool each: the pack stops loading all emergencies if a listed pool is missing.
+     mp="false": single player until Phase 7. -->
+<rolePlay>
+    <pools>
+        <pool name="rse_deer"/>
+        <pool name="rse_boar"/>
+        <pool name="rse_pig"/>
+        <pool name="rse_sheep"/>
+        <pool name="rse_goat"/>
+        <pool name="rse_cow"/>
+        <pool name="rse_horse"/>
+        <pool name="rse_buffalo"/>
+        <pool name="rse_wreck"/>
+        <pool name="rse_rollover"/>
+        <pool name="rse_trailer"/>
+        <pool name="rse_livestock"/>
+        <pool name="rse_storm"/>
+        <pool name="rse_powerline"/>
+    </pools>
+    <scenarios>
+        <scenario type="default" mp="false" path="emergencies/deer.xml" pools="rse_deer"/>
+        <scenario type="default" mp="false" path="emergencies/boar.xml" pools="rse_boar"/>
+        <scenario type="default" mp="false" path="emergencies/pig.xml" pools="rse_pig"/>
+        <scenario type="default" mp="false" path="emergencies/sheep.xml" pools="rse_sheep"/>
+        <scenario type="default" mp="false" path="emergencies/goat.xml" pools="rse_goat"/>
+        <scenario type="default" mp="false" path="emergencies/cow.xml" pools="rse_cow"/>
+        <scenario type="default" mp="false" path="emergencies/horse.xml" pools="rse_horse"/>
+        <scenario type="default" mp="false" path="emergencies/buffalo.xml" pools="rse_buffalo"/>
+        <scenario type="default" mp="false" path="emergencies/wreck.xml" pools="rse_wreck"/>
+        <scenario type="default" mp="false" path="emergencies/rollover.xml" pools="rse_rollover"/>
+        <scenario type="default" mp="false" path="emergencies/trailer.xml" pools="rse_trailer"/>
+        <scenario type="default" mp="false" path="emergencies/livestock.xml" pools="rse_livestock"/>
+        <scenario type="default" mp="false" path="emergencies/storm.xml" pools="rse_storm"/>
+        <scenario type="default" mp="false" path="emergencies/powerline.xml" pools="rse_powerline"/>
+    </scenarios>
+</rolePlay>

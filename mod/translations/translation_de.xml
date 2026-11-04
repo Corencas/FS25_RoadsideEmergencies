@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- German: machine-drafted, corrections from native speakers welcome (see README). -->
+<l10n>
+    <texts>
+        <!-- keys -->
+        <text name="input_RSE_STRAP" text="RSE-Bergegurt"/>
+
+        <!-- animals -->
+        <text name="rse_animal_deer" text="Reh"/>
+        <text name="rse_animal_boar" text="Wildschwein"/>
+        <text name="rse_animal_pig" text="Schwein"/>
+        <text name="rse_animal_sheep" text="Schaf"/>
+        <text name="rse_animal_goat" text="Ziege"/>
+        <text name="rse_animal_cow" text="Kuh"/>
+        <text name="rse_animal_buffalo" text="Wasserbüffel"/>
+        <text name="rse_animal_horse" text="Pferd"/>
+
+        <!-- carcasses -->
+        <text name="rse_fillType_deer" text="Totes Reh"/>
+        <text name="rse_fillType_boar" text="Totes Wildschwein"/>
+        <text name="rse_fillType_pig" text="Totes Schwein"/>
+        <text name="rse_fillType_sheep" text="Totes Schaf"/>
+        <text name="rse_fillType_goat" text="Tote Ziege"/>
+        <text name="rse_fillType_cow" text="Tote Kuh"/>
+        <text name="rse_fillType_buffalo" text="Toter Wasserbüffel"/>
+        <text name="rse_fillType_horse" text="Totes Pferd"/>
+        <text name="rse_info_deadAnimal" text="Totes Tier"/>
+        <text name="rse_info_mass" text="Gewicht"/>
+        <text name="rse_info_massValue" text="%d kg"/>
+        <text name="rse_action_drag" text="%s ziehen"/>
+        <text name="rse_action_letGo" text="%s loslassen"/>
+        <text name="rse_action_tooHeavy" text="%s: zu schwer zum Ziehen von Hand. Nimm einen Gurt oder eine Maschine."/>
+
+        <!-- recovery strap -->
+        <text name="rse_strap_hook" text="RSE: Gurt hier einhaken"/>
+        <text name="rse_strap_attach" text="RSE: Gurt hier befestigen"/>
+        <text name="rse_strap_drop" text="RSE: Gurt weglegen"/>
+        <text name="rse_strap_remove" text="RSE: Gurt lösen"/>
+        <text name="rse_strap_hooked" text="Gurt am Tier (%s) eingehakt. Hake jetzt das andere Ende an einem Fahrzeug ein."/>
+        <text name="rse_strap_attached" text="Gurt vom Tier (%s) an %s befestigt."/>
+        <text name="rse_strap_tooFar" text="Zu weit auseinander: %.1f m. Der Gurt reicht %d m."/>
+        <text name="rse_strap_removed" text="Gurt gelöst."/>
+
+        <!-- disposal points -->
+        <text name="rse_point_shop" text="Shop"/>
+        <text name="rse_point_player" text="Mein Punkt %d"/>
+        <text name="rse_point_hotspot" text="Abgabestelle %d: %s"/>
+        <text name="rse_marker_loose" text="Frei laufendes Tier: %s"/>
+        <text name="rse_marker_left" text="Zurückgelassenes totes Tier: %s"/>
+        <text name="rse_delivered" text="Tier abgegeben: %s (%s). Abtransport: %d $. Entsorgungsgebühr: %d $."/>
+        <text name="rse_finance_haulPay" text="Vergütung Tierabtransport"/>
+        <text name="rse_collectedUnearned" text="Leitstelle: Der Straßendienst hat ein nie abgeliefertes totes Tier (%s) abgeholt. Dir wurden %d $ berechnet, einschließlich der %d $, die du für den Abtransport erhalten hast."/>
+        <text name="rse_collected" text="Leitstelle: Der Straßendienst hat ein zurückgelassenes totes Tier (%s) abgeholt. Dir wurden %d $ berechnet."/>
+        <text name="rse_finance_collection" text="Abholgebühren für Tierkörper"/>
+        <text name="rse_finance_disposalFee" text="Entsorgungsgebühren"/>
+
+        <!-- settings panel -->
+        <text name="input_RSE_SETTINGS" text="Roadside-Emergencies-Einstellungen"/>
+        <text name="rse_set_title" text="Roadside-Emergencies-Einstellungen"/>
+        <text name="rse_set_on" text="An"/>
+        <text name="rse_set_off" text="Aus"/>
+        <text name="rse_set_size_small" text="Klein"/>
+        <text name="rse_set_size_normal" text="Normal"/>
+        <text name="rse_set_size_large" text="Groß"/>
+        <text name="rse_set_size_random" text="Zufällig"/>
+        <text name="rse_set_calls" text="Leitstelle ruft von selbst an"/>
+        <text name="rse_set_animalCalls" text="Einsätze mit Tieren"/>
+        <text name="rse_set_wreckCalls" text="Einsätze mit Wracks und verlorener Ladung"/>
+        <text name="rse_set_jobSize" text="Einsatzgröße (wie viele Tiere oder Ballen)"/>
+        <text name="rse_set_pay" text="Einkommen aus Einsätzen und Abtransport"/>
+        <text name="rse_set_fees" text="Entsorgungsgebühren und Rechnungen des Landkreises"/>
+        <text name="rse_set_left" text="Landkreis holt Zurückgelassenes ab nach"/>
+        <text name="rse_set_expire" text="Anderer Dienstleister übernimmt nach"/>
+        <text name="rse_set_markers" text="Kartenmarkierungen"/>
+        <text name="rse_set_addPoint" text="Abgabestelle hier hinzufügen"/>
+        <text name="rse_set_removePoint" text="Deine nächste Abgabestelle entfernen"/>
+        <text name="rse_point_added" text="Abgabestelle hier hinzugefügt: %s."/>
+        <text name="rse_point_removed" text="Deine Abgabestelle wurde entfernt: %s."/>
+        <text name="rse_point_noneOwn" text="Du hast keine eigene Abgabestelle."/>
+
+        <!-- scene kit -->
+        <text name="input_RSE_KIT_MENU" text="Einsatz-Ausrüstung: öffnen oder schließen"/>
+        <text name="input_RSE_KIT_USE" text="Einsatz-Ausrüstung: aufstellen oder einsammeln"/>
+        <text name="input_RSE_KIT_TURN" text="Einsatz-Ausrüstung: drehen"/>
+        <text name="input_RSE_KIT_NEXT" text="Einsatz-Ausrüstung: nächstes Teil"/>
+        <text name="rse_kit_next" text="Nächstes Teil"/>
+        <text name="rse_kit_cone" text="Leitkegel"/>
+        <text name="rse_kit_barricade" text="Holzabsperrung"/>
+        <text name="rse_kit_coneTape" text="Leitkegel mit Absperrband"/>
+        <text name="rse_kit_stop" text="Einsatz-Ausrüstung schließen"/>
+        <text name="rse_kit_open" text="Einsatz-Ausrüstung öffnen"/>
+        <text name="rse_kit_place" text="Aufstellen: %s"/>
+        <text name="rse_kit_pickup" text="Einsammeln: %s"/>
+        <text name="rse_kit_turn" text="Drehen"/>
+        <text name="rse_kit_loadFailed" text="Dieses Teil konnte nicht geladen werden: %s."/>
+        <text name="rse_kit_limit" text="Mehr als %d Teile gleichzeitig sind nicht möglich."/>
+        <text name="rse_kit_collect" text="Sammle deine Leitkegel und Absperrungen ein (noch %d). Vorher gibt es keine neuen Einsätze."/>
+        <text name="rse_kit_allCollected" text="Alle Leitkegel und Absperrungen sind eingesammelt. Du kannst wieder neue Einsätze annehmen."/>
+        <text name="rse_kit_reminder" text="Die Leitstelle hat angerufen: Die Leitkegel und Absperrungen deiner Firma blockieren noch den Verkehr (noch %d). Sammle sie ein. Vorher gibt es keine neuen Einsätze."/>
+
+        <!-- Emergency Pack -->
+        <text name="rse_ep_deer_description" text="Leitstelle des Landkreises: Ein Auto hat Wild auf der Straße angefahren. Der Verkehr staut sich. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_boar_description" text="Leitstelle des Landkreises: Ein Auto hat ein oder mehrere Wildschweine auf der Straße angefahren. Der Verkehr staut sich. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_pig_description" text="Leitstelle des Landkreises: Ein Auto hat ein oder mehrere entlaufene Schweine auf der Straße angefahren. Der Verkehr staut sich. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_sheep_description" text="Leitstelle des Landkreises: Schafe sind durch einen Zaun gekommen, und ein Auto hat sie auf der Straße angefahren. Der Verkehr staut sich. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_goat_description" text="Leitstelle des Landkreises: Ein Auto hat eine oder mehrere entlaufene Ziegen auf der Straße angefahren. Der Verkehr staut sich. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_cow_description" text="Leitstelle des Landkreises: Ein Lkw hat eine oder mehrere Kühe auf der Straße angefahren. Der Verkehr staut sich. Kühe sind zu schwer zum Ziehen von Hand, bring also ein Fahrzeug zum Wegziehen oder eine Maschine zum Anheben mit. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_horse_description" text="Leitstelle des Landkreises: Ein Auto hat ein oder mehrere entlaufene Pferde auf der Straße angefahren. Der Verkehr staut sich. Pferde sind zu schwer zum Ziehen von Hand, bring also ein Fahrzeug zum Wegziehen oder eine Maschine zum Anheben mit. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_buffalo_description" text="Leitstelle des Landkreises: Ein Lkw hat einen oder mehrere Wasserbüffel auf der Straße angefahren. Der Verkehr staut sich. Wasserbüffel sind zu schwer zum Ziehen von Hand, bring also ein Fahrzeug zum Wegziehen oder eine Maschine zum Anheben mit. Kannst du die Straße räumen?"/>
+        <text name="rse_ep_hint_arrive" text="Fahre zur markierten Stelle."/>
+        <text name="rse_ep_hint_clear_small" text="Räume die Straße. Lade die Tiere für die volle Bezahlung auf und bring sie dann zu einer Entsorgungsstelle. Der Straßenrand bringt wenig ein, und der Landkreis berechnet dir das Abholen. Leitkegel sind freiwillig (U)."/>
+        <text name="rse_ep_hint_clear_heavy" text="Räume die Straße. Nimm für die volle Bezahlung einen Gurt (K) oder eine Maschine, dann geht es zur Entsorgungsstelle. Der Straßenrand bringt wenig ein, der Landkreis berechnet das Abholen. Leitkegel sind freiwillig (U)."/>
+        <text name="rse_ep_done" text="Die Straße ist frei. Danke!"/>
+        <text name="rse_scene_resumed" text="Du hast einen laufenden Einsatz. Folge der Kartenmarkierung."/>
+        <text name="rse_scene_resumeFailed" text="Der Einsatz konnte nach dem Laden nicht fortgesetzt werden und wurde abgebrochen."/>
+        <text name="rse_left_warn" text="Leitstelle: Du hast ein totes Tier (%s) zurückgelassen. Hole es innerhalb von %s ab, sonst holt es der Landkreis ab und stellt es dir in Rechnung. Es ist auf deiner Karte markiert."/>
+        <text name="rse_left_warnMany" text="Leitstelle: Du hast %d tote Tiere zurückgelassen. Hole sie innerhalb von %s ab, sonst holt sie der Landkreis ab und stellt sie dir in Rechnung. Sie sind auf deiner Karte markiert."/>
+        <text name="rse_unit_minute" text="1 Minute"/>
+        <text name="rse_unit_minutes" text="%d Minuten"/>
+        <text name="rse_caller_driver" text="Ein vorbeifahrender Fahrer"/>
+        <text name="rse_caller_bus" text="Ein Schulbusfahrer"/>
+        <text name="rse_caller_mail" text="Ein Postbote"/>
+        <text name="rse_caller_neighbor" text="Ein Nachbar"/>
+        <text name="rse_caller_sheriff" text="Das Büro des Sheriffs"/>
+        <text name="rse_call_details" text="%s hat es gemeldet. Es ist %s von dir entfernt."/>
+        <text name="rse_call_detailsNear" text="%s hat es bei Flurstück %d gemeldet, %s von dir entfernt."/>
+        <text name="rse_call_arrivedOne" text="Ein Tier liegt auf der Straße."/>
+        <text name="rse_call_arrivedMany" text="%d Tiere liegen auf der Straße."/>
+        <text name="rse_call_expiring" text="Leitstelle: Wenn du nicht innerhalb von %s am Einsatzort bist, übernimmt ein anderer Dienstleister."/>
+        <text name="rse_call_expired" text="Leitstelle: Ein anderer Dienstleister hat den Einsatz übernommen, weil du nicht rechtzeitig dort warst. Es gibt keine Bezahlung und keine Strafe."/>
+        <text name="rse_call_lightsBonus" text="Deine Warnleuchten haben den Einsatzort gesichert: %d %% mehr Bezahlung."/>
+        <text name="rse_ep_wreck_description" text="Leitstelle des Landkreises: Ein Lkw ist verunglückt und blockiert die Straße. Der Verkehr staut sich. Er muss zu einer Bergungsstelle geschleppt werden. Übernimmst du den Auftrag?"/>
+        <text name="rse_ep_rollover_description" text="Leitstelle des Landkreises: Ein Traktor ist in einen Graben gekippt, und der Fahrer sitzt noch darin. Er muss aufgerichtet und zu einer Bergungsstelle gebracht werden. Übernimmst du den Auftrag?"/>
+        <text name="rse_ep_doneWreck" text="Der Auftrag ist erledigt. Danke!"/>
+        <text name="rse_wreck_hint_prepare" text="Geh zum Wrack und bereite es für die Bergung vor. Leitkegel und Absperrungen sind freiwillig (U)."/>
+        <text name="rse_wreck_hint_driver" text="Geh zum Traktor und hilf dem Fahrer heraus. Leitkegel und Absperrungen sind freiwillig (U)."/>
+        <text name="rse_wreck_hint_upright" text="Stelle ihn wieder auf die Räder: Hake einen Gurt hoch an der oberen Seite ein (K), befestige das andere Ende an einem Fahrzeug und ziehe ihn hinüber."/>
+        <text name="rse_wreck_prepare" text="Wrack für die Bergung vorbereiten"/>
+        <text name="rse_wreck_driver" text="Dem Fahrer heraushelfen"/>
+        <text name="rse_wreck_driverOut" text="Der Fahrer ist draußen und unverletzt."/>
+        <text name="rse_wreck_upright" text="Er steht wieder auf den Rädern."/>
+        <text name="rse_wreck_delivered" text="Das Wrack ist an der Bergungsstelle."/>
+        <text name="rse_wreck_locked" text="Dieses Wrack muss zuerst für die Bergung vorbereitet werden."/>
+        <text name="rse_wreck_noEngine" text="Der Motor dieses Wracks lässt sich nicht starten."/>
+        <text name="rse_load_delivered" text="Ein Ballen wurde abgeliefert. Verbleibende Ballen: %d."/>
+        <text name="rse_call_cancelled" text="Leitstelle: Der Einsatz wurde abgesagt."/>
+        <text name="rse_ep_storm_description" text="Leitstelle des Landkreises: Ein Tornado hat Ballen auf die Straße geweht. Der Verkehr staut sich. Sie müssen zu einer Abgabestelle. Übernimmst du den Auftrag?"/>
+        <text name="rse_storm_hint" text="Bring alle Ballen zur markierten Abgabestelle. Die Ballen können auf jedes Fahrzeug."/>
+        <text name="rse_ep_livestock_description" text="Leitstelle des Landkreises: Ein Viehanhänger ist auf der Straße umgekippt. Einige Tiere sind tot, andere laufen frei herum. Du kannst die Tiere, den Anhänger oder beides übernehmen, für beides gibt es einen Bonus. Für die lebenden Tiere brauchst du einen eigenen Viehanhänger. Übernimmst du den Auftrag?"/>
+        <text name="rse_crash_hint" text="Zwei Aufgaben, erledige eine oder beide: Fange die frei laufenden Tiere ein, führe sie zu deinem Viehanhänger und räume die toten weg; oder richte den Anhänger auf und schleppe ihn ab. Beides bringt einen Bonus."/>
+        <text name="rse_crash_arrived" text="Tote Tiere: %d. Frei laufende Tiere: %d. Sie laufen davon, also warte nicht zu lange."/>
+        <text name="rse_crash_animalsDone" text="Um die Tiere ist gesorgt. Bring auch den Anhänger für %d %% Bonus. Sonst übernimmt nach %s ein anderer Dienstleister; im Einstellungsfenster (H) kannst du ihn früher abgeben."/>
+        <text name="rse_crash_trailerDone" text="Der Anhänger ist da. Kümmere dich auch um die Tiere für %d %% Bonus. Sonst übernimmt nach %s ein anderer Dienstleister; im Einstellungsfenster (H) kannst du sie früher abgeben."/>
+        <text name="rse_crash_warn" text="Leitstelle des Landkreises: In %s übernimmt ein anderer Dienstleister den Rest dieses Auftrags."/>
+        <text name="rse_crash_handedOver" text="Leitstelle des Landkreises: Ein anderer Dienstleister kümmert sich um den Rest. Du wirst für das bezahlt, was du erledigt hast."/>
+        <text name="rse_crash_bonus" text="Du hast beide Teile des Auftrags erledigt: %d %% Bonus."/>
+        <text name="rse_survivor_catch" text="%s einfangen"/>
+        <text name="rse_survivor_load" text="%s in deinen Anhänger verladen"/>
+        <text name="rse_survivor_caught" text="Du führst das Tier (%s) am Strick. Bring es zu deinem eigenen Viehanhänger."/>
+        <text name="rse_survivor_gotAway" text="Das Tier (%s) ist dir entwischt."/>
+        <text name="rse_survivor_noRoom" text="Dein Viehanhänger kann dieses Tier nicht aufnehmen: Er ist voll oder hat schon eine andere Tierart geladen."/>
+        <text name="rse_survivor_loaded" text="Tier im Anhänger: %s. Verbleibende frei laufende Tiere: %d."/>
+        <text name="rse_set_help" text="Hoch und Runter: auswählen. Links und Rechts: ändern. Eingabe: bestätigen. H oder Esc: schließen."/>
+        <text name="rse_set_defaults" text="Alle Einstellungen zurücksetzen"/>
+        <text name="rse_set_defaultsDone" text="Alle Einstellungen sind zurückgesetzt. Deine Abgabestellen bleiben erhalten."/>
+        <text name="rse_set_none" text="Keine"/>
+        <text name="rse_set_handOver" text="Diesen Auftrag einem anderen Dienstleister geben"/>
+        <text name="rse_set_handOverPaid" text="Bezahlung für das Erledigte"/>
+        <text name="rse_set_handOverNone" text="Keine Bezahlung"/>
+        <text name="rse_call_handedOver" text="Leitstelle des Landkreises: Ein anderer Dienstleister hat den Auftrag übernommen. Es gibt keine Bezahlung."/>
+        <text name="rse_call_cantHandOver" text="Der Auftrag konnte nicht abgegeben werden."/>
+        <text name="rse_map_teleport" text="Hierher teleportieren"/>
+        <text name="rse_map_collect" text="Jetzt vom Landkreis abholen lassen (wird berechnet)"/>
+        <text name="rse_map_removePoint" text="Diese Abgabestelle entfernen"/>
+        <text name="input_RSE_STRAP_IN" text="RSE-Bergegurt: einholen"/>
+        <text name="input_RSE_STRAP_OUT" text="RSE-Bergegurt: nachlassen"/>
+        <text name="rse_strap_reelIn" text="RSE: Gurt einholen"/>
+        <text name="rse_strap_reelOut" text="RSE: Gurt nachlassen"/>
+        <text name="rse_call_lightsHint" text="Schalte deine Warnblinker oder Rundumleuchten an, solange du hier arbeitest: %d %% mehr Bezahlung."/>
+        <text name="rse_ep_trailer_description" text="Leitstelle des Landkreises: Ein Anhänger ist umgekippt und hat seine Ballen auf der Straße verloren. Der Verkehr staut sich. Du kannst den Anhänger, die Ballen oder beides übernehmen, für beides gibt es einen Bonus. Übernimmst du den Auftrag?"/>
+        <text name="rse_ep_powerline_description" text="Kreisleitstelle: Ein Auto ist gegen einen Strommast gefahren. Mast und Leitungen liegen auf der Straße, und der Fahrer sitzt noch im Auto. Der Verkehr staut sich. Der Stromversorger ist unterwegs. Kannst du helfen?"/>
+        <text name="rse_line_hint_wait" text="Bleib auf Abstand: Die Leitungen können unter Spannung stehen. Stelle Leitkegel und Warnlichter auf. Der Stromversorger braucht etwa anderthalb Minuten, um den Strom abzustellen."/>
+        <text name="rse_line_hint_work" text="Hilf dem Fahrer heraus und bring das Auto zu einer Bergungsstelle. Geh zu jeder Leitung (siehe Markierungen) und roll sie auf. Bring den Mast weg, zersägt, wenn er sonst nicht passt. Beide Teile bringen einen Bonus."/>
+        <text name="rse_line_danger" text="Zurück! Die Leitungen können unter Spannung stehen. Wenn du so nah bleibst, bekommst du weniger Geld."/>
+        <text name="rse_line_dangerCut" text="Du warst zu lange zu nah an den Leitungen, darum kürzt der Kreis deinen Lohn um %d%%."/>
+        <text name="rse_line_powerOff" text="Stromversorger: Der Strom ist aus, du kannst sicher arbeiten."/>
+        <text name="rse_line_rollUp" text="Gedrückt halten, um die Leitung aufzurollen"/>
+        <text name="rse_line_stillLive" text="Noch nicht: Der Strom ist noch an. Der Stromversorger braucht noch etwa %d Sekunden."/>
+        <text name="rse_line_wireDone" text="Die Leitung ist aufgerollt. Verbleibende Leitungen: %d."/>
+        <text name="rse_line_pieceIn" text="Dieses Stück des Masts ist angekommen. Verbleibende Stücke: %d."/>
+        <text name="rse_line_poleIn" text="Der Mast ist angekommen."/>
+        <text name="rse_crash_carDone" text="Das Auto ist angekommen. Räum auch Mast und Leitungen weg, dann gibt es %d%% Bonus. Sonst übernimmt nach %s ein anderer Betrieb; in den Einstellungen (H) kannst du sie früher abgeben."/>
+        <text name="rse_crash_lineDone" text="Mast und Leitungen sind weggeräumt. Bring auch das Auto, dann gibt es %d%% Bonus. Sonst übernimmt nach %s ein anderer Betrieb; in den Einstellungen (H) kannst du es früher abgeben."/>
+        <text name="rse_strap_log" text="Stamm"/>
+        <text name="rse_guide_title_line" text="Umgestürzte Strommasten"/>
+        <text name="rse_guide_line_1" text="Ein Auto ist gegen einen Strommast gefahren. Bleib auf Abstand, bis der Stromversorger den Strom abgestellt hat: Die Leitungen können unter Spannung stehen, und wer zu nah bleibt, bekommt weniger Geld. Stell in der Zwischenzeit Leitkegel und Warnlichter auf."/>
+        <text name="rse_guide_line_2" text="Ist der Strom aus, hilf dem Fahrer heraus und bring das Auto zu einer Bergungsstelle. Eine Markierung zeigt jede Leitung: Geh zu ihr, egal an welcher Stelle, und halte die Taste gedrückt, um sie aufzurollen."/>
+        <text name="rse_guide_line_3" text="Der Mast ist ein echter Stamm. Wenn er sonst nicht passt, zersäge ihn mit der Kettensäge: Stell dich neben ihn und ziele quer darüber. Bring jedes Stück zu einer Bergungsstelle. Erledigst du beide Teile, gibt es einen Bonus."/>
+        <text name="rse_crash_hint_load" text="Zwei Aufgaben, erledige eine oder beide: Bereite den Anhänger vor, richte ihn auf und schleppe ihn ab; oder bring die Ballen zur markierten Bergungsstelle. Beides bringt einen Bonus."/>
+        <text name="rse_crash_arrivedLoad" text="Ballen auf der Straße: %d."/>
+        <text name="rse_load_call_small" text="Die Ladung sind kleine Ballen. Ein Pickup und deine eigenen Hände reichen dafür."/>
+        <text name="rse_load_call_big" text="Die Ladung sind große Ballen. Bring einen Frontlader oder Teleskoplader mit und etwas, worauf sie passen."/>
+        <text name="rse_load_arrived_small" text="Trage die kleinen Ballen von Hand auf eine Pickup-Ladefläche oder in den Anhänger, sobald er wieder auf den Rädern steht. Jeder Ballen, der eine Bergungsstelle erreicht, wird bezahlt."/>
+        <text name="rse_load_arrived_big" text="Die großen Ballen brauchen einen Frontlader oder Teleskoplader. Jeder Ballen, der eine Bergungsstelle erreicht, wird bezahlt."/>
+        <text name="rse_crash_trailerDoneBales" text="Der Anhänger ist da. Bring auch die Ballen für %d %% Bonus. Sonst übernimmt nach %s ein anderer Dienstleister; im Einstellungsfenster (H) kannst du sie früher abgeben."/>
+        <text name="rse_crash_balesDone" text="Die Ballen sind da. Bring auch den Anhänger für %d %% Bonus. Sonst übernimmt nach %s ein anderer Dienstleister; im Einstellungsfenster (H) kannst du ihn früher abgeben."/>
+        <text name="rse_wreck_hint_deliver" text="Bring es zur markierten Bergungsstelle. Der Motor bleibt aus. Hake es mit einem Gurt (K) an ein Fahrzeug, dann folgt es dir, oder nimm eine Winde. Für einen Abschleppwagen: Gurt an die Ladefläche und einholen (N)."/>
+        <text name="rse_set_open" text="Roadside-Einstellungen und Anleitung"/>
+        <text name="rse_set_guide" text="Anleitung öffnen"/>
+        <text name="rse_guide_title" text="Anleitung zu Roadside Emergencies"/>
+        <text name="rse_guide_help" text="Links und Rechts: Seite. Eingabe: nächste Seite. H oder Esc: schließen."/>
+        <text name="rse_guide_page" text="Seite %d von %d"/>
+        <text name="rse_guide_title_welcome" text="Willkommen"/>
+        <text name="rse_guide_welcome_1" text="Du bist der örtliche Dienstleister, den die Leitstelle des Landkreises ruft, wenn auf der Straße etwas passiert: angefahrene Tiere, Unfallwracks, umgekippte Fahrzeuge, verlorene Ladung und Sturmschäden."/>
+        <text name="rse_guide_welcome_2" text="Einsätze kommen von selbst, von überall auf den Straßen der Karte. Ein Pager fragt, ob du den Auftrag annimmst. Ablehnen kostet nichts. Nimmst du an, folge der Markierung."/>
+        <text name="rse_guide_welcome_3" text="Du kannst jederzeit zu dieser Anleitung zurückkehren: Drücke zu Fuß H und wähle &quot;Anleitung öffnen&quot;. Im selben Menü findest du alle Einstellungen."/>
+        <text name="rse_guide_title_calls" text="Einsätze und Bezahlung"/>
+        <text name="rse_guide_calls_1" text="Ein Auftrag wird bezahlt, wenn er erledigt ist, und die Fortschrittsanzeige zeigt, wie weit du bist. Es läuft immer nur ein Auftrag."/>
+        <text name="rse_guide_calls_2" text="Schalte am Einsatzort deine Warnblinker oder Rundumleuchten an, dann gibt es mehr Geld."/>
+        <text name="rse_guide_calls_3" text="Einen Einsatz, den du nicht rechtzeitig erreichst, übernimmt ein anderer Dienstleister, ohne Bezahlung und ohne Strafe. Du kannst auch jeden Auftrag in den Einstellungen (H) abgeben, zum Beispiel wenn ein Wrack feststeckt."/>
+        <text name="rse_guide_calls_4" text="Du kannst während eines Auftrags speichern. Er ist nach dem Laden wieder da."/>
+        <text name="rse_guide_title_animals" text="Tote Tiere"/>
+        <text name="rse_guide_animals_1" text="Räume die Straße. Kleine Tiere kannst du mit der Aktionstaste von Hand ziehen. Schwere brauchen einen Gurt oder eine Maschine."/>
+        <text name="rse_guide_animals_2" text="Lade ein Tier auf ein beliebiges Fahrzeug für die volle Bezahlung und bring es dann zu einer Abgabestelle. Dort wirst du für den Abtransport bezahlt, abzüglich einer Entsorgungsgebühr. Der Laden ist immer eine Abgabestelle."/>
+        <text name="rse_guide_animals_3" text="Es nur an den Straßenrand zu bewegen, bringt sehr wenig ein. Ein zurückgelassenes Tier wird auf deiner Karte markiert, und du wirst erinnert. Lässt du es zu lange liegen, holt es der Landkreis ab und stellt es dir in Rechnung."/>
+        <text name="rse_guide_animals_4" text="Tierkörper verhalten sich wie Ballen, also können Frontlader, Gabeln, Kräne, Anhänger, Spanngurte und Autoload-Mods sie handhaben. Eine Kuh ist schwer, ein kleiner Kran hebt sie nicht."/>
+        <text name="rse_guide_title_strap" text="Der Bergegurt"/>
+        <text name="rse_guide_strap_1" text="Ziele zu Fuß auf ein totes Tier oder ein vorbereitetes Wrack und drücke K, um den Gurt dort einzuhaken. Ziele dann auf ein Fahrzeug und drücke wieder K für das andere Ende. Ziele auf nichts, um den Gurt wegzulegen."/>
+        <text name="rse_guide_strap_2" text="In der Nähe eines Gurts holst du ihn mit gehaltenem N ein und lässt ihn mit M nach. Durch Einholen ziehst du ein Wrack auf einen Abschleppwagen, durch Nachlassen rollt es wieder herunter."/>
+
+        <text name="rse_guide_strap_3" text="Um ein Wrack aufzurichten, das auf der Seite liegt, hake es hoch an der oberen Seite ein, befestige den Gurt an einem Fahrzeug und ziehe es herum."/>
+        <text name="rse_guide_title_wrecks" text="Wracks"/>
+        <text name="rse_guide_wrecks_1" text="Geh zum Wrack und bereite es zuerst für die Bergung vor. Sein Motor bleibt aus, weil es ein Wrack ist. Du schleppst es also ab oder lädst es auf."/>
+        <text name="rse_guide_wrecks_2" text="Steht es auf den Rädern, hake es mit dem Gurt an ein Fahrzeug. Der Gurt sitzt dort, wo du hinzielst, und zieht erst, wenn du ihn einholst oder losfährst. Er zieht entlang der Leine, und die Vorderräder drehen sich zum Zug hin, also schwenkt ein schräger Zug das Wrack herum. Ein Anhänger kann nicht lenken, darum rückt er beim Einholen zur Leine hin. Beim Abschleppen wandert der Gurt ans Ende des Wracks und kürzt sich selbst, außer du hast ihn von Hand eingeholt, und das Wrack bremst, wenn du anhältst."/>
+        <text name="rse_guide_wrecks_3" text="Wracks und Ballen müssen zu einer Bergungsstelle, bevor du dafür bezahlt wirst. Die Markierung zeigt den Weg."/>
+        <text name="rse_guide_wrecks_4" text="Manche Aufträge haben zwei Teile, etwa einen Anhänger und seine Ballen. Erledige einen, und nach einer Weile übernimmt ein anderer Dienstleister den Rest, oder erledige beide für einen Bonus."/>
+        <text name="rse_guide_title_loads" text="Verlorene Ballen"/>
+        <text name="rse_guide_loads_1" text="Der Einsatz sagt dir, was die Ladung ist. Kleine Ballen trägst du von Hand, also reicht ein Pickup. Große Ballen bringen mehr pro Ballen, brauchen aber einen Frontlader oder Teleskoplader."/>
+        <text name="rse_guide_loads_2" text="Bei einem Anhänger-Auftrag brauchst du keine zweite Fahrt. Stelle den Anhänger wieder auf die Räder, lade die Ballen hinein und schleppe alles zur Bergungsstelle. Ein Sturm-Auftrag hat keinen Anhänger, also bring deinen eigenen mit und fahre so oft, wie du musst."/>
+        <text name="rse_guide_loads_3" text="Jeder Ballen, der eine Bergungsstelle erreicht, wird bezahlt, auch wenn du den Rest des Auftrags in den Einstellungen (H) abgibst. Ein Ballen bringt mehr, wenn du nur die Ballen bringst."/>
+        <text name="rse_guide_title_loose" text="Frei laufende Tiere"/>
+        <text name="rse_guide_loose_1" text="Bei einem umgekippten Viehanhänger laufen lebende Tiere davon. Sie bleiben zum Grasen stehen und weichen aus, wenn du auf sie zukommst."/>
+        <text name="rse_guide_loose_2" text="Geh zu einem Tier und fange es mit der Aktionstaste ein. Es folgt dir am Strick. Bring es zu deinem eigenen Viehanhänger und drücke die Taste wieder, um es zu verladen."/>
+        <text name="rse_guide_loose_3" text="Du führst immer nur ein Tier. Es entwischt, wenn du zu weit vorausläufst, und bleibt zurück, wenn du in ein Fahrzeug steigst. Verladene Tiere gehören dir und lassen sich beim Tierhändler verkaufen."/>
+        <text name="rse_guide_title_kit" text="Leitkegel und Absperrungen"/>
+        <text name="rse_guide_kit_1" text="Drücke bei einem Einsatz zu Fuß U für die Ausrüstung. I wählt das nächste Teil, L stellt es auf oder hebt auf, worauf du zielst, und gehaltenes O dreht es. Sie sind kostenlos und stoppen den Verkehr."/>
+        <text name="rse_guide_kit_2" text="Was du aufstellst, sammelst du wieder ein. Bis dahin ruft der Landkreis weiter an, und es kommt kein neuer Einsatz."/>
+        <text name="rse_guide_title_markers" text="Kartenmarkierungen"/>
+        <text name="rse_guide_markers_1" text="Ein grünes Tier ist ein frei laufendes Tier, ein rotes ! ein zurückgelassenes totes Tier und ein oranger Kegel einer deiner Leitkegel oder Absperrungen. Eine blaue Zahl ist deine eigene Abgabestelle, sichtbar, solange du etwas zu bringen hast."/>
+        <text name="rse_guide_markers_2" text="Klicke auf der Karte auf eine Markierung, um zu sehen, was es ist, und dorthin zu teleportieren. Du kannst auch ein totes Tier vom Landkreis abholen lassen, gegen die übliche Rechnung, oder eine Abgabestelle entfernen."/>
+        <text name="rse_guide_markers_3" text="Eigene Abgabestellen fügst du in den Einstellungen (H) hinzu."/>
+        <text name="rse_guide_title_mods" text="Passt gut dazu"/>
+        <text name="rse_guide_mods_1" text="Du brauchst keine dieser Mods, aber sie passen gut zur Arbeit. Die hier genannten wurden mit Roadside Emergencies getestet."/>
+        <text name="rse_guide_mods_2" text="T880 Rollback von Roughneck Modding Crew: Ziehe ein Wrack mit dem Gurt (K) und den Haspeltasten (N und M) auf die Ladefläche, zurre es fest und fahre es hin."/>
+        <text name="rse_guide_mods_3" text="Better Winch von ThundR: Die Winde hakt tote Tiere und Wracks an. UniversalAutoload von loki_79: Es lädt sie auf die Anhänger, die es unterstützt."/>
+        <text name="rse_guide_mods_4" text="Frontlader, Ballengreifer und Krananhänger können tote Tiere bewegen, aber ein kleiner Kran hebt keine Kuh."/>
+        <text name="rse_scene_deliver" text="Bring die weggeschafften Tiere für eine Zusatzvergütung zu einer Entsorgungsstelle."/>
+        <text name="rse_ep_missing" text="Roadside Emergencies: Das Emergency-Pack-DLC fehlt, daher gibt es keine Einsätze."/>
+    </texts>
+</l10n>

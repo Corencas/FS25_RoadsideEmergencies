@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="106">
+    <author>Corencas</author>
+    <version>0.9.0.0</version>
+    <title>
+        <en>Roadside Emergencies</en>
+        <de>Roadside Emergencies</de>
+    </title>
+    <description>
+        <en><![CDATA[Adds 14 new road and roadside callouts to the free Emergency Pack DLC. You are the local contractor county dispatch calls when something goes wrong on the road, and you handle it with whatever vehicles and attachments you own.
+
+The calls:
+- Animals hit on the road: deer, wild boar, pigs, sheep, goats, cattle, horses and water buffalo
+- A wrecked truck across the lane
+- A tractor rollover
+- An overturned trailer with its bales on the road
+- A livestock trailer crash, with loose animals to catch
+- Storm damage after a twister
+- A downed power line
+
+Calls come from anywhere on the map's roads, and traffic stops behind them until the road is clear. Place cones and barricades by hand, load the animals, hook the recovery strap where you aim, and tow wrecks in or reel them onto a rollback. Whatever you bring to a drop-off or recovery point earns the full pay, and warning lights earn a bonus.
+
+Press H on foot for the guide and the settings.
+
+Requires the Emergency Pack DLC. Single player only for now.
+
+This is a public beta. Official download and bug reports: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod for Farming Simulator.]]></en>
+        <de><![CDATA[Bringt 14 neue Einsätze auf und neben der Straße in das kostenlose Emergency-Pack-DLC. Du bist der örtliche Dienstleister, den die Leitstelle des Landkreises ruft, wenn auf der Straße etwas passiert, und du erledigst es mit den Fahrzeugen und Geräten, die du besitzt.
+
+Die Einsätze:
+- Angefahrene Tiere auf der Straße: Rehe, Wildschweine, Schweine, Schafe, Ziegen, Rinder, Pferde und Wasserbüffel
+- Ein Lkw-Wrack quer auf der Fahrspur
+- Ein umgekippter Traktor
+- Ein umgekippter Anhänger mit seinen Ballen auf der Straße
+- Ein Unfall mit einem Viehanhänger, bei dem Tiere frei herumlaufen
+- Sturmschäden nach einem Tornado
+- Eine umgestürzte Stromleitung
+
+Einsätze kommen von überall auf den Straßen der Karte, und der Verkehr staut sich, bis die Straße frei ist. Stelle Leitkegel und Absperrungen von Hand auf, lade die Tiere auf, hake den Bergungsgurt dort ein, wo du hinzielst, und schleppe Wracks ab oder ziehe sie auf einen Abschleppwagen. Was du zu einer Abgabe- oder Bergungsstelle bringst, wird voll bezahlt, und Warnlichter bringen einen Bonus.
+
+Drücke zu Fuß H für die Anleitung und die Einstellungen.
+
+Benötigt das Emergency-Pack-DLC. Vorerst nur für Einzelspieler.
+
+Dies ist eine öffentliche Beta. Offizieller Download und Fehlermeldungen: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod für den Landwirtschafts-Simulator.]]></de>
+    </description>
+    <iconFilename>icon_roadsideEmergencies.dds</iconFilename>
+    <multiplayer supported="false"/>
+
+    <extraSourceFiles>
+        <!-- engine-free core (unit-tested in tests/) -->
+        <sourceFile filename="scripts/core/Config.lua"/>
+        <sourceFile filename="scripts/core/Log.lua"/>
+        <sourceFile filename="scripts/core/AnimalCatalog.lua"/>
+        <sourceFile filename="scripts/core/PayRules.lua"/>
+        <sourceFile filename="scripts/core/PointRegistry.lua"/>
+        <sourceFile filename="scripts/core/SaveCodec.lua"/>
+        <sourceFile filename="scripts/core/Settings.lua"/>
+        <sourceFile filename="scripts/core/Store.lua"/>
+        <sourceFile filename="scripts/core/RoadClearRule.lua"/>
+        <sourceFile filename="scripts/core/SceneSpec.lua"/>
+        <sourceFile filename="scripts/core/CallPlanner.lua"/>
+        <sourceFile filename="scripts/core/KitRules.lua"/>
+        <sourceFile filename="scripts/core/SpotRules.lua"/>
+        <sourceFile filename="scripts/core/LeftBehindRule.lua"/>
+        <sourceFile filename="scripts/core/JobRules.lua"/>
+        <sourceFile filename="scripts/core/Guide.lua"/>
+        <sourceFile filename="scripts/core/ProgressRules.lua"/>
+        <sourceFile filename="scripts/core/HerdRules.lua"/>
+        <sourceFile filename="scripts/core/GaitRules.lua"/>
+        <sourceFile filename="scripts/core/WreckRules.lua"/>
+        <sourceFile filename="scripts/core/TwisterRules.lua"/>
+        <sourceFile filename="scripts/core/LineRules.lua"/>
+        <sourceFile filename="scripts/core/ToolRules.lua"/>
+        <!-- game adapters -->
+        <sourceFile filename="scripts/game/Text.lua"/>
+        <sourceFile filename="scripts/game/Carcass.lua"/>
+        <sourceFile filename="scripts/game/Carcasses.lua"/>
+        <sourceFile filename="scripts/game/CarcassDrag.lua"/>
+        <sourceFile filename="scripts/game/Strap.lua"/>
+        <sourceFile filename="scripts/game/Points.lua"/>
+        <sourceFile filename="scripts/game/SaveLoad.lua"/>
+        <sourceFile filename="scripts/game/Roads.lua"/>
+        <sourceFile filename="scripts/game/Survivors.lua"/>
+        <sourceFile filename="scripts/game/Wrecks.lua"/>
+        <sourceFile filename="scripts/game/PowerLine.lua"/>
+        <sourceFile filename="scripts/game/ToolSwitch.lua"/>
+        <sourceFile filename="scripts/game/Scenes.lua"/>
+        <sourceFile filename="scripts/game/EpBridge.lua"/>
+        <sourceFile filename="scripts/game/EpSteps.lua"/>
+        <sourceFile filename="scripts/game/TwisterTravel.lua"/>
+        <sourceFile filename="scripts/game/Calls.lua"/>
+        <sourceFile filename="scripts/game/Markers.lua"/>
+        <sourceFile filename="scripts/game/MapClicks.lua"/>
+        <sourceFile filename="scripts/game/SettingsPanel.lua"/>
+        <sourceFile filename="scripts/game/Kit.lua"/>
+        <sourceFile filename="scripts/game/Console.lua"/>
+        <sourceFile filename="scripts/game/RoadsideEmergencies.lua"/>
+    </extraSourceFiles>
+
+    <l10n filenamePrefix="translations/translation"/>
+
+    <!-- carcass bodies: one fill type per animal, each with its own name and picture (nothing sells, feeds or wraps them). The bale types in xml/bales/ (base-game square
+         bale models by path) are loaded directly by Carcasses.lua, not listed here: the game reads mod bale types before mod
+         fill types, so a listed bale type would not know our fill types (0.1.0.0 warning). -->
+    <fillTypes filename="xml/fillTypes.xml"/>
+
+    <!-- on-foot keys: recovery strap (hook, attach, remove); scene kit (open or close, place or pick up, rotate, next item); settings panel -->
+    <actions>
+        <action name="RSE_STRAP" category="ONFOOT"/>
+        <action name="RSE_STRAP_IN" category="ONFOOT"/>
+        <action name="RSE_STRAP_OUT" category="ONFOOT"/>
+        <action name="RSE_KIT_MENU" category="ONFOOT"/>
+        <action name="RSE_KIT_USE" category="ONFOOT"/>
+        <action name="RSE_KIT_TURN" category="ONFOOT"/>
+        <action name="RSE_KIT_NEXT" category="ONFOOT"/>
+        <action name="RSE_SETTINGS" category="ONFOOT"/>
+    </actions>
+    <inputBinding>
+        <actionBinding action="RSE_STRAP">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_k"/>
+        </actionBinding>
+        <actionBinding action="RSE_STRAP_IN">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_n"/>
+        </actionBinding>
+        <actionBinding action="RSE_STRAP_OUT">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_m"/>
+        </actionBinding>
+        <actionBinding action="RSE_KIT_MENU">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_u"/>
+        </actionBinding>
+        <actionBinding action="RSE_KIT_USE">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_l"/>
+        </actionBinding>
+        <actionBinding action="RSE_KIT_TURN">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_o"/>
+        </actionBinding>
+        <actionBinding action="RSE_KIT_NEXT">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_i"/>
+        </actionBinding>
+        <actionBinding action="RSE_SETTINGS">
+            <binding device="KB_MOUSE_DEFAULT" input="KEY_h"/>
+        </actionBinding>
+    </inputBinding>
+
+    <!-- the Emergency Pack's add-on loader (API version 1): emergencies/init.xml lists our emergencies -->
+    <emergencyPack version="1">
+        <scenarioDirectory>emergencies</scenarioDirectory>
+    </emergencyPack>
+</modDesc>

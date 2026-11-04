@@ -1,0 +1,42 @@
+name: Works with another mod?
+description: How it went with a tow truck, winch, map or any other mod, good or bad
+labels: ["compatibility"]
+body:
+  - type: input
+    id: mod
+    attributes:
+      label: Which mod?
+      description: Its name and a link to where you got it.
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: How did it go?
+      options:
+        - It works
+        - It partly works
+        - It doesn't work
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What did you try?
+      description: For example, which emergency, and what you did with that mod.
+    validations:
+      required: true
+  - type: input
+    id: mod_version
+    attributes:
+      label: Roadside Emergencies version
+      description: Shown in the game's mod list, for example 0.9.0.0.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: log.txt, if something went wrong
+      description: >-
+        Drag your log.txt into this box. It's in Documents/My Games/FarmingSimulator2025.
+        Copy it before you restart the game, because the game overwrites it.

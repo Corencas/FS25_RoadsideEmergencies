@@ -1,0 +1,70 @@
+name: Bug report
+description: Something went wrong in the game
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: emergency
+    attributes:
+      label: Which emergency?
+      options:
+        - An animal call
+        - Wrecked truck
+        - Tractor rollover
+        - Overturned trailer
+        - Livestock trailer crash
+        - Storm damage
+        - Downed power line
+        - Not during a call
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: reload
+    attributes:
+      label: Did it happen after loading a save?
+      options:
+        - "No"
+        - "Yes"
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod version
+      description: Shown in the game's mod list, for example 0.9.0.0.
+    validations:
+      required: true
+  - type: input
+    id: game_version
+    attributes:
+      label: Game version and store
+      description: Shown in the game's main menu, for example 1.25.1.0 on Steam.
+    validations:
+      required: true
+  - type: input
+    id: map
+    attributes:
+      label: Map
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other mods
+      description: The ones that might matter, such as tow trucks or winches. log.txt has the full list.
+  - type: textarea
+    id: log
+    attributes:
+      label: log.txt
+      description: >-
+        Drag your log.txt into this box. It's in Documents/My Games/FarmingSimulator2025.
+        Copy it before you restart the game, because the game overwrites it.
+    validations:
+      required: true

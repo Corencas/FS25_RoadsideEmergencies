@@ -1,0 +1,73 @@
+describe("RsePayRules", function()
+    it("works out the haul-off pay and the disposal fee from the mass", function()
+        expectEqual(RsePayRules.haulPay(80, 1, RseConfig), 209)
+        expectEqual(RsePayRules.disposalFee(80, 1, RseConfig), 45)
+        expectEqual(RsePayRules.haulPay(650, 1, RseConfig), 808)
+        expectEqual(RsePayRules.disposalFee(650, 1, RseConfig), 188)
+    end)
+
+    it("always leaves more pay than fee, so hauling is worth it", function()
+        for _, kind in ipairs(RseAnimalCatalog.kinds()) do
+            local mass = RseAnimalCatalog.get(kind).massKg
+            expectTrue(RsePayRules.haulPay(mass, 1, RseConfig) > RsePayRules.disposalFee(mass, 1, RseConfig), kind)
+        end
+    end)
+
+    it("works out the charge for collecting a carcass left behind", function()
+        expectEqual(RsePayRules.collectionCharge(80, 1, RseConfig), 120)
+        expectEqual(RsePayRules.collectionCharge(650, 1, RseConfig), 263)
+        expectEqual(RsePayRules.collectionCharge(80, 0, RseConfig), 0)
+    end)
+
+    it("scales with the setting and rounds to whole dollars", function()
+        expectEqual(RsePayRules.disposalFee(80, 2, RseConfig), 90)
+        expectEqual(RsePayRules.disposalFee(80, 0.5, RseConfig), 23)
+        expectEqual(RsePayRules.disposalFee(80, 0, RseConfig), 0)
+        expectEqual(RsePayRules.haulPay(80, 2, RseConfig), 418)
+    end)
+
+    it("never works out a negative amount", function()
+        expectEqual(RsePayRules.disposalFee(-50, 1, RseConfig), RseConfig.FEE_BASE)
+        expectEqual(RsePayRules.disposalFee(80, -3, RseConfig), 0)
+        expectEqual(RsePayRules.disposalFee(nil, nil, RseConfig), RseConfig.FEE_BASE)
+        expectEqual(RsePayRules.haulPay(-50, 1, RseConfig), RseConfig.HAUL_PAY_BASE)
+    end)
+
+    it("pays a flat call reward per road cleared, more for more and heavier animals", function()
+        expectEqual(RsePayRules.callReward({ "deer" }, {}, RseConfig), 600)
+        expectEqual(RsePayRules.callReward({ "cow" }, {}, RseConfig), 956)
+        expectEqual(RsePayRules.callReward({ "cow", "cow" }, {}, RseConfig), 1413)
+        expectEqual(RsePayRules.callReward({}, {}, RseConfig), RseConfig.CALL_PAY_BASE)
+        expectEqual(RsePayRules.callReward({ "dragon" }, {}, RseConfig), RseConfig.CALL_PAY_BASE)
+    end)
+
+    it("pays very little for animals only moved to the roadside", function()
+        expectEqual(RsePayRules.callReward({ "deer" }, { "deer" }, RseConfig), 125)
+        expectEqual(RsePayRules.callReward({ "cow", "cow" }, { "cow", "cow" }, RseConfig), 150)
+        expectEqual(RsePayRules.callReward({ "cow", "cow" }, { "cow" }, RseConfig), 781, "one hauled, one at the roadside")
+    end)
+
+    it("works out the pay for hauling an animal, to take back if it is never delivered", function()
+        expectEqual(RsePayRules.unearnedPay({ "deer" }, {}, "deer", RseConfig), 475)
+        expectEqual(RsePayRules.unearnedPay({ "cow", "cow" }, {}, "cow", RseConfig), 632)
+        local deer = RsePayRules.callReward({ "deer" }, {}, RseConfig)
+        local roadside = RsePayRules.callReward({ "deer" }, { "deer" }, RseConfig)
+        expectEqual(deer - RsePayRules.unearnedPay({ "deer" }, {}, "deer", RseConfig), roadside, "ends the same as the roadside")
+    end)
+
+    it("scales pay with the income setting", function()
+        expectEqual(RsePayRules.scaled(600, 1.5), 900)
+        expectEqual(RsePayRules.scaled(600, nil), 600)
+    end)
+
+    it("adds the warning-light bonus", function()
+        expectEqual(RsePayRules.withLightsBonus(600, RseConfig), 642)
+    end)
+
+    it("keeps the fee setting in range", function()
+        expectEqual(RsePayRules.clampFactor(9, RseConfig), RseConfig.FEE_FACTOR_MAX)
+        expectEqual(RsePayRules.clampFactor(-1, RseConfig), RseConfig.FEE_FACTOR_MIN)
+        expectEqual(RsePayRules.clampFactor("x", RseConfig), RseConfig.FEE_FACTOR_DEFAULT)
+        expectEqual(RsePayRules.clampFactor(1.5, RseConfig), 1.5)
+    end)
+end)

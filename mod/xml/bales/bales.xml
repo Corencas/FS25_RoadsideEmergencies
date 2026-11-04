@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- Our carcass body types. Carcasses.lua registers them with the game's bale list when the map loads (after mod fill types
+     exist): listed in modDesc they were read before our fill types existed (0.1.0.0), and not registered at all the game refuses
+     to load them (0.1.0.1, "Bale not correctly registered"). -->
+<bales>
+    <bale filename="xml/bales/carcassSmall.xml"/>
+    <bale filename="xml/bales/carcassLarge.xml"/>
+</bales>

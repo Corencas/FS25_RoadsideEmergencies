@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A trailer has overturned and spilled its bales on the road. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road lane (spline); our first step
+     moves it to a random spot on the road network. Two parts, the trailer and the bales, in any order. Bales and trailers go to a recovery point (Z): no roadside ending.
+     Pay: our amount for each part done (Config.lua, WRECKS), and a bonus for both. -->
+<scenario description="rse_ep_trailer_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="25" wreck="trailer" emergency="trailer"/>
+        </checkpoint>
+        <checkpoint hint="rse_crash_hint_load" actionClass="FS25_RoadsideEmergencies.RseStepCrash">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

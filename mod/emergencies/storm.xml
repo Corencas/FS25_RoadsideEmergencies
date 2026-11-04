@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A twister has blown bales across the road. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road lane (spline); our first step
+     moves it to a random spot on the road network. It only ends when everything has reached a recovery point (Z). Pay: our amount
+     (Config.lua, WRECKS) when delivered. -->
+<scenario description="rse_ep_storm_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="25" wreck="storm" emergency="storm"/>
+        </checkpoint>
+        <checkpoint hint="rse_storm_hint" actionClass="FS25_RoadsideEmergencies.RseStepDeliver">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>
