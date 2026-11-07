@@ -17,6 +17,91 @@ local function savePath(directory)
     return directory .. "/" .. RseConfig.SAVE_FILENAME
 end
 
+-- the settings, under base: the savegame's and the player file's (PlayerFile.lua) are the same
+function RseSaveLoad.writeSettings(xmlId, base, settings)
+    setXMLFloat(xmlId, base .. "#feeFactor", tonumber(settings.feeFactor) or RseConfig.FEE_FACTOR_DEFAULT)
+    if type(settings.callsEnabled) == "boolean" then
+        setXMLBool(xmlId, base .. "#calls", settings.callsEnabled)
+    end
+    if settings.jobSize ~= nil then
+        setXMLString(xmlId, base .. "#jobSize", tostring(settings.jobSize))
+    end
+    for _, row in ipairs(RseSettings.ROWS) do
+        if not row.legacy and settings[row.key] ~= nil then
+            setXMLString(xmlId, base .. "#" .. row.key, tostring(settings[row.key]))
+        end
+    end
+end
+
+-- the raw settings under base, for RseSaveCodec to check
+function RseSaveLoad.readSettings(xmlId, base)
+    local settings = { feeFactor = getXMLFloat(xmlId, base .. "#feeFactor"), callsEnabled = getXMLBool(xmlId, base .. "#calls"),
+        jobSize = getXMLString(xmlId, base .. "#jobSize") }
+    for _, row in ipairs(RseSettings.ROWS) do
+        if not row.legacy then
+            settings[row.key] = getXMLString(xmlId, base .. "#" .. row.key)
+        end
+    end
+    return settings
+end
+
+-- a logging crash: its size, and where to look for the logs
+local function writeLogs(xmlId, logs)
+    local base = ROOT .. ".scene.logs"
+    setXMLInt(xmlId, base .. "#total", logs.total)
+    setXMLInt(xmlId, base .. "#gone", logs.gone)
+    for _, field in ipairs({ "dirX", "dirZ" }) do
+        if logs[field] ~= nil then
+            setXMLFloat(xmlId, base .. "#" .. field, logs[field])
+        end
+    end
+    if logs.splitType ~= nil then
+        setXMLInt(xmlId, base .. "#splitType", logs.splitType)
+    end
+    for i, tree in ipairs(logs.trees) do
+        local key = string.format("%s.tree(%d)", base, i - 1)
+        setXMLFloat(xmlId, key .. "#x", tree.x)
+        setXMLFloat(xmlId, key .. "#z", tree.z)
+    end
+    for i, piece in ipairs(logs.pieces) do
+        local key = string.format("%s.piece(%d)", base, i - 1)
+        setXMLFloat(xmlId, key .. "#x", piece.x)
+        setXMLFloat(xmlId, key .. "#y", piece.y)
+        setXMLFloat(xmlId, key .. "#z", piece.z)
+        if piece.rx ~= nil then -- a save from before 0.9.3.4, saved again before its logs were found, doesn't know
+            setXMLFloat(xmlId, key .. "#rx", piece.rx)
+            setXMLFloat(xmlId, key .. "#ry", piece.ry)
+            setXMLFloat(xmlId, key .. "#rz", piece.rz)
+        end
+    end
+end
+
+local function readLogs(xmlId)
+    local base = ROOT .. ".scene.logs"
+    if not hasXMLProperty(xmlId, base) then
+        return nil
+    end
+    local logs = { total = getXMLInt(xmlId, base .. "#total"), gone = getXMLInt(xmlId, base .. "#gone"), splitType = getXMLInt(xmlId, base .. "#splitType"),
+        trees = {}, pieces = {} }
+    for _, field in ipairs({ "dirX", "dirZ" }) do
+        logs[field] = getXMLFloat(xmlId, base .. "#" .. field)
+    end
+    local i = 0
+    while hasXMLProperty(xmlId, string.format("%s.tree(%d)", base, i)) do
+        local key = string.format("%s.tree(%d)", base, i)
+        table.insert(logs.trees, { x = getXMLFloat(xmlId, key .. "#x"), z = getXMLFloat(xmlId, key .. "#z") })
+        i = i + 1
+    end
+    i = 0
+    while hasXMLProperty(xmlId, string.format("%s.piece(%d)", base, i)) do
+        local key = string.format("%s.piece(%d)", base, i)
+        table.insert(logs.pieces, { x = getXMLFloat(xmlId, key .. "#x"), y = getXMLFloat(xmlId, key .. "#y"), z = getXMLFloat(xmlId, key .. "#z"),
+            rx = getXMLFloat(xmlId, key .. "#rx"), ry = getXMLFloat(xmlId, key .. "#ry"), rz = getXMLFloat(xmlId, key .. "#rz") })
+        i = i + 1
+    end
+    return logs
+end
+
 -- a downed power line: its state, and three lists of places
 local LINE_LISTS = { standing = { "x", "z" }, wire = { "x", "y", "z", "topX", "topY", "topZ" }, piece = { "x", "y", "z" } }
 local LINE_LIST_FIELDS = { standing = "standing", wire = "wires", piece = "pieces" }
@@ -81,7 +166,7 @@ local function readLine(xmlId)
     return line
 end
 
-function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene)
+function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene, twister, ownLogs, cleanup)
     local path = savePath(directory)
     if path == nil then
         return false
@@ -92,15 +177,8 @@ function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene)
         return false
     end
     setXMLInt(xmlId, ROOT .. "#version", RseConfig.SAVE_VERSION)
-    setXMLFloat(xmlId, ROOT .. ".settings#feeFactor", store.settings.feeFactor)
-    setXMLBool(xmlId, ROOT .. ".settings#calls", store.settings.callsEnabled)
-    setXMLString(xmlId, ROOT .. ".settings#jobSize", store.settings.jobSize)
+    RseSaveLoad.writeSettings(xmlId, ROOT .. ".settings", store.settings)
     setXMLBool(xmlId, ROOT .. ".settings#guideSeen", store.settings.guideSeen == true)
-    for _, row in ipairs(RseSettings.ROWS) do
-        if not row.legacy then
-            setXMLString(xmlId, ROOT .. ".settings#" .. row.key, tostring(store.settings[row.key]))
-        end
-    end
     for i, point in ipairs(store.points:playerPoints()) do
         local key = string.format("%s.points.point(%d)", ROOT, i - 1)
         setXMLString(xmlId, key .. "#name", point.name)
@@ -136,6 +214,29 @@ function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene)
         setXMLBool(xmlId, key .. "#owed", item.owed)
         setXMLBool(xmlId, key .. "#job", item.job == true)
     end
+    if twister ~= nil then
+        setXMLFloat(xmlId, ROOT .. ".twister#x", twister.x)
+        setXMLFloat(xmlId, ROOT .. ".twister#z", twister.z)
+    end
+    -- where our logs' trees stand (SavedLogs.lua); the element is there even when empty, so a load can tell this save from an older one
+    setXMLInt(xmlId, ROOT .. ".ownLogs#count", #(ownLogs or {}))
+    for i, origin in ipairs(ownLogs or {}) do
+        local key = string.format("%s.ownLogs.tree(%d)", ROOT, i - 1)
+        setXMLFloat(xmlId, key .. "#x", origin.x)
+        setXMLFloat(xmlId, key .. "#z", origin.z)
+    end
+    -- logs of a job that is over, still to be cleared (Cleanup.lua)
+    for i, item in ipairs(cleanup or {}) do
+        local key = string.format("%s.cleanup.item(%d)", ROOT, i - 1)
+        setXMLFloat(xmlId, key .. "#x", item.x)
+        setXMLFloat(xmlId, key .. "#z", item.z)
+        for j, log in ipairs(item.logs) do
+            local logKey = string.format("%s.log(%d)", key, j - 1)
+            setXMLFloat(xmlId, logKey .. "#x", log.x)
+            setXMLFloat(xmlId, logKey .. "#y", log.y)
+            setXMLFloat(xmlId, logKey .. "#z", log.z)
+        end
+    end
     if scene ~= nil then
         setXMLString(xmlId, ROOT .. ".scene#id", scene.id)
         setXMLString(xmlId, ROOT .. ".scene#label", tostring(scene.label))
@@ -147,9 +248,19 @@ function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene)
         if scene.wreck ~= nil then
             setXMLInt(xmlId, ROOT .. ".scene#reward", math.floor(scene.reward or 0))
             setXMLInt(xmlId, ROOT .. ".scene#led", math.floor(scene.led or 0))
+            if scene.rescueMs ~= nil then
+                setXMLFloat(xmlId, ROOT .. ".scene#rescueMs", scene.rescueMs)
+            end
+            if scene.rescueNoted then
+                setXMLBool(xmlId, ROOT .. ".scene#rescueNoted", true)
+                setXMLInt(xmlId, ROOT .. ".scene#rescueEarned", math.floor(scene.rescueEarned or 0))
+            end
             setXMLInt(xmlId, ROOT .. ".scene#balesIn", math.floor(scene.balesIn or 0))
             setXMLString(xmlId, ROOT .. ".scene.wreck#kind", scene.wreck.kind)
             setXMLString(xmlId, ROOT .. ".scene.wreck#state", scene.wreck.state)
+            if scene.wreck.file ~= nil then
+                setXMLString(xmlId, ROOT .. ".scene.wreck#file", scene.wreck.file)
+            end
             setXMLBool(xmlId, ROOT .. ".scene.wreck#delivered", scene.wreck.delivered == true)
             if scene.wreck.load ~= nil then
                 setXMLString(xmlId, ROOT .. ".scene.wreck#load", scene.wreck.load)
@@ -165,6 +276,21 @@ function RseSaveLoad.write(directory, store, carcasses, straps, kit, scene)
                 for _, field in ipairs({ "x", "y", "z", "yaw" }) do
                     setXMLFloat(xmlId, key .. "#" .. field, animal[field])
                 end
+                setXMLBool(xmlId, key .. "#penned", animal.penned == true)
+                setXMLBool(xmlId, key .. "#lamb", animal.lamb == true)
+            end
+            if scene.flock ~= nil then
+                setXMLInt(xmlId, ROOT .. ".scene.flock#total", scene.flock.total)
+                for _, field in ipairs({ "x", "z", "gateYaw" }) do
+                    setXMLFloat(xmlId, ROOT .. ".scene.flock#" .. field, scene.flock[field])
+                end
+            end
+            if scene.logs ~= nil then
+                writeLogs(xmlId, scene.logs)
+            end
+            if scene.crossing ~= nil then
+                setXMLInt(xmlId, ROOT .. ".scene.crossing#index", scene.crossing.index)
+                setXMLBool(xmlId, ROOT .. ".scene.crossing#passed", scene.crossing.passed == true)
             end
             if scene.line ~= nil then
                 writeLine(xmlId, scene.line)
@@ -195,8 +321,8 @@ function RseSaveLoad.read(directory)
         return nil
     end
     local raw = { version = getXMLInt(xmlId, ROOT .. "#version"), points = {}, carcasses = {}, straps = {}, kit = {},
-        settings = { feeFactor = getXMLFloat(xmlId, ROOT .. ".settings#feeFactor"), callsEnabled = getXMLBool(xmlId, ROOT .. ".settings#calls"),
-            jobSize = getXMLString(xmlId, ROOT .. ".settings#jobSize"), guideSeen = getXMLBool(xmlId, ROOT .. ".settings#guideSeen") } }
+        settings = RseSaveLoad.readSettings(xmlId, ROOT .. ".settings") }
+    raw.settings.guideSeen = getXMLBool(xmlId, ROOT .. ".settings#guideSeen")
     local i = 0
     while true do
         local key = string.format("%s.points.point(%d)", ROOT, i)
@@ -206,11 +332,6 @@ function RseSaveLoad.read(directory)
         table.insert(raw.points, { name = getXMLString(xmlId, key .. "#name"), kind = getXMLString(xmlId, key .. "#kind"),
             x = getXMLFloat(xmlId, key .. "#x"), z = getXMLFloat(xmlId, key .. "#z") })
         i = i + 1
-    end
-    for _, row in ipairs(RseSettings.ROWS) do
-        if not row.legacy then
-            raw.settings[row.key] = getXMLString(xmlId, ROOT .. ".settings#" .. row.key)
-        end
     end
     i = 0
     while true do
@@ -255,6 +376,41 @@ function RseSaveLoad.read(directory)
         table.insert(raw.kit, item)
         i = i + 1
     end
+    if hasXMLProperty(xmlId, ROOT .. ".twister") then
+        raw.twister = { x = getXMLFloat(xmlId, ROOT .. ".twister#x"), z = getXMLFloat(xmlId, ROOT .. ".twister#z") }
+    end
+    if hasXMLProperty(xmlId, ROOT .. ".ownLogs") then
+        raw.ownLogs = {}
+        i = 0
+        while true do
+            local key = string.format("%s.ownLogs.tree(%d)", ROOT, i)
+            if not hasXMLProperty(xmlId, key) then
+                break
+            end
+            table.insert(raw.ownLogs, { x = getXMLFloat(xmlId, key .. "#x"), z = getXMLFloat(xmlId, key .. "#z") })
+            i = i + 1
+        end
+    end
+    raw.cleanup = {}
+    i = 0
+    while true do
+        local key = string.format("%s.cleanup.item(%d)", ROOT, i)
+        if not hasXMLProperty(xmlId, key) then
+            break
+        end
+        local item = { x = getXMLFloat(xmlId, key .. "#x"), z = getXMLFloat(xmlId, key .. "#z"), logs = {} }
+        local j = 0
+        while true do
+            local logKey = string.format("%s.log(%d)", key, j)
+            if not hasXMLProperty(xmlId, logKey) then
+                break
+            end
+            table.insert(item.logs, { x = getXMLFloat(xmlId, logKey .. "#x"), y = getXMLFloat(xmlId, logKey .. "#y"), z = getXMLFloat(xmlId, logKey .. "#z") })
+            j = j + 1
+        end
+        table.insert(raw.cleanup, item)
+        i = i + 1
+    end
     if hasXMLProperty(xmlId, ROOT .. ".scene") then
         raw.scene = { id = getXMLString(xmlId, ROOT .. ".scene#id"), label = getXMLString(xmlId, ROOT .. ".scene#label"),
             kinds = getXMLString(xmlId, ROOT .. ".scene#kinds"), arrived = getXMLBool(xmlId, ROOT .. ".scene#arrived") }
@@ -263,7 +419,8 @@ function RseSaveLoad.read(directory)
         end
         if hasXMLProperty(xmlId, ROOT .. ".scene.wreck") then
             local wreck = { kind = getXMLString(xmlId, ROOT .. ".scene.wreck#kind"), state = getXMLString(xmlId, ROOT .. ".scene.wreck#state"),
-                delivered = getXMLBool(xmlId, ROOT .. ".scene.wreck#delivered"), load = getXMLString(xmlId, ROOT .. ".scene.wreck#load"), bales = {} }
+                delivered = getXMLBool(xmlId, ROOT .. ".scene.wreck#delivered"), load = getXMLString(xmlId, ROOT .. ".scene.wreck#load"),
+                file = getXMLString(xmlId, ROOT .. ".scene.wreck#file"), bales = {} }
             for _, field in ipairs({ "x", "y", "z", "rx", "ry", "rz" }) do
                 wreck[field] = getXMLFloat(xmlId, ROOT .. ".scene.wreck#" .. field)
             end
@@ -282,8 +439,19 @@ function RseSaveLoad.read(directory)
             end
             raw.scene.wreck = wreck
             raw.scene.line = readLine(xmlId)
+            raw.scene.logs = readLogs(xmlId)
+            if hasXMLProperty(xmlId, ROOT .. ".scene.flock") then
+                raw.scene.flock = { total = getXMLInt(xmlId, ROOT .. ".scene.flock#total"), x = getXMLFloat(xmlId, ROOT .. ".scene.flock#x"),
+                    z = getXMLFloat(xmlId, ROOT .. ".scene.flock#z"), gateYaw = getXMLFloat(xmlId, ROOT .. ".scene.flock#gateYaw") }
+            end
+            if hasXMLProperty(xmlId, ROOT .. ".scene.crossing") then
+                raw.scene.crossing = { index = getXMLInt(xmlId, ROOT .. ".scene.crossing#index"), passed = getXMLBool(xmlId, ROOT .. ".scene.crossing#passed") }
+            end
             raw.scene.reward = getXMLInt(xmlId, ROOT .. ".scene#reward")
             raw.scene.led = getXMLInt(xmlId, ROOT .. ".scene#led")
+            raw.scene.rescueMs = getXMLFloat(xmlId, ROOT .. ".scene#rescueMs")
+            raw.scene.rescueNoted = getXMLBool(xmlId, ROOT .. ".scene#rescueNoted")
+            raw.scene.rescueEarned = getXMLInt(xmlId, ROOT .. ".scene#rescueEarned")
             raw.scene.balesIn = getXMLInt(xmlId, ROOT .. ".scene#balesIn")
             raw.scene.survivors = {}
             n = 0
@@ -292,7 +460,8 @@ function RseSaveLoad.read(directory)
                 if not hasXMLProperty(xmlId, key) then
                     break
                 end
-                local animal = { kind = getXMLString(xmlId, key .. "#kind") }
+                local animal = { kind = getXMLString(xmlId, key .. "#kind"), penned = getXMLBool(xmlId, key .. "#penned"),
+                    lamb = getXMLBool(xmlId, key .. "#lamb") }
                 for _, field in ipairs({ "x", "y", "z", "yaw" }) do
                     animal[field] = getXMLFloat(xmlId, key .. "#" .. field)
                 end

@@ -42,9 +42,29 @@ function RseCarcass:getDefaultMass()
     return RseCarcass:superClass().getDefaultMass(self)
 end
 
+-- What a vehicle's belts or a loader show on the fill display: "3 Deer", not "3pieces" (Z). The game writes a fill type's short unit right after the
+-- number, so the unit is the animal's name, with a space, one or many by how many of this kind the display has had this frame. The game's own bales
+-- have no such function: belts and loaders then read fill type, level and capacity themselves, which is what this does too.
+RseCarcass.unitTally = { display = nil, time = nil, levels = {} }
+
+function RseCarcass:getFillLevelInformation(display)
+    local fillType, fillLevel, capacity = self:getFillType(), self:getFillLevel(), self:getCapacity()
+    local tally = RseCarcass.unitTally
+    if tally.display ~= display or tally.time ~= g_time then
+        tally.display, tally.time, tally.levels = display, g_time, {}
+    end
+    local total = (tally.levels[fillType] or 0) + (fillLevel or 0)
+    tally.levels[fillType] = total
+    local desc = g_fillTypeManager ~= nil and g_fillTypeManager:getFillTypeByIndex(fillType) or nil
+    if desc ~= nil and self.rseKind ~= nil then
+        desc.unitShort = " " .. RseText.animalUnit(self.rseKind, total)
+    end
+    display:addFillLevel(fillType, fillLevel, capacity)
+end
+
 function RseCarcass:showInfo(box)
-    box:addLine(RseText.get("rse_info_deadAnimal"), RseText.animal(self.rseKind))
+    box:addLine(RseText.get("rse_info_deadAnimal"), RseText.animalName(self.rseKind))
     if self.rseMassKg ~= nil then
-        box:addLine(RseText.get("rse_info_mass"), RseText.get("rse_info_massValue", self.rseMassKg))
+        box:addLine(RseText.get("rse_info_mass"), g_i18n:formatMass(self.rseMassKg / 1000)) -- as the game's own bales show theirs
     end
 end

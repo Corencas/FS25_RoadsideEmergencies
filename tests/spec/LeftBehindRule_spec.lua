@@ -59,6 +59,19 @@ describe("RseLeftBehindRule", function()
         expectEqual(RseLeftBehindRule.restore(900, config).reminders, 2)
     end)
 
+    it("clears up a job's scene once nobody is near, never before the wait, and after the longest wait anyway", function()
+        local c = { CLEANUP_WAIT_MS = 1000, CLEANUP_MAX_MS = 5000 }
+        local item = {}
+        expectEqual(RseLeftBehindRule.crewDue(item, 500, true, c), false, "too soon, even with nobody near")
+        expectEqual(RseLeftBehindRule.crewDue(item, 600, false, c), false, "the wait is over, but someone is near")
+        expectEqual(RseLeftBehindRule.crewDue(item, 100, true, c), true, "and now nobody is")
+        local stays = {}
+        for _ = 1, 4 do
+            expectEqual(RseLeftBehindRule.crewDue(stays, 1000, false, c), false, "someone stays near")
+        end
+        expectEqual(RseLeftBehindRule.crewDue(stays, 1000, false, c), true, "it goes after the longest wait all the same")
+    end)
+
     it("uses reminders at 15 and 5 minutes", function()
         expectEqual(RseConfig.LEFT_REMINDERS_MS[1], 15 * 60000)
         expectEqual(RseConfig.LEFT_REMINDERS_MS[2], 5 * 60000)

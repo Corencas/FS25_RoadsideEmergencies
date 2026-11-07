@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A vehicle has stalled on a railroad crossing, and the train is coming. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road
+     lane (spline); our first step moves it to the crossing (LevelCrossing.lua). Only a strap or a winch line moves the vehicle (Z). If the train gets there first the job
+     is lost, and off the tracks in time it still has to reach a recovery point (Z). Pay: our amount (Config.lua, WRECKS) when delivered. -->
+<scenario description="rse_ep_crossing_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="25" wreck="crossing" emergency="crossing"/>
+        </checkpoint>
+        <checkpoint hint="rse_crossing_hint" actionClass="FS25_RoadsideEmergencies.RseStepCrossing">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

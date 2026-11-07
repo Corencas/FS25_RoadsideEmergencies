@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A car has gone off the road into shallow water, the driver still inside. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road
+     lane (spline); our first step moves it to a place with water and a bank the car can come up (RiverPlaces.lua). Get the driver out, pull the car out, take it to a
+     recovery point. Pay: our amount (Config.lua, WRECKS) when delivered. -->
+<scenario description="rse_ep_river_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="45" wreck="river" emergency="river"/>
+        </checkpoint>
+        <checkpoint hint="rse_river_hint_driver" actionClass="FS25_RoadsideEmergencies.RseStepPrepare">
+            <action/>
+        </checkpoint>
+        <checkpoint hint="rse_river_hint_pull" actionClass="FS25_RoadsideEmergencies.RseStepDeliver">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

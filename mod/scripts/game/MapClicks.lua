@@ -72,35 +72,6 @@ local function actionsFor(hotspot, info)
     return list
 end
 
--- names only, once: what the game's map screen has, for fitting this to it
-local function reportNames(frame)
-    if RseMapClicks.reported then
-        return
-    end
-    RseMapClicks.reported = true
-    local names = {}
-    for key in pairs(frame) do
-        local name = string.lower(tostring(key))
-        if string.find(name, "context", 1, true) ~= nil or string.find(name, "button", 1, true) ~= nil or name == "currenthotspot" then
-            table.insert(names, tostring(key))
-        end
-    end
-    table.sort(names)
-    local actions = {}
-    for key, action in pairs(type(frame.contextActions) == "table" and frame.contextActions or {}) do
-        local fields = {}
-        for field in pairs(type(action) == "table" and action or {}) do
-            table.insert(fields, tostring(field))
-        end
-        table.sort(fields)
-        table.insert(actions, tostring(key) .. "(" .. table.concat(fields, ",") .. ")")
-    end
-    table.sort(actions)
-    RseLog.info("map screen names: %s", table.concat(names, " "))
-    local showBoxType = InGameMenuMapUtil ~= nil and type(InGameMenuMapUtil.showContextBox) or "no util"
-    RseLog.info("map screen actions: %s; showContextBox %s", table.concat(actions, " "), tostring(showBoxType))
-end
-
 -- our buttons go at the end of the game's list; they stay there, switched off, when something else is selected
 local function setButtons(frame, list)
     local actions = frame.contextActions
@@ -149,7 +120,6 @@ local function showDialog(hotspot, info)
 end
 
 local function onSelected(frame, hotspot)
-    reportNames(frame)
     local info = type(hotspot) == "table" and hotspot.rseMarker or nil
     if info == nil then
         if frame.rseActionSlots ~= nil and type(frame.contextActions) == "table" then

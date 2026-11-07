@@ -19,6 +19,11 @@
         <pool name="rse_livestock"/>
         <pool name="rse_storm"/>
         <pool name="rse_powerline"/>
+        <pool name="rse_logging"/>
+        <pool name="rse_crossing"/>
+        <pool name="rse_river"/>
+        <pool name="rse_tree"/>
+        <pool name="rse_flock"/>
     </pools>
     <scenarios>
         <scenario type="default" mp="false" path="emergencies/deer.xml" pools="rse_deer"/>
@@ -35,5 +40,10 @@
         <scenario type="default" mp="false" path="emergencies/livestock.xml" pools="rse_livestock"/>
         <scenario type="default" mp="false" path="emergencies/storm.xml" pools="rse_storm"/>
         <scenario type="default" mp="false" path="emergencies/powerline.xml" pools="rse_powerline"/>
+        <scenario type="default" mp="false" path="emergencies/logging.xml" pools="rse_logging"/>
+        <scenario type="default" mp="false" path="emergencies/crossing.xml" pools="rse_crossing"/>
+        <scenario type="default" mp="false" path="emergencies/river.xml" pools="rse_river"/>
+        <scenario type="default" mp="false" path="emergencies/tree.xml" pools="rse_tree"/>
+        <scenario type="default" mp="false" path="emergencies/flock.xml" pools="rse_flock"/>
     </scenarios>
 </rolePlay>

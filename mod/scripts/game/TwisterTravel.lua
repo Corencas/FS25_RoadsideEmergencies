@@ -4,6 +4,7 @@
 
 RseTwisterTravel = {
     wander = nil,      -- { x, z, heading, turn }: metres from where it appeared; nil: not following one
+    savedBase = nil,   -- { x, z }: the middle of its area, from the savegame
     baseX = nil,
     baseZ = nil,
     height = 0,        -- how far its root sits above the ground
@@ -35,10 +36,12 @@ local function update(self, twister, dt)
     end
     local x, y, z = getWorldTranslation(node)
     if self.wander == nil then
-        self.wander, self.baseX, self.baseZ, self.aliveMs, self.overruled = {}, x, z, 0, 0
+        local baseX, baseZ = RseTwisterRules.base(self.savedBase, x, z, RseConfig)
+        self.savedBase = nil
+        self.wander, self.baseX, self.baseZ, self.aliveMs, self.overruled = { x = x - baseX, z = z - baseZ }, baseX, baseZ, 0, 0
         self.height = y - getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
         RseLog.info("twister: it travels at %.1f m/s within %d m of %.0f, %.0f, and its damage goes with it", RseConfig.TWISTER_WANDER_SPEED,
-            RseConfig.TWISTER_WANDER_RADIUS, x, z)
+            RseConfig.TWISTER_WANDER_RADIUS, baseX, baseZ)
     elseif self.placedX ~= nil and math.abs(x - self.placedX) + math.abs(z - self.placedZ) > 1 then
         self.overruled = self.overruled + 1
     end
@@ -86,9 +89,17 @@ function RseTwisterTravel:finish()
     self.wander, self.placedX, self.placedZ = nil, nil, nil
 end
 
+-- what the save keeps: the middle of its area, so that a reload doesn't move it
+function RseTwisterTravel:saveData()
+    if self.wander == nil then
+        return nil
+    end
+    return { x = self.baseX, z = self.baseZ }
+end
+
 -- a new savegame: nothing to follow yet
 function RseTwisterTravel:reset()
-    self.wander, self.placedX, self.placedZ, self.failed = nil, nil, nil, false
+    self.wander, self.placedX, self.placedZ, self.failed, self.savedBase = nil, nil, nil, false, nil
 end
 
 -- Hands back what the game's function returned: Utils.appendedFunction throws that away.

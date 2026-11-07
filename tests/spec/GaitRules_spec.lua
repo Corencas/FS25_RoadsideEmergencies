@@ -130,6 +130,55 @@ describe("RseGaitRules", function()
         end
     end)
 
+    it("folds a short step less than a long one, and a full step fully", function()
+        local shuffle = RseGaitRules.foldShare(0.05, 0.83, RseConfig)
+        local walk = RseGaitRules.foldShare(0.2, 0.83, RseConfig)
+        expectTrue(shuffle < 0.3 and walk > shuffle and walk < 1, "less")
+        expectEqual(RseGaitRules.foldShare(0.5, 0.83, RseConfig), 1, "full")
+        expectEqual(RseGaitRules.foldShare(-1, 0.83, RseConfig), 0, "never backward")
+    end)
+
+    it("keeps a leg to what a leg can do, whatever the solver says", function()
+        local angles, held = RseGaitRules.limitLeg({ -2.5, 0.2, 0 / 0, 3 }, nil, 16, RseConfig)
+        expectTrue(held, "held back")
+        local limits = RseConfig.GAIT_JOINT_LIMITS
+        expectEqual(angles[1], limits[1][1], "not flung forward")
+        expectNear(angles[2], 0.2, 1e-9, "a fair one is left alone")
+        expectEqual(angles[3], 0, "nonsense becomes rest")
+        expectEqual(angles[4], limits[4][2])
+        local fine, fair = RseGaitRules.limitLeg({ 0.3, -0.5, 0.9, -0.2 }, nil, 16, RseConfig)
+        expectTrue(not fair, "a normal step isn't held back")
+        expectNear(fine[3], 0.9, 1e-9, "and goes through untouched")
+    end)
+
+    it("never jumps a joint from one frame to the next", function()
+        local last = { 0, 0, 0, 0 }
+        local angles = RseGaitRules.limitLeg({ 0.8, -1.2, 1.5, 0.9 }, last, 16, RseConfig)
+        local most = RseConfig.GAIT_JOINT_RATE * 16 / 1000
+        for i = 1, 4 do
+            expectTrue(math.abs(angles[i] - last[i]) <= most + 1e-9, "joint " .. i)
+        end
+        local _, held = RseGaitRules.limitLeg({ 0.8, -1.2, 1.5, 0.9 }, last, 16, RseConfig)
+        expectTrue(not held, "and that alone isn't a leg held back")
+        local wrapped = RseGaitRules.limitLeg({ 0.1 + 2 * math.pi, 0, 0, 0 }, { 0.1, 0, 0, 0 }, 16, RseConfig)
+        expectNear(wrapped[1], 0.1, 1e-9, "a whole turn more is the same pose, not a jump")
+    end)
+
+    it("swings a hanging tail about the forward axis and one straight out back about the up axis", function()
+        local x, y, z = RseGaitRules.swingAxis(-1, 0)
+        expectEqual(x, 0)
+        expectNear(y, 0, 1e-9)
+        expectNear(math.abs(z), 1, 1e-9, "hanging: forward")
+        local _, backY, backZ = RseGaitRules.swingAxis(0, -1)
+        expectNear(math.abs(backY), 1, 1e-9, "straight back: up")
+        expectNear(backZ, 0, 1e-9)
+        local _, slantY, slantZ = RseGaitRules.swingAxis(-0.5, -0.5)
+        expectNear(slantY * -0.5 + slantZ * -0.5, 0, 1e-9, "always square to the bone")
+        expectNear(slantY * slantY + slantZ * slantZ, 1, 1e-9)
+        local _, noneY = RseGaitRules.swingAxis(0, 0)
+        expectEqual(noneY, 1, "nothing to tell: up")
+    end)
+
     it("leaves a joint alone at no angle", function()
         local x, y, z, w = RseGaitRules.axisAngle(1, 0, 0, 0)
         expectEqual(x, 0)

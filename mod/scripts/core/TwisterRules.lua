@@ -23,3 +23,11 @@ function RseTwisterRules.wander(state, dt, config, random)
     state.x = state.x + math.sin(state.heading) * step
     state.z = state.z + math.cos(state.heading) * step
 end
+
+-- Where its area is centred: where the save says, if this is plainly the same twister, so that a reload doesn't move the area. Otherwise where it is now.
+function RseTwisterRules.base(saved, x, z, config)
+    if saved ~= nil and math.sqrt((saved.x - x) ^ 2 + (saved.z - z) ^ 2) <= config.TWISTER_WANDER_RADIUS * 2 then
+        return saved.x, saved.z
+    end
+    return x, z
+end

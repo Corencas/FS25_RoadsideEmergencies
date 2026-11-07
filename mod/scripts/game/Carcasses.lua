@@ -384,7 +384,7 @@ function RseCarcasses:saveData()
     local list, indexOf = {}, {}
     for _, entry in ipairs(self.entries) do
         local node = self:bodyNode(entry)
-        if node ~= nil then
+        if node ~= nil and not entry.crewTakes then -- one the county is about to clear away (Cleanup.lua) is gone after a load
             local x, y, z = getWorldTranslation(node)
             local rx, ry, rz = getWorldRotation(node)
             table.insert(list, { kind = entry.kind, x = x, y = y, z = z, rx = rx, ry = ry, rz = rz,

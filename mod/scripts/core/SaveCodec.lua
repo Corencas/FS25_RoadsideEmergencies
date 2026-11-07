@@ -7,13 +7,46 @@
 -- kit = { { item, x, y, z, yaw, owed, job } } (scene kit items in the world; job: placed for the call in progress),
 -- scene = { id, label, x, y, z, kinds, arrived, wreck, reward } (the call in progress, which comes back after loading; kinds: its animals,
 -- space-separated; arrived: the player had reached it;
--- wreck: { kind, state, x, y, z, rx, ry, rz, delivered, bales = { { x, y, z, rx, ry, rz } } }, survivors = { { kind, x, y, z, yaw } };
+-- wreck: { kind, file, state, x, y, z, rx, ry, rz, delivered, bales = { { x, y, z, rx, ry, rz } } }, survivors = { { kind, x, y, z, yaw } };
 -- reward: a wreck job's pay, fixed when it began; led: live animals already loaded; balesIn: bales already brought in).
+-- twister = { x, z } (the middle of a running twister's area).
+-- ownLogs = { { x, z } } (where each log tree this mod laid down stands; nil in a save from before the list, 0.9.6.2 and older).
+-- cleanup = { { x, z, logs = { { x, y, z } } } } (logs of a job that is over, still to be cleared once nobody is near; game/Cleanup.lua).
 -- Bad entries are dropped with a warning instead of breaking the load.
 
 RseSaveCodec = {}
 
 -- a saved power line, or nil: only places with all their numbers
+-- a logging crash: the job's size, and where to look for the logs
+local function normalizeLogs(logs)
+    if type(logs) ~= "table" or tonumber(logs.total) == nil then
+        return nil
+    end
+    local function places(list, fields)
+        local result = {}
+        for _, item in ipairs(type(list) == "table" and list or {}) do
+            local place, whole = {}, true
+            for _, field in ipairs(fields) do
+                place[field] = tonumber(item[field])
+                whole = whole and place[field] ~= nil
+            end
+            if whole then
+                table.insert(result, place)
+            end
+        end
+        return result
+    end
+    -- a piece keeps its turn if the save has it whole; a save from before 0.9.3.4 has none
+    local pieces = places(logs.pieces, { "x", "y", "z" })
+    local turned = places(logs.pieces, { "x", "y", "z", "rx", "ry", "rz" })
+    if #turned == #pieces then
+        pieces = turned
+    end
+    return { total = math.max(1, math.floor(tonumber(logs.total))), gone = math.max(0, math.floor(tonumber(logs.gone) or 0)),
+        dirX = tonumber(logs.dirX), dirZ = tonumber(logs.dirZ), splitType = tonumber(logs.splitType),
+        trees = places(logs.trees, { "x", "z" }), pieces = pieces }
+end
+
 local function normalizeLine(line)
     if type(line) ~= "table" then
         return nil
@@ -42,7 +75,7 @@ local function normalizeLine(line)
 end
 
 function RseSaveCodec.normalize(raw, config)
-    local data = { version = config.SAVE_VERSION, settings = {}, points = {}, carcasses = {}, straps = {}, kit = {} }
+    local data = { version = config.SAVE_VERSION, settings = {}, points = {}, carcasses = {}, straps = {}, kit = {}, cleanup = {} }
     local warnings = {}
     if type(raw) ~= "table" then
         data.settings.feeFactor = config.FEE_FACTOR_DEFAULT
@@ -95,7 +128,8 @@ function RseSaveCodec.normalize(raw, config)
         data.scene = { id = scene.id, label = scene.label, x = sceneX, y = sceneY, z = sceneZ, kinds = kinds, arrived = scene.arrived == true }
         if type(scene.wreck) == "table" and config.WRECKS[scene.wreck.kind] ~= nil then
             local wreck = { kind = scene.wreck.kind, state = scene.wreck.state, delivered = scene.wreck.delivered == true, bales = {},
-                load = type(scene.wreck.load) == "string" and scene.wreck.load or nil }
+                load = type(scene.wreck.load) == "string" and scene.wreck.load or nil,
+                file = type(scene.wreck.file) == "string" and scene.wreck.file or nil }
             for _, field in ipairs({ "x", "y", "z", "rx", "ry", "rz" }) do
                 wreck[field] = tonumber(scene.wreck[field])
             end
@@ -107,15 +141,30 @@ function RseSaveCodec.normalize(raw, config)
             end
             data.scene.wreck = wreck
             data.scene.line = normalizeLine(scene.line)
+            data.scene.logs = normalizeLogs(scene.logs)
+            local flock = scene.flock
+            if type(flock) == "table" and tonumber(flock.total) ~= nil and tonumber(flock.x) ~= nil and tonumber(flock.z) ~= nil
+                and tonumber(flock.gateYaw) ~= nil then
+                data.scene.flock = { total = math.max(1, math.floor(tonumber(flock.total))), x = tonumber(flock.x), z = tonumber(flock.z),
+                    gateYaw = tonumber(flock.gateYaw) }
+            end
+            if type(scene.crossing) == "table" and tonumber(scene.crossing.index) ~= nil then
+                data.scene.crossing = { index = math.floor(tonumber(scene.crossing.index)),
+                    passed = scene.crossing.passed == true or scene.crossing.passed == "true" }
+            end
             local reward = tonumber(scene.reward)
             data.scene.reward = reward ~= nil and reward > 0 and reward or nil
             data.scene.led = math.max(0, math.floor(tonumber(scene.led) or 0))
+            data.scene.rescueMs = tonumber(scene.rescueMs)
+            data.scene.rescueNoted = scene.rescueNoted == true or scene.rescueNoted == "true" or nil
+            data.scene.rescueEarned = tonumber(scene.rescueEarned)
             data.scene.balesIn = math.max(0, math.floor(tonumber(scene.balesIn) or 0))
             data.scene.survivors = {}
             for _, animal in ipairs(type(scene.survivors) == "table" and scene.survivors or {}) do
                 if RseAnimalCatalog.get(animal.kind) ~= nil and tonumber(animal.x) ~= nil and tonumber(animal.y) ~= nil and tonumber(animal.z) ~= nil then
                     table.insert(data.scene.survivors, { kind = animal.kind, x = tonumber(animal.x), y = tonumber(animal.y), z = tonumber(animal.z),
-                        yaw = tonumber(animal.yaw) or 0 })
+                        yaw = tonumber(animal.yaw) or 0, penned = animal.penned == true or animal.penned == "true",
+                        lamb = animal.lamb == true or animal.lamb == "true" })
                 end
             end
         end
@@ -169,6 +218,33 @@ function RseSaveCodec.normalize(raw, config)
                 owed = item.owed == true or (item.job == true and not sceneValid) })
         else
             table.insert(warnings, string.format("kit item %d (%s) is incomplete; dropped", i, tostring(item.item)))
+        end
+    end
+    local twister = type(raw.twister) == "table" and raw.twister or {}
+    if tonumber(twister.x) ~= nil and tonumber(twister.z) ~= nil then
+        data.twister = { x = tonumber(twister.x), z = tonumber(twister.z) }
+    end
+    for i, item in ipairs(type(raw.cleanup) == "table" and raw.cleanup or {}) do
+        local logs = {}
+        for _, log in ipairs(type(item) == "table" and type(item.logs) == "table" and item.logs or {}) do
+            if type(log) == "table" and tonumber(log.x) ~= nil and tonumber(log.y) ~= nil and tonumber(log.z) ~= nil then
+                table.insert(logs, { x = tonumber(log.x), y = tonumber(log.y), z = tonumber(log.z) })
+            end
+        end
+        if type(item) == "table" and tonumber(item.x) ~= nil and tonumber(item.z) ~= nil and #logs > 0 then
+            table.insert(data.cleanup, { x = tonumber(item.x), z = tonumber(item.z), logs = logs })
+        else
+            table.insert(warnings, string.format("what job %d left has no place or no logs; dropped", i))
+        end
+    end
+    if type(raw.ownLogs) == "table" then
+        data.ownLogs = {}
+        for i, origin in ipairs(raw.ownLogs) do
+            if type(origin) == "table" and tonumber(origin.x) ~= nil and tonumber(origin.z) ~= nil then
+                table.insert(data.ownLogs, { x = tonumber(origin.x), z = tonumber(origin.z) })
+            else
+                table.insert(warnings, string.format("our log tree %d has no place; dropped", i))
+            end
         end
     end
     return data, warnings

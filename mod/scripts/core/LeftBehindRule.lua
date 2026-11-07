@@ -49,6 +49,14 @@ function RseLeftBehindRule.minutesLeft(state, config)
     return math.ceil(math.max(0, config.LEFT_COLLECT_MS - (state.leftMs or 0)) / 60000)
 end
 
+-- What a job leaves at its scene once it is over (game/Cleanup.lua) goes once nobody is near: CLEANUP_WAIT_MS at the soonest, and after CLEANUP_MAX_MS
+-- whatever happens. item: { waitMs, maxMs }, counted down here (nil: it has just begun). far: nobody within CLEANUP_DISTANCE. True when it goes.
+function RseLeftBehindRule.crewDue(item, dt, far, config)
+    item.waitMs = (item.waitMs or config.CLEANUP_WAIT_MS) - dt
+    item.maxMs = (item.maxMs or config.CLEANUP_MAX_MS) - dt
+    return item.maxMs <= 0 or (item.waitMs <= 0 and far == true)
+end
+
 -- the state of a carcass read from a savegame: warnings already given aren't repeated, and its marker comes back
 function RseLeftBehindRule.restore(leftMs, config)
     local ms = leftMs or 0

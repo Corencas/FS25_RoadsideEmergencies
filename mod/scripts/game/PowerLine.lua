@@ -56,6 +56,24 @@ local function placePin(holder, x, y, z, px, pz)
     end
 end
 
+-- A log's reference point isn't its middle, and the pieces of a cut log all keep the same one: their pins would lie on top of each other.
+local function logMiddle(node)
+    return localToWorld(node, getCenterOfMass(node))
+end
+
+-- both ends of a log, which runs along its own Y axis, as { { x, y, z }, { x, y, z } }; nothing if the game has no size for it
+local function logEnds(node)
+    local sizeX, sizeY, sizeZ = getSplitShapeStats(node)
+    if sizeX == nil then
+        return {}
+    end
+    local half = math.max(sizeX, sizeY, sizeZ) / 2
+    local cx, cy, cz = getCenterOfMass(node)
+    local ax, ay, az = localToWorld(node, cx, cy + half, cz)
+    local bx, by, bz = localToWorld(node, cx, cy - half, cz)
+    return { { x = ax, y = ay, z = az }, { x = bx, y = by, z = bz } }
+end
+
 local function updatePins(line)
     local px, pz = playerPosition()
     local on = line.state.powerOff == true
@@ -68,7 +86,7 @@ local function updatePins(line)
     end
     for _, piece in ipairs(line.pieces) do
         if on and nodeExists(piece.node) then
-            local x, y, z = getWorldTranslation(piece.node)
+            local x, y, z = logMiddle(piece.node)
             placePin(piece, x, y, z, px, pz)
         else
             removePin(piece)
@@ -143,7 +161,7 @@ local RseWireActivatable_mt = Class(RseWireActivatable)
 local function newActivatable(line, wire)
     local self = setmetatable({}, RseWireActivatable_mt)
     self.line, self.wire = line, wire
-    self.activateText = RseText.get("rse_line_rollUp")
+    self.activateText = RseText.action("rse_line_rollUp")
     return self
 end
 
@@ -360,6 +378,7 @@ requestPole = function(line)
         return
     end
     local pole = line.layout.pole
+    RseSavedLogs:remember(pole.x, pole.z)
     manager:loadTreeTrunk(desc, pole.x, groundAt(pole.x, pole.z) + RseConfig.LINE_POLE_DROP, pole.z, pole.dirX, 0, pole.dirZ, RseConfig.LINE_POLE_LENGTH,
         #desc.stages, 1, true, false)
     line.pending = manager.loadTreeTrunkDatas[#manager.loadTreeTrunkDatas]
@@ -472,7 +491,7 @@ local function findLostPieces(self, line, dt)
     end
     local found = adoptFound(self, line)
     if found > 0 then
-        RseLog.info("power line: a piece of the pole went without a cut message, and %d piece(s) were found where it lay", found)
+        RseLog.info("logs: a piece went without a cut message, and %d piece(s) were found where it lay", found)
     end
     line.lost, line.lostMs = {}, nil
 end
@@ -501,6 +520,39 @@ local function findInTreeRecord(self, line)
     end
 end
 
+-- A saved job's logs are back, so are they where they were saved? SavedLogs.lua should have seen to that as they loaded. A piece that isn't there goes
+-- back: a log of another kind of tree, if a map has no transport trees, or one the physics has flung. A search that finds a log hasn't shown it is where
+-- it should be.
+local function putBack(line, saved, what)
+    local found = {}
+    for i, piece in ipairs(line.pieces) do
+        local x, y, z = getWorldTranslation(piece.node)
+        local lx, _, lz = getTranslation(piece.node)
+        found[i] = { x = x, y = y, z = z, lx = lx, lz = lz }
+    end
+    local match = RseLogRules.matchSaved(found, saved, RseConfig.LOG_SAVED_NEAR)
+    local moved = 0
+    for i, piece in ipairs(line.pieces) do
+        local node, m = piece.node, match[i]
+        local place = m ~= nil and saved[m.saved] or nil
+        if place ~= nil and not m.inPlace then
+            removeFromPhysics(node)
+            setWorldTranslation(node, place.x, place.y, place.z)
+            if place.rx ~= nil then
+                setWorldRotation(node, place.rx, place.ry, place.rz)
+            end
+            addToPhysics(node)
+            setLinearVelocity(node, 0, 0, 0)
+            setAngularVelocity(node, 0, 0, 0)
+            piece.lastX, piece.lastY, piece.lastZ = place.x, place.y, place.z
+            moved = moved + 1
+        end
+    end
+    if moved > 0 then
+        RseLog.info("%s: %d piece(s) weren't where they were saved, and went back", what, moved)
+    end
+end
+
 -- A saved job: the game has put the loose logs back itself, with new node numbers. If the pole can't be found at all, it gets a new one: the job can't be
 -- finished without one, and it must not count as brought in.
 local function findSavedPieces(self, line, dt)
@@ -518,6 +570,7 @@ local function findSavedPieces(self, line, dt)
     adoptFound(self, line)
     if #line.pieces >= expected and #line.pieces > 0 or line.searchTries >= RseConfig.LINE_SEARCH_TRIES then
         RseLog.info("power line: %d of %d saved piece(s) of the pole found again", #line.pieces, expected)
+        RseLog.try("put the pole back", putBack, line, line.savedPieces or {}, "power line")
         line.searchMs, line.savedPieces = nil, nil
         if #line.pieces == 0 then
             RseLog.info("power line: the saved pole is gone, so a new one lies in its place")
@@ -534,14 +587,13 @@ function RsePowerLine:onShapeCut(oldShape, shape)
         return
     end
     for _, scene in pairs(RseScenes.scenes) do
-        local line = scene.line
-        if line ~= nil then
+        for _, line in pairs({ scene.line, scene.spill }) do
             for _, piece in ipairs(line.pieces) do
                 if piece.node == oldShape then
                     piece.cut = true
                     RseStrap:releaseForNode(oldShape)
                     addPiece(line, shape)
-                    RseLog.debug("power line: the pole was cut, %d piece(s)", #line.pieces)
+                    RseLog.debug("logs: one was cut, %d piece(s)", #line.pieces)
                     return
                 end
             end
@@ -555,8 +607,7 @@ function RsePowerLine:ownsLog(shape)
         return false
     end
     for _, scene in pairs(RseScenes.scenes) do
-        local line = scene.line
-        if line ~= nil then
+        for _, line in pairs({ scene.line, scene.spill }) do
             if isTracked(line, shape) then
                 return true
             end
@@ -592,7 +643,7 @@ local function installCutRule(self)
         if ok and owned then
             if not self.cutLogged then
                 self.cutLogged = true
-                RseLog.info("chainsaw: the game refuses cuts on this land, and this log is the job's pole, so it goes ahead")
+                RseLog.info("chainsaw: the game refuses cuts on this land, and this log belongs to the job, so it goes ahead")
             end
             return true
         end
@@ -632,19 +683,158 @@ local function wireSpec(layout, wire)
         topY = groundAt(pole.x, pole.z) + RseConfig.LINE_POLE_TOP, topZ = pole.z }
 end
 
+-- Where the poles can go (Z: one stood inside a building, another in a plowed field). A standing pole needs open ground that isn't farmland: no field of any
+-- kind under it, no roof or anything built over it, nothing right against it, no water, and well off every lane. A wire needs a clear line from the pole's
+-- top to where it lies on the road, and the fallen pole somewhere to lie, not where a field is.
+local probe = {}
+
+function probe:onHit(hitObjectId)
+    if hitObjectId ~= nil and hitObjectId ~= 0 then
+        self.hit = true
+        return false
+    end
+    return true
+end
+
+local function solidMask()
+    return (CollisionFlag.BUILDING or 0) + (CollisionFlag.STATIC_OBJECT or 0)
+end
+
+local function hits(x1, y1, z1, x2, y2, z2, mask)
+    local dx, dy, dz = x2 - x1, y2 - y1, z2 - z1
+    local length = math.sqrt(dx * dx + dy * dy + dz * dz)
+    if length < 1e-3 then
+        return false
+    end
+    probe.hit = false
+    raycastClosest(x1, y1, z1, dx / length, dy / length, dz / length, length, "onHit", probe, mask)
+    return probe.hit
+end
+
+local function terrainAt(x, z)
+    return getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
+end
+
+-- a roof, a slab, a road surface or anything else built over the spot, from high above down to just under the ground
+local function isBuiltOver(x, z)
+    local ground = terrainAt(x, z)
+    return hits(x, ground + RseConfig.LINE_ROOF_RAY, z, x, ground - RseConfig.GROUND_RAY_BELOW, z, solidMask() + (CollisionFlag.ROAD or 0))
+end
+
+local function isWet(x, z)
+    local ground = terrainAt(x, z)
+    return hits(x, ground + RseConfig.WATER_RAY_START, z, x, ground - 0.2, z, CollisionFlag.WATER or 0)
+end
+
+-- the reason a standing pole can't go at (x, z), or nil
+local function poleSpotProblem(x, z, segments)
+    local lane = RseRoadClearRule.distanceToRoad(x, z, segments)
+    if lane ~= nil and lane < RseConfig.LINE_STANDING_ROAD_CLEAR then
+        return "road"
+    end
+    if RseFlockPlaces:fieldKind(x, z) ~= nil then
+        return "field"
+    end
+    if isBuiltOver(x, z) then
+        return "built"
+    end
+    if isWet(x, z) then
+        return "water"
+    end
+    local y, room = terrainAt(x, z) + 1.5, RseConfig.LINE_STANDING_ROOM
+    for _, offset in ipairs({ { room, 0 }, { -room, 0 }, { 0, room }, { 0, -room } }) do
+        if hits(x, y, z, x + offset[1], y, z + offset[2], solidMask()) then
+            return "cramped"
+        end
+    end
+    return nil
+end
+
+-- the reason this layout doesn't fit, or nil
+local function layoutProblem(layout, segments)
+    for _, spot in ipairs(layout.standing) do
+        local problem = poleSpotProblem(spot.x, spot.z, segments)
+        if problem ~= nil then
+            return problem
+        end
+    end
+    for _, wire in ipairs(layout.wires) do
+        local top = layout.standing[wire.pole]
+        if hits(top.x, terrainAt(top.x, top.z) + RseConfig.LINE_POLE_TOP, top.z, wire.x, terrainAt(wire.x, wire.z) + 0.5, wire.z, solidMask()) then
+            return "wire"
+        end
+    end
+    local pole = layout.pole
+    local length = RseConfig.LINE_POLE_LENGTH
+    local footY = terrainAt(pole.x, pole.z) + 0.6
+    if RseFlockPlaces:fieldKind(pole.x, pole.z) ~= nil or isBuiltOver(pole.x, pole.z)
+        or hits(pole.x, footY, pole.z, pole.x + pole.dirX * length, footY, pole.z + pole.dirZ * length, solidMask()) then
+        return "fallen pole"
+    end
+    return nil
+end
+
+-- the first layout that fits at (x, z), trying each of RseLineRules.shapes; nil and why the last one didn't, if none does
+function RsePowerLine:findLayout(x, z, road, wireCount)
+    local dirX, dirZ = road.dirX or 1, road.dirZ or 0
+    local length = math.max(math.sqrt(dirX * dirX + dirZ * dirZ), 1e-6)
+    dirX, dirZ = dirX / length, dirZ / length
+    local preferred = RseLineRules.roadside(x, z, dirX, dirZ, road.segments, RseConfig)
+    local why = "no road"
+    if road.dirX == nil then
+        return nil, why
+    end
+    for _, shape in ipairs(RseLineRules.shapes(preferred, RseConfig)) do
+        local layout = RseLineRules.layout(x, z, dirX, dirZ, shape.side, wireCount, RseConfig, shape)
+        why = layoutProblem(layout, road.segments)
+        if why == nil then
+            return layout, nil, dirX, dirZ
+        end
+    end
+    return nil, why
+end
+
+-- A road spot where a power line fits, for the next call (as RiverPlaces.lua and FlockPlaces.lua choose theirs). Nil if none of LINE_SPOT_TRIES did:
+-- the call is then called off rather than laid out where it can't be.
+function RsePowerLine:pickSpot()
+    local reasons = {}
+    for _ = 1, RseConfig.LINE_SPOT_TRIES do
+        local spot = RseScenes:nextSpot(true)
+        if spot == nil then
+            break
+        end
+        local road = RseRoads.around(spot.x, spot.z, RseConfig.ROAD_SEARCH_RADIUS)
+        local layout, why = self:findLayout(spot.x, spot.z, road, #RseConfig.LINE_WIRE_SPOTS)
+        if layout ~= nil then
+            return spot
+        end
+        reasons[why] = (reasons[why] or 0) + 1
+    end
+    local parts = {}
+    for why, count in pairs(reasons) do
+        table.insert(parts, string.format("%s %d", why, count))
+    end
+    table.sort(parts)
+    RseLog.info("power line: no road spot with room for the poles (%s)", table.concat(parts, ", "))
+    return nil
+end
+
 -- lays it all out around a new scene; road: what RseRoads measured, size: the job size
 function RsePowerLine:spawn(scene, road, size)
     subscribe(self)
     local def = RseConfig.WRECKS[scene.wreck.kind]
-    local dirX, dirZ = road.dirX or 1, road.dirZ or 0
-    local length = math.max(math.sqrt(dirX * dirX + dirZ * dirZ), 1e-6)
-    dirX, dirZ = dirX / length, dirZ / length
-    local side = RseLineRules.roadside(scene.x, scene.z, dirX, dirZ, road.segments, RseConfig)
     local wireCount = RseSceneSpec.count(def.wires, math.random, size)
-    local layout = RseLineRules.layout(scene.x, scene.z, dirX, dirZ, side, wireCount, RseConfig)
+    local layout, why, dirX, dirZ = self:findLayout(scene.x, scene.z, road, wireCount)
+    if layout == nil then
+        -- nowhere for the poles here (Z: never one in a building): the call is called off, with no pay and no penalty
+        RseLog.info("power line at %.1f, %.1f: no room for the poles (%s); the call is called off", scene.x, scene.z, tostring(why))
+        scene.wreck.failed = true
+        return
+    end
     local line = newLine(def, layout)
     line.yaw = math.atan2(dirX, dirZ)
     line.wiresTotal = wireCount
+    line.scene = scene
     scene.line = line
     for _, spot in ipairs(layout.standing) do
         local ok, pole = RseLog.try("a utility pole", loadStanding, spot, line.yaw)
@@ -670,13 +860,13 @@ function RsePowerLine:wiresLeft(line)
     return left
 end
 
--- how many things are left to do of the pole and the wires
+-- how many things are left to do of the line: the wires. The pole is optional (Z): it pays extra if it is in before the rest is done
 function RsePowerLine:remaining(scene)
     local line = scene.line
     if line == nil then
         return 0
     end
-    return self:wiresLeft(line) + (line.poleIn and 0 or 1)
+    return self:wiresLeft(line)
 end
 
 function RsePowerLine:pay(scene)
@@ -690,11 +880,10 @@ function RsePowerLine:hasProgress(scene)
     return line ~= nil and (line.poleIn or line.wiresIn > 0)
 end
 
--- for the progress bar, and for noticing that the job moves on
+-- for the progress bar: the wires (the pole is optional)
 function RsePowerLine:share(scene)
     local line = scene.line
-    local total = line.wiresTotal + 1
-    return (line.wiresIn + (line.poleIn and 1 or 0)) / total
+    return line.wiresTotal > 0 and line.wiresIn / line.wiresTotal or 1
 end
 
 function RsePowerLine:progressKey(scene)
@@ -709,6 +898,7 @@ function RsePowerLine:update(scene, dt)
         return
     end
     line.warnMs = math.max(0, (line.warnMs or 0) - dt)
+    line.quietMs = math.max(0, (line.quietMs or 0) - dt)
     local function step()
         collectPole(line)
         if line.searchMs ~= nil then
@@ -733,61 +923,101 @@ function RsePowerLine:update(scene, dt)
     end
 end
 
--- every frame, from RseScenes:draw. Returns false when a pin failed to draw.
+-- every frame, from RseScenes:draw (not behind menus). Returns false when a pin or the warning failed to draw.
 function RsePowerLine:draw(scene)
     local line = scene.line
-    return line == nil or (renderPins(line.wires) and renderPins(line.pieces))
+    if line == nil then
+        return true
+    end
+    -- the whole time you are too close to the live wires: the warning banner, with the hazard sign (Z)
+    if line.inDanger and not line.state.powerOff and not line.failed then
+        local second = line.state.penalized and "rse_line_dangerPaid" or "rse_line_dangerPay"
+        if not RseLog.try("the live wires warning", RseDraw.warningBanner, RseText.get("rse_line_dangerTitle"), RseText.get(second)) then
+            return false
+        end
+    end
+    return renderPins(line.wires) and renderPins(line.pieces)
 end
 
--- someone tried to start on the car or a wire too early
+-- Someone tried to start on the car or a wire too early. One message per situation (P12, Z: three near-duplicates stacked at once): not again for a
+-- while, and not right after the warning about standing too close. The call panel shows how long the crew still needs, so the message only says so when
+-- the panel isn't on the screen.
 function RsePowerLine:warnLive(line)
-    if (line.warnMs or 0) > 0 then
+    if (line.warnMs or 0) > 0 or (line.quietMs or 0) > 0 then
         return
     end
-    line.warnMs = RseConfig.LINE_WARN_MS
-    RseText.notify(RseText.get("rse_line_stillLive", RseLineRules.secondsLeft(line.state, RseConfig)), true)
+    line.warnMs, line.quietMs = RseConfig.LINE_WARN_MS, RseConfig.LINE_QUIET_MS
+    if RseCallPanel ~= nil and RseCallPanel:visible() then
+        RseText.notify(RseText.get("rse_line_stillLiveShort"), true)
+    else
+        RseText.notify(RseText.get("rse_line_stillLive", RseLineRules.secondsLeft(line.state, RseConfig, line.scene ~= nil and RseUtilityCrew:status(line.scene)
+            or nil)), true)
+    end
 end
 
--- The wires may be live until the crew has been: every frame until then, once you have arrived. Returns true when the power is off.
+-- The wires may be live until the crew has been: every frame until then, once you have arrived. The first time, the utility crew's truck is sent for
+-- (UtilityCrew.lua); without one, the timer cuts the power. Returns true when the power is off.
 function RsePowerLine:updatePower(scene, dt)
     local line = scene.line
+    if not line.crewAsked and not line.state.powerOff then
+        line.crewAsked = true
+        local ok, sent = RseLog.try("send the county crew", RseUtilityCrew.dispatch, RseUtilityCrew, scene)
+        line.crewSent = ok and sent == true
+    end
     local radius = RseConfig.LINE_DANGER_RADIUS
     local x, z = playerPosition()
     local inside = x ~= nil and (x - scene.x) ^ 2 + (z - scene.z) ^ 2 <= radius * radius
-    local event = RseLineRules.tickPower(line.state, dt, inside, RseConfig)
+    local event = RseLineRules.tickPower(line.state, dt, inside, RseConfig, RseUtilityCrew:status(scene))
+    line.inDanger = inside and not line.state.powerOff -- the banner says it the whole time, so no message on top of it
     if event == "warn" then
-        RseText.notify(RseText.get("rse_line_danger"), true)
+        line.quietMs = RseConfig.LINE_QUIET_MS
     elseif event == "cut" then
+        line.quietMs = RseConfig.LINE_QUIET_MS
         RseText.notify(RseText.get("rse_line_dangerCut", math.floor(RseConfig.LINE_DANGER_CUT * 100 + 0.5)), true)
         RseLog.info("scene %d: stayed too long near the live wires", scene.id)
     elseif event == "off" then
         scene.wreck.waitForPower = nil
+        local crew = RseUtilityCrew:status(scene)
+        if crew ~= nil and not crew.done then
+            RseLog.info("scene %d: the crew truck was held up; the power went off on the timer", scene.id)
+        end
         RseText.notify(RseText.get("rse_line_powerOff"))
         RseLog.info("scene %d: the power is off", scene.id)
     end
     return line.state.powerOff == true
 end
 
--- the job has ended: everything goes
-function RsePowerLine:remove(scene)
+-- The job has ended: the crew's truck drives off once you have gone, the prompts and pins go now, and the poles, the wires and the pole's pieces wait for the
+-- county with the rest (Cleanup.lua).
+function RsePowerLine:leaveBehind(scene, item)
     local line = scene.line
     if line == nil then
         return
     end
-    for _, wire in ipairs(line.wires) do
+    RseLog.try("the crew's truck after the job", RseUtilityCrew.release, RseUtilityCrew, scene)
+    local wires = line.wires
+    for _, wire in ipairs(wires) do
         removePin(wire)
-        removeWire(wire)
-        removeCoil(wire)
+        if wire.activatable ~= nil then
+            g_currentMission.activatableObjectsSystem:removeActivatable(wire.activatable)
+            wire.activatable = nil
+        end
     end
     line.wires = {}
-    removeStanding(line)
     for _, piece in ipairs(line.pieces) do
         removePin(piece)
         if nodeExists(piece.node) then
-            deleteLog(piece.node)
+            table.insert(item.logs, piece.node)
         end
     end
     line.pieces = {}
+    table.insert(item.extras, function()
+        for _, wire in ipairs(wires) do
+            removeWire(wire)
+            removeCoil(wire)
+        end
+        removeStanding(line)
+    end)
 end
 
 -- what the savegame keeps. The pieces of the pole are saved by the game; this only remembers where to look for them.
@@ -876,4 +1106,14 @@ function RsePowerLine:unload()
         g_messageCenter:unsubscribeAll(self)
     end
     self.subscribed = false
+end
+
+-- what a logging crash shares with the pole (LogSpill.lua)
+RsePowerLine.logs = { nodeExists = nodeExists, playerPosition = playerPosition, groundAt = groundAt, removePin = removePin, placePin = placePin,
+    renderPins = renderPins, addPiece = addPiece, deleteLog = deleteLog, searchAround = searchAround, adoptFound = adoptFound, findLostPieces = findLostPieces,
+    collectShapes = collectShapes, logMiddle = logMiddle, logEnds = logEnds, putBack = putBack }
+
+-- the chainsaw's rule and the game's cut messages, for logs of any job
+function RsePowerLine:watchLogs()
+    subscribe(self)
 end

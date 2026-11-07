@@ -76,8 +76,8 @@ local function create(steady, name)
     return hotspot
 end
 
--- shows the marker under `key` at x, z (moves it if it is already there). options: { steady (it doesn't blink), name (what it is), image, info (for a click:
--- MapClicks.lua) }
+-- shows the marker under `key` at x, z (moves it if it is already there). options: { steady (it doesn't blink), quiet (it doesn't blink or stay at the edge
+-- of the minimap, while something else needs your attention), name (what it is), image, info (for a click: MapClicks.lua) }
 function RseMarkers:show(key, x, z, options)
     if not self.enabled then
         return
@@ -88,12 +88,18 @@ function RseMarkers:show(key, x, z, options)
         if hotspot == nil then
             return
         end
-        marker = { hotspot = hotspot, steady = options.steady == true }
+        marker = { hotspot = hotspot, steady = options.steady == true, persistent = true }
         self.markers[key] = marker
     end
-    if (options.steady == true) ~= marker.steady then
-        marker.steady = options.steady == true
-        RseLog.try("map marker blinking", marker.hotspot.setBlinking, marker.hotspot, not marker.steady)
+    local calm = options.steady == true or options.quiet == true
+    if calm ~= marker.steady then
+        marker.steady = calm
+        RseLog.try("map marker blinking", marker.hotspot.setBlinking, marker.hotspot, not calm)
+    end
+    local persistent = options.quiet ~= true
+    if persistent ~= marker.persistent then
+        marker.persistent = persistent
+        RseLog.try("map marker persistent", marker.hotspot.setPersistent, marker.hotspot, persistent)
     end
     if options.image ~= nil and marker.image ~= options.image then
         RseLog.try("map marker picture", setImage, marker, options.image)

@@ -4,6 +4,7 @@
 RseSettings = {
     ROWS = {
         { key = "callsEnabled", textKey = "rse_set_calls", kind = "onOff", values = { true, false }, default = true, legacy = true },
+        { key = "callFrequency", textKey = "rse_set_frequency", kind = "frequency", values = { "rare", "normal", "often" }, default = "normal" },
         { key = "animalCalls", textKey = "rse_set_animalCalls", kind = "onOff", values = { true, false }, default = true },
         { key = "wreckCalls", textKey = "rse_set_wreckCalls", kind = "onOff", values = { true, false }, default = true },
         { key = "jobSize", textKey = "rse_set_jobSize", kind = "size", values = { "small", "normal", "large", "random" }, default = "normal", legacy = true },
@@ -11,7 +12,8 @@ RseSettings = {
         { key = "feeFactor", textKey = "rse_set_fees", kind = "percent", values = { 0, 0.5, 1, 1.5, 2 }, default = 1, legacy = true },
         { key = "leftMinutes", textKey = "rse_set_left", kind = "minutes", values = { 15, 30, 45, 60 }, default = 30 },
         { key = "expireMinutes", textKey = "rse_set_expire", kind = "minutes", values = { 10, 20, 30, 60 }, default = 20 },
-        { key = "markersEnabled", textKey = "rse_set_markers", kind = "onOff", values = { true, false }, default = true }
+        { key = "markersEnabled", textKey = "rse_set_markers", kind = "onOff", values = { true, false }, default = true },
+        { key = "panelEnabled", textKey = "rse_set_panel", kind = "onOff", values = { true, false }, default = true }
     }
 }
 
@@ -77,4 +79,5 @@ end
 function RseSettings.applyTimes(settings, config)
     config.LEFT_COLLECT_MS = (settings.leftMinutes or 30) * 60000
     config.JOB_EXPIRE_MS = (settings.expireMinutes or 20) * 60000
+    config.CALL_GAP_MS = config.CALL_GAPS[settings.callFrequency] or config.CALL_GAPS.normal
 end

@@ -39,7 +39,7 @@ describe("RseSettings", function()
     end)
 
     it("puts the time settings where the rules read them", function()
-        local config = {}
+        local config = { CALL_GAPS = RseConfig.CALL_GAPS }
         RseSettings.applyTimes({ leftMinutes = 45, expireMinutes = 10 }, config)
         expectEqual(config.LEFT_COLLECT_MS, 45 * 60000)
         expectEqual(config.JOB_EXPIRE_MS, 10 * 60000)
@@ -48,5 +48,17 @@ describe("RseSettings", function()
     it("has defaults that match the config's", function()
         expectEqual(RseSettings.row("leftMinutes").default * 60000, RseConfig.LEFT_COLLECT_MS)
         expectEqual(RseSettings.row("expireMinutes").default * 60000, RseConfig.JOB_EXPIRE_MS)
+    end)
+
+    it("sets the time between calls from how often they should come", function()
+        local config = { CALL_GAPS = RseConfig.CALL_GAPS }
+        RseSettings.applyTimes({ callFrequency = "often" }, config)
+        expectEqual(config.CALL_GAP_MS, RseConfig.CALL_GAPS.often)
+        RseSettings.applyTimes({ callFrequency = "rare" }, config)
+        expectEqual(config.CALL_GAP_MS, RseConfig.CALL_GAPS.rare)
+        RseSettings.applyTimes({}, config)
+        expectEqual(config.CALL_GAP_MS, RseConfig.CALL_GAPS.normal)
+        expectEqual(RseSettings.parse(RseSettings.row("callFrequency"), "often"), "often")
+        expectEqual(RseSettings.parse(RseSettings.row("callFrequency"), nil), "normal", "a save from before the setting")
     end)
 end)

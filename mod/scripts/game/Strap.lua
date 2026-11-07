@@ -4,7 +4,9 @@
 -- STRAP_SNAP of one). Press it on a strapped carcass or vehicle to remove the strap, or at nothing to drop the strap you
 -- hold. A joint keeps the two ends at most as far apart as they were when attached; the base-game rope model shows it.
 -- A joint's limits are a box along its own axes, so one axis of the joint is kept turned along the line: that makes the box a real line, which pulls
--- where it runs. Only while really towing does the joint lie along the vehicle's own axes, to keep the wreck straight behind (strap.boxed).
+-- where it runs. Only while really towing does the joint lie along the vehicle's own axes (strap.boxed), and then its middle moves to a hinge just behind
+-- the vehicle
+-- (strap.anchor), so that the wreck's end follows there the way a trailer follows its hitch.
 -- Straps are saved (carcass, the vehicle's unique id, both points, length) and put back after a reload.
 
 RseStrap = {
@@ -174,9 +176,9 @@ function RseStrap:pendingAction(hit)
     if hit.kind == "vehicle" and strapOnVehicle(self, hit.vehicle) ~= nil then
         return "remove"
     end
-    -- a wreck that has been prepared can take a strap where you choose (F26)
+    -- a wreck that has been prepared can take a strap where you choose (F26), until its job is over (Cleanup.lua)
     local wreck = hit.kind == "vehicle" and RseWrecks.byVehicle[hit.vehicle] or nil
-    if wreck ~= nil and wreck.state ~= "locked" then
+    if wreck ~= nil and wreck.state ~= "locked" and not wreck.retired then
         return "hook"
     end
     return nil
@@ -216,7 +218,7 @@ local function hook(self, hit)
         body = componentOf(hit.vehicle, hit.node)
         -- on its wheels: it hooks where you aim, so that a pull at an angle can swing it round; it moves to the end of the wreck once you really tow
         local wreck = RseWrecks.byVehicle[hit.vehicle]
-        if wreck ~= nil and wreck.state == "ready" then
+        if wreck ~= nil and (wreck.state == "ready" or wreck.state == "held") then
             x, y, z, offCentre = RseWrecks:hookPoint(wreck, x, y, z)
             body = hit.vehicle.components[1].node
             seated = true
@@ -288,7 +290,7 @@ local function attach(self, hit)
     local hx, hy, hz = getWorldTranslation(holding.hookNode)
     local gap = distance3D(ax, ay, az, hx, hy, hz)
     if gap > RseConfig.STRAP_MAX_LENGTH then
-        RseText.notify(RseText.get("rse_strap_tooFar", gap, RseConfig.STRAP_MAX_LENGTH), true)
+        RseText.notify(RseText.get("rse_strap_tooFar", RseText.distance(gap), RseText.distance(RseConfig.STRAP_MAX_LENGTH)), true)
         return
     end
     local length = math.max(RseConfig.STRAP_MIN_LENGTH, math.min(gap, RseConfig.STRAP_MAX_LENGTH))
@@ -458,7 +460,7 @@ function RseStrap:registerActionEvents()
             local _, reelId = g_inputBinding:registerActionEvent(reel.action, self, reel.callback, false, true, true, false)
             self[reel.key] = reelId
             if reelId ~= nil then
-                g_inputBinding:setActionEventText(reelId, RseText.get(reel.textKey))
+                g_inputBinding:setActionEventText(reelId, RseText.action(reel.textKey))
                 g_inputBinding:setActionEventTextPriority(reelId, GS_PRIO_VERY_HIGH)
                 g_inputBinding:setActionEventTextVisibility(reelId, false)
             end
@@ -479,7 +481,7 @@ local function showAction(self, action)
         return
     end
     local active = action ~= nil
-    local text = active and RseText.get(ACTION_TEXTS[action]) or nil
+    local text = active and RseText.action(ACTION_TEXTS[action]) or nil
     if active ~= self.shownActive then
         g_inputBinding:setActionEventActive(self.actionEventId, active)
         g_inputBinding:setActionEventTextVisibility(self.actionEventId, active)
@@ -491,10 +493,11 @@ local function showAction(self, action)
     end
 end
 
--- a wreck on its side is held until the vehicle on its strap pulls away with the strap tight
+-- a wreck on its side, or one that is held (on a railroad crossing), stays put until the vehicle on its strap pulls away with the strap tight
 local function checkPull(strap)
     local wreck = strap.wreckVehicle ~= nil and RseWrecks.byVehicle[strap.wreckVehicle] or nil
-    if wreck == nil or wreck.state ~= "tipped" or wreck.pin == nil or not nodeExists(strap.vehiclePoint) or not nodeExists(strap.hookNode) then
+    if wreck == nil or (wreck.state ~= "tipped" and wreck.state ~= "held") or wreck.pin == nil or not nodeExists(strap.vehiclePoint)
+        or not nodeExists(strap.hookNode) then
         return
     end
     local vx, vy, vz = getWorldTranslation(strap.vehiclePoint)
@@ -506,8 +509,14 @@ local function checkPull(strap)
     end
 end
 
--- the strap's limits, in the vehicle's own axes: side to side, up and down, along. Changing them live is how the game's own joints adjust.
+-- the strap's limits. As a line, they only stop it running out; as a hinge, a little play each way. Changing them live is how the game's own joints adjust.
 local function applyLimits(strap)
+    if strap.boxed and strap.anchor ~= nil then
+        setJointTranslationLimit(strap.jointIndex, 0, true, -RseConfig.TOW_LATERAL, RseConfig.TOW_LATERAL)
+        setJointTranslationLimit(strap.jointIndex, 1, true, -RseConfig.TOW_VERTICAL, RseConfig.TOW_VERTICAL)
+        setJointTranslationLimit(strap.jointIndex, 2, true, -RseConfig.TOW_TRAVEL, RseConfig.TOW_TRAVEL)
+        return
+    end
     setJointTranslationLimit(strap.jointIndex, 0, true, -strap.lateral, strap.lateral)
     setJointTranslationLimit(strap.jointIndex, 1, true, -strap.length, strap.length)
     setJointTranslationLimit(strap.jointIndex, 2, true, -strap.length, strap.length)
@@ -543,17 +552,26 @@ local function keepAlongLine(strap)
     end
 end
 
--- the joint along the vehicle's own axes while really towing, along the line otherwise
+-- A hinge where the hook is right now, so that starting to tow moves nothing; updateTow then brings it to its place. Otherwise the joint lies along the
+-- line again.
 local function setBoxed(strap, boxed, gap)
     strap.boxed = boxed
     if boxed then
+        local x, y, z = worldToLocal(strap.vehiclePoint, getWorldTranslation(strap.hookNode))
+        strap.anchor = { x = x, y = y, z = z }
+        strap.anchorSide = z < 0 and -1 or 1
         setRotation(strap.jointFrame, 0, 0, 0)
+        setTranslation(strap.jointFrame, x, y, z)
         setJointFrame(strap.jointIndex, 0, strap.jointFrame)
+        applyLimits(strap)
+        RseLog.debug("strap: towing from %.1f m, %s", gap, strap.anchorSide < 0 and "behind the vehicle" or "in front of it")
     else
-        -- the corner of a box is further out than the line was long
-        strap.length = math.max(strap.length, gap)
+        strap.anchor = nil
+        strap.length = math.max(RseConfig.STRAP_MIN_LENGTH, gap + RseConfig.STRAP_HOOK_SLACK)
         strap.lateral = strap.length
         applyLimits(strap)
+        setTranslation(strap.jointFrame, 0, 0, 0)
+        setJointFrame(strap.jointIndex, 0, strap.jointFrame)
     end
 end
 
@@ -578,9 +596,70 @@ local function seatForTow(self, strap, wreck)
     end
 end
 
+-- is the wreck riding on the vehicle at the other end, as on a rollback?
+local function isCarried(strap, wreck)
+    local vehicle = strap.vehicle
+    local size = vehicle.size
+    if size == nil or wreck.vehicle.rootNode == nil or vehicle.components[1].node ~= strap.component then
+        return false
+    end
+    local lx, _, lz = worldToLocal(strap.component, getWorldTranslation(wreck.vehicle.rootNode))
+    return RseWreckRules.isCarried(lx, lz, size.length, size.lengthOffset, size.width)
+end
+
+-- the hinge's place: x, z, and how far along the vehicle's end is
+local function hitchTarget(strap, wreck)
+    local vehicle = strap.vehicle
+    local px, _, pz = getTranslation(strap.vehiclePoint)
+    local size = vehicle.components[1].node == strap.component and vehicle.size or {}
+    local wreckSize = wreck.vehicle.size or {}
+    return RseWreckRules.hitchPoint(px, pz, strap.anchorSide, size.length, size.lengthOffset, wreckSize.width, RseConfig)
+end
+
+-- Really towing, the wreck follows as a trailer's geometry says: RseWreckRules.follow has why, and the reasons it is built this way. The engine reports the
+-- speed at any point itself, so nothing here assumes which way round its rotations run, except the yaw, which yawAgrees watches.
+local function followHinge(strap, wreck, dt)
+    local node = strap.body -- the part of the wreck on the hinge: on a trailer with a drawbar, not always its main body
+    local hookX, hookY, hookZ = getWorldTranslation(strap.hookNode)
+    local hingeVX, hingeVY, hingeVZ = getVelocityAtWorldPos(strap.component, getWorldTranslation(strap.jointFrame))
+    local hookVX, hookVY, hookVZ = getVelocityAtWorldPos(node, hookX, hookY, hookZ)
+    local sideways = worldDirectionToLocal(node, hingeVX, hingeVY, hingeVZ)
+    local _, _, localZ = worldToLocal(node, hookX, hookY, hookZ)
+    local farZ = RseWrecks:farAxleZ(wreck, node, localZ)
+    local wantYaw = RseWreckRules.followYaw(sideways, localZ, farZ, RseConfig)
+    local vx, vy, vz = getLinearVelocity(node)
+    local wx, wy, wz = getAngularVelocity(node)
+    if wantYaw ~= nil then
+        local hookSide = worldDirectionToLocal(node, hookVX, hookVY, hookVZ)
+        local farVX, farVY, farVZ = getVelocityAtWorldPos(node, localToWorld(node, 0, 0, farZ))
+        local farSide = worldDirectionToLocal(node, farVX, farVY, farVZ)
+        local shown = (hookSide - farSide) / (localZ - farZ)
+        strap.yawCheck = strap.yawCheck or {}
+        if not RseWreckRules.yawAgrees(strap.yawCheck, wy, shown, dt, RseConfig) then
+            RseLog.problem("towing: the engine's yaw is %.2f and the wreck's speeds show %.2f, so the wreck no longer follows the hitch", wy, shown)
+            strap.followFailed = true
+            return
+        end
+    end
+    local centreX, _, centreZ = localToWorld(node, getCenterOfMass(node))
+    local sideX, _, sideZ = localDirectionToWorld(strap.component, 1, 0, 0)
+    local yaw, newVX, newVZ = RseWreckRules.follow({ yaw = wy, wantYaw = wantYaw, vx = vx, vz = vz, armX = hookX - centreX, armZ = hookZ - centreZ,
+        hookVX = hookVX, hookVZ = hookVZ, hingeVX = hingeVX, hingeVZ = hingeVZ, sideX = sideX, sideZ = sideZ },
+        RseWreckRules.frameShare(RseConfig.TOW_FOLLOW_YAW, dt, RseConfig), RseWreckRules.frameShare(RseConfig.TOW_FOLLOW_SIDE, dt, RseConfig))
+    setAngularVelocity(node, wx, yaw, wz)
+    setLinearVelocity(node, newVX, vy, newVZ)
+end
+
+local function moveHinge(strap)
+    setTranslation(strap.jointFrame, strap.anchor.x, strap.anchor.y, strap.anchor.z)
+    setJointFrame(strap.jointIndex, 0, strap.jointFrame)
+end
+
 -- A wreck on its wheels on a strap. Hooking up moves nothing: you can reel it in and out, onto a rollback or into another position, for as long as you like.
--- Only once you drive off with the strap tight does the strap shorten by itself (unless you reeled it by hand) and keep the wreck straight behind.
--- A strap can only pull, so when you stop, the wreck would roll on into you: it brakes as soon as the strap goes slack, except while you are reeling.
+-- Only once you drive off with the strap tight does it become a hinge just behind the vehicle (Z: it swerved wide on a line, and was hard to tow with a small
+-- pickup). That is how the game's own trailers follow, and the wheels at that end follow too, so the wreck tracks on its far axle.
+-- A strap can only pull, so when you stop, the wreck would roll on into you: it brakes as soon as it runs up on the hinge or the strap goes slack, except
+-- while you are reeling. Riding on a rollback it just keeps its brakes on.
 local function updateTow(strap, wreck, dt)
     local vx, vy, vz = getWorldTranslation(strap.vehiclePoint)
     local hx, hy, hz = getWorldTranslation(strap.hookNode)
@@ -589,42 +668,43 @@ local function updateTow(strap, wreck, dt)
         strap.closing = (strap.closing or 0) * 0.8 + (strap.lastGap - gap) / (dt / 1000) * 0.2
     end
     strap.lastGap = gap
+    local _, _, along = worldToLocal(strap.vehiclePoint, hx, hy, hz)
     local slack = strap.length - gap
-    if strap.boxed then
-        -- the limits work along each of the vehicle's axes: the slack is what the nearest of them has left
-        local sideways, _, along = worldToLocal(strap.vehiclePoint, hx, hy, hz)
-        slack = math.min(strap.length - math.abs(along), strap.lateral - math.abs(sideways))
+    if strap.boxed and strap.anchor ~= nil then
+        slack = RseWreckRules.hitchSlack(along, strap.anchor.z, strap.anchorSide, RseConfig)
     end
     local reeling = (strap.reelMs or 0) > 0
     if reeling then
         strap.reelMs = strap.reelMs - dt
     end
-    local brake = reeling and 0 or RseWreckRules.towBrake(slack, strap.closing or 0, RseConfig)
-    strap.tow = strap.tow or {}
+    local carried = isCarried(strap, wreck)
     local speed = strap.vehicle.getLastSpeed ~= nil and strap.vehicle:getLastSpeed() or 0
-    local towing = RseWreckRules.isTowing(strap.tow, dt, { speed = speed, slack = slack, reeling = reeling }, RseConfig)
-    RseLog.try("tow the wreck", RseWrecks.assistTow, RseWrecks, wreck, vx, vy, vz, brake, towing, reeling)
+    local moving = strap.vehicle.movingDirection or 0
+    local pushing = speed >= RseConfig.TOW_PUSH_SPEED and moving ~= 0 and (along < 0) == (moving < 0)
+    local brake = reeling and 0 or (carried and 1 or RseWreckRules.towBrake(slack, strap.closing or 0, RseConfig))
+    strap.tow = strap.tow or {}
+    local towing = RseWreckRules.isTowing(strap.tow, dt, { speed = speed, slack = slack, reeling = reeling, carried = carried, pushing = pushing }, RseConfig)
     if towing ~= strap.boxed and not strap.aimFailed then
         RseLog.try("turn the strap's joint", setBoxed, strap, towing, gap)
     end
-    local changed = false
-    if towing then
-        local step = RseConfig.TOW_REEL_SPEED * dt / 1000
-        if not strap.manual and strap.length > RseConfig.TOW_LENGTH then
-            strap.length = math.max(RseConfig.TOW_LENGTH, strap.length - step)
-            changed = true
+    local aimX, aimY, aimZ = vx, vy, vz
+    if towing and strap.anchor ~= nil then
+        local targetX, targetZ, endZ = hitchTarget(strap, wreck)
+        if RseWreckRules.moveAnchor(strap.anchor, targetX, targetZ, RseConfig.TOW_REEL_SPEED * dt / 1000) then
+            RseLog.try("move the hinge", moveHinge, strap)
         end
-        if strap.lateral > RseConfig.TOW_LATERAL then
-            strap.lateral = math.max(RseConfig.TOW_LATERAL, strap.lateral - step)
-            changed = true
-        end
-    elseif strap.lateral ~= strap.length then
-        -- not towing: the wreck may lie at any angle to the vehicle
-        strap.lateral = strap.length
-        changed = true
+        strap.length = math.sqrt(strap.anchor.x ^ 2 + strap.anchor.y ^ 2 + strap.anchor.z ^ 2) + RseConfig.TOW_TRAVEL
+        aimX, aimY, aimZ = localToWorld(strap.vehiclePoint, targetX, strap.anchor.y, endZ)
+        -- the wheels aim from the hook's own line: a hook off the middle held them to one side all the way down a straight road (0.9.5.2's log: 3 degrees)
+        local wreckNode = wreck.vehicle.rootNode
+        local hookOff = worldToLocal(wreckNode, hx, hy, hz)
+        local aimedX, aimedY, aimedZ = worldToLocal(wreckNode, aimX, aimY, aimZ)
+        aimX, aimY, aimZ = localToWorld(wreckNode, aimedX - hookOff, aimedY, aimedZ)
     end
-    if changed then
-        RseLog.try("shorten the strap", applyLimits, strap)
+    RseLog.try("tow the wreck", RseWrecks.assistTow, RseWrecks, wreck, aimX, aimY, aimZ, brake, reeling, dt)
+    if towing and strap.anchor ~= nil and not strap.followFailed then
+        local ok = RseLog.try("follow the hitch", followHinge, strap, wreck, dt)
+        strap.followFailed = strap.followFailed or not ok -- once in the log; it still tows
     end
 end
 

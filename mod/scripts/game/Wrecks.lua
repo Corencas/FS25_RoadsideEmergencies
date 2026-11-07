@@ -11,6 +11,9 @@ RseWrecks = {
     everWreck = setmetatable({}, { __mode = "k" }),   -- every vehicle that has been a wreck, even after its job
     resetCopies = {},                                 -- what the game made when it reset one anyway
     resetSubscribed = false,
+    lastFile = {},                                    -- kind -> the vehicle of the last call of that kind
+    forcedVariant = nil,                              -- test: { kind, number }, the next one of that kind (rseVehicle)
+    planned = nil,                                    -- { kind, variant }: the vehicle the pager has named
     modDir = nil
 }
 
@@ -43,8 +46,13 @@ local function wrap(class, name, fn)
     class[name] = Utils.overwrittenFunction(class[key], fn)
 end
 
+-- the utility crew's truck (UtilityCrew.lua) is theirs, not yours
+local function isCrew(vehicle)
+    return RseUtilityCrew ~= nil and RseUtilityCrew:owns(vehicle)
+end
+
 wrap(Enterable, "getIsEnterable", function(vehicle, superFunc)
-    if isLocked(vehicle) then
+    if isLocked(vehicle) or isCrew(vehicle) then
         return false
     end
     return superFunc(vehicle)
@@ -58,11 +66,17 @@ wrap(Enterable, "interact", function(vehicle, enterableInteract, superFunc, play
         end
         return
     end
+    if isCrew(vehicle) then
+        if g_currentMission ~= nil then
+            g_currentMission:showBlinkingWarning(RseText.get("rse_crew_notYours"), 2500)
+        end
+        return
+    end
     return enterableInteract(vehicle, superFunc, player)
 end)
 
 wrap(Enterable, "getIsTabbable", function(vehicle, superFunc)
-    if RseWrecks.byVehicle[vehicle] ~= nil then
+    if RseWrecks.byVehicle[vehicle] ~= nil or isCrew(vehicle) then
         return false
     end
     return superFunc(vehicle)
@@ -132,7 +146,8 @@ local function pin(vehicle)
     return { jointIndex = constructor:finalize(), anchor = anchor, sharedId = sharedId, vehiclePoint = vehiclePoint }
 end
 
--- flat on its side, side on the ground. Rolled 90 degrees, half the vehicle's width is the height of its middle above the ground.
+-- Flat on its side, side on the ground, along the ground from end to end (Z: a 12 m trailer lay level with one end in the air). Rolled 90 degrees, half the
+-- vehicle's width is the height of its middle above the ground; its length follows the slope between its two ends.
 local function layOnSide(wreck)
     local vehicle = wreck.vehicle
     local node = rootNodeOf(vehicle)
@@ -140,9 +155,47 @@ local function layOnSide(wreck)
         return
     end
     local x, _, z = getWorldTranslation(node)
-    local width = vehicle.size ~= nil and vehicle.size.width or RseConfig.WRECK_TIPPED_HEIGHT * 2
+    local size = vehicle.size or {}
+    local width = size.width or RseConfig.WRECK_TIPPED_HEIGHT * 2
+    local length = math.max(1, size.length or 4)
+    local yaw = wreck.rotation.ry
+    local fx, fz = math.sin(yaw), math.cos(yaw)
+    local function ground(px, pz)
+        return getTerrainHeightAtWorldPos(g_terrainNode, px, 0, pz)
+    end
+    local middleX, middleZ = x + fx * (size.lengthOffset or 0), z + fz * (size.lengthOffset or 0)
+    local back, front = ground(middleX - fx * length / 2, middleZ - fz * length / 2), ground(middleX + fx * length / 2, middleZ + fz * length / 2)
+    local rise = front - back
+    local along = math.sqrt(length * length + rise * rise)
+    -- its forward follows the slope; its up lies level, to the side (as a roll of +90 degrees about its forward axis gives)
+    local pose = createTransformGroup("rseWreckPose")
+    link(getRootNode(), pose)
+    setDirection(pose, fx * length / along, rise / along, fz * length / along, -fz, 0, fx)
+    local rx, ry, rz = getWorldRotation(pose)
+    delete(pose)
+    -- the slope's height at the reference point, which sits lengthOffset behind the middle
+    local y = math.max(ground(x, z), (front + back) / 2 - rise * (size.lengthOffset or 0) / length) + width / 2 + 0.05
+    vehicle:setAbsolutePosition(x, y, z, rx, ry, rz)
+end
+
+-- Put back where it was placed, if something moved it before its pin (Z: traffic on a crossing shoved the stalled vehicle off the tracks). Its height above
+-- the ground goes with it.
+local function holdWherePlaced(wreck)
+    local node = rootNodeOf(wreck.vehicle)
+    local placed = wreck.placed
+    if node == nil or placed == nil then
+        return
+    end
+    local x, y, z = getWorldTranslation(node)
+    local drift = math.sqrt((x - placed.x) ^ 2 + (z - placed.z) ^ 2)
+    if drift <= RseConfig.WRECK_DRIFT_MAX then
+        return
+    end
+    local above = y - getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
     local rotation = wreck.rotation
-    vehicle:setAbsolutePosition(x, getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z) + width / 2 + 0.05, z, rotation.rx, rotation.ry, rotation.rz)
+    wreck.vehicle:setAbsolutePosition(placed.x, getTerrainHeightAtWorldPos(g_terrainNode, placed.x, 0, placed.z) + above, placed.z, rotation.rx, rotation.ry,
+        rotation.rz)
+    RseLog.info("wreck %s had moved %.1f m before its pin: put back where it was placed", wreck.kind, drift)
 end
 
 local function unpin(wreck)
@@ -175,7 +228,7 @@ local RseWreckActivatable_mt = Class(RseWreckActivatable)
 local function newActivatable(wreck)
     local self = setmetatable({}, RseWreckActivatable_mt)
     self.wreck = wreck
-    self.activateText = RseText.get(wreck.def.driver and "rse_wreck_driver" or "rse_wreck_prepare")
+    self.activateText = RseText.action(wreck.def.driver and "rse_wreck_driver" or "rse_wreck_prepare")
     return self
 end
 
@@ -203,6 +256,14 @@ function RseWreckActivatable:run()
     if self.wreck.waitForPower then
         RsePowerLine:warnLive(self.wreck.waitForPower)
         return
+    end
+    if self.wreck.waitForTree ~= nil then
+        -- only a log on the car holds the door (Z). If the check itself fails, the door opens: nobody gets stuck on it
+        local ok, blocked = RseLog.try("look for a log on the car", RseLogSpill.carBlocked, RseLogSpill, self.wreck.waitForTree)
+        if ok and blocked then
+            RseText.notify(RseText.get("rse_tree_notYet"), true)
+            return
+        end
     end
     RseWrecks:prepare(self.wreck)
 end
@@ -338,18 +399,27 @@ function RseWrecks:onLoaded(vehicles, loadingState, wreck)
     end
     if wreck.state == "locked" then
         wreck.pinInMs = wreck.def.tipped and 0 or RseConfig.WRECK_PIN_MS
-        wreck.activatable = newActivatable(wreck)
-        g_currentMission.activatableObjectsSystem:addActivatable(wreck.activatable)
+        if not wreck.def.scenery and not wreck.retired then -- retired: its job ended while it loaded
+            wreck.activatable = newActivatable(wreck)
+            g_currentMission.activatableObjectsSystem:addActivatable(wreck.activatable)
+        end
     elseif wreck.state == "tipped" then
         wreck.pinInMs = 0 -- a saved one, prepared but not yet pulled over
+    elseif wreck.state == "held" then
+        wreck.pinInMs = RseConfig.WRECK_HELD_PIN_MS
     end
     if wreck.def.tipped and wreck.pinInMs == 0 then
         RseLog.try("lay the wreck on its side", layOnSide, wreck)
     end
-    if wreck.def.driver and wreck.state == "locked" then
+    if (wreck.def.driver or wreck.def.seated) and wreck.state == "locked" then
         self:seatDriver(wreck)
     end
-    if wreck.def.smoke then
+    local inWater = wreck.variant ~= nil and wreck.variant.noDrown
+    if inWater then -- the game breaks a vehicle for good once the water over it is this deep
+        wreck.vehicle.thresholdTailwaterDepth = math.huge
+        wreck.vehicle.thresholdTailwaterDepthWarning = math.huge
+    end
+    if wreck.def.smoke and not inWater then
         RseLog.try("the smoke", startSmoke, wreck)
     end
     if wreck.def.hazards and wreck.vehicle.spec_lights ~= nil then
@@ -379,19 +449,136 @@ local function setDriverVisible(wreck, visible)
     end
 end
 
+-- Hiding the character doesn't last: the game works out its visibility again every frame (Enterable:onPostUpdate, VehicleCharacter:updateVisibility), which is
+-- why Z's driver stayed in the seat. So it goes altogether, the way the game itself removes a character when someone leaves a vehicle.
+local function removeDriver(wreck)
+    wreck.showDriverInMs = nil
+    local vehicle = wreck.vehicle
+    if vehicle ~= nil and vehicle.deleteVehicleCharacter ~= nil then
+        RseLog.try("the driver gets out", vehicle.deleteVehicleCharacter, vehicle)
+    end
+end
+
+-- is this vehicle in the game? A map or a later game version could leave one out, and a call then takes another
+local function inStore(file)
+    if g_storeManager == nil or g_storeManager.getItemByXMLFilename == nil then
+        return true
+    end
+    return g_storeManager:getItemByXMLFilename(Utils.getFilename(file, RoadsideEmergencies.MOD_DIR)) ~= nil
+end
+
+-- the vehicle for the next wreck of this kind. If the store knows none of them, the lookup itself is at fault, so it doesn't count.
+function RseWrecks:pickVariant(kind)
+    local def = RseConfig.WRECKS[kind]
+    local forced = self.forcedVariant
+    if forced ~= nil and forced.kind == kind then
+        self.forcedVariant = nil
+        return def.variants[forced.number]
+    end
+    local last = self.lastFile[kind]
+    local fleet = RseCalls ~= nil and RseCalls:fleet() or nil
+    local function canRecover(_, variant)
+        return RseWreckRules.canRecover(variant, fleet)
+    end
+    local function fits(file, variant)
+        return inStore(file) and canRecover(file, variant)
+    end
+    -- never one the farm couldn't recover: dispatch doesn't call about those at all. Only rseStart gets here with nothing in reach, and takes whatever there
+    -- is.
+    local variant = RseWreckRules.pickVariant(def, math.random(), last, fits) or RseWreckRules.pickVariant(def, math.random(), last, canRecover)
+        or RseWreckRules.pickVariant(def, math.random(), last, inStore) or RseWreckRules.pickVariant(def, math.random(), last)
+    if variant ~= nil then
+        self.lastFile[kind] = variant.file
+    end
+    return variant
+end
+
+-- its name in the shop, or nil
+local function vehicleName(file)
+    local item = g_storeManager ~= nil and g_storeManager:getItemByXMLFilename(Utils.getFilename(file, RoadsideEmergencies.MOD_DIR)) or nil
+    if item == nil or type(item.name) ~= "string" or string.find(item.name, "[%%$]") ~= nil then
+        return nil
+    end
+    local brand = g_brandManager ~= nil and g_brandManager:getBrandByIndex(item.brandIndex) or nil
+    if brand ~= nil and brand.name ~= "NONE" and brand.title ~= nil then
+        return brand.title .. " " .. item.name
+    end
+    return item.name
+end
+
+-- the vehicle's name as the shop writes it (brand and name), or nil
+function RseWrecks:nameOf(variant)
+    local ok, name = RseLog.try("name the vehicle", vehicleName, variant.file)
+    return ok and name or nil
+end
+
+-- which vehicle it is, and what it takes to tow it
+function RseWrecks:towText(variant)
+    local need = RseText.get(variant.heavy and "rse_call_towBig" or "rse_call_towSmall")
+    local ok, name = RseLog.try("name the vehicle", vehicleName, variant.file)
+    if ok and name ~= nil then
+        return RseText.get("rse_call_vehicle", name) .. " " .. need
+    end
+    return need
+end
+
+-- Before the pager asks (Z: you must know before you say yes): which vehicle this call has. Returns what the pager should add,
+-- or nil for a call with nothing to tow.
+function RseWrecks:planCall(id)
+    self.planned = nil
+    for _, emergency in ipairs(RseConfig.EMERGENCIES) do
+        if emergency.id == id and emergency.wreck ~= nil then
+            local variant = self:pickVariant(emergency.wreck)
+            if variant == nil then
+                return nil
+            end
+            self.planned = { kind = emergency.wreck, variant = variant }
+            return self:towText(variant)
+        end
+    end
+    return nil
+end
+
+-- the vehicle for a wreck being laid out: the one the pager has named, if it has
+function RseWrecks:takeVariant(kind)
+    local planned = self.planned
+    self.planned = nil
+    if planned ~= nil and planned.kind == kind then
+        return planned.variant
+    end
+    return self:pickVariant(kind)
+end
+
+-- for the log: how many of each kind's vehicles the game has
+function RseWrecks:logVehicles()
+    local parts = {}
+    for kind, def in pairs(RseConfig.WRECKS) do
+        if def.variants ~= nil then
+            local found = 0
+            for _, variant in ipairs(def.variants) do
+                found = found + (inStore(variant.file) and 1 or 0)
+            end
+            table.insert(parts, string.format("%s %d/%d", kind, found, #def.variants))
+        end
+    end
+    table.sort(parts)
+    RseLog.info("wreck vehicles in the game: %s", table.concat(parts, ", "))
+end
+
 -- Puts a wreck in the world: position { x, z, yaw, rx, rz }, loading takes a moment; y, for a saved one: where it stood, on a bridge or a rollback's bed.
 -- bales: { { x, y, z, rx, ry, rz }, ... } already chosen, of the kind `load`. delivered: a saved job whose vehicle is already in, so only the bales come back.
-function RseWrecks:spawn(kind, position, state, bales, delivered, load)
+function RseWrecks:spawn(kind, position, state, bales, delivered, load, variant)
     local def = RseConfig.WRECKS[kind]
-    local wreck = { kind = kind, def = def, state = RseWreckRules.newState(state), bales = {}, restMs = 0, delivered = false, load = load }
+    local wreck = { kind = kind, def = def, variant = variant, state = RseWreckRules.newState(state), bales = {}, restMs = 0, delivered = false, load = load }
     if def.noVehicle or delivered then
         wreck.state, wreck.delivered = "ready", true
     else
         local data = VehicleLoadingData.new()
-        data:setFilename(Utils.getFilename(def.file, RoadsideEmergencies.MOD_DIR))
+        data:setFilename(Utils.getFilename(variant.file, RoadsideEmergencies.MOD_DIR))
         data:setPosition(position.x, position.y, position.z, def.tipped and wreck.state == "locked" and RseConfig.WRECK_TIPPED_HEIGHT or RseConfig.WRECK_HEIGHT)
         local tippedRoll = def.tipped and wreck.state == "locked" and math.pi / 2 or 0
         wreck.rotation = { rx = position.rx or 0, ry = position.yaw or 0, rz = position.rz or tippedRoll }
+        wreck.placed = { x = position.x, z = position.z }
         data:setRotation(wreck.rotation.rx, wreck.rotation.ry, wreck.rotation.rz)
         -- the way the game spawns contract vehicles: not in your vehicle list, can't be sold
         data:setPropertyState(VehiclePropertyState.MISSION)
@@ -432,7 +619,7 @@ function RseWrecks:prepare(wreck)
     end
     wreck.state = RseWreckRules.afterPrepare(wreck.state, wreck.def)
     if wreck.def.driver then
-        setDriverVisible(wreck, false)
+        removeDriver(wreck)
         RseText.notify(RseText.get("rse_wreck_driverOut"))
     end
     if wreck.activatable ~= nil then
@@ -519,24 +706,78 @@ local function hasSteering(vehicle)
     return vehicle.maxRotTime ~= nil and vehicle.minRotTime ~= nil and vehicle.rotatedTime ~= nil and (vehicle.maxRotTime ~= 0 or vehicle.minRotTime ~= 0)
 end
 
--- A trailer's wheels give way along the line while you reel (RseWreckRules.freeWheelAngle). The picture doesn't turn: its tires look dragged sideways.
-local function lineUpFreeWheels(vehicle, node, hx, hy, hz, reeling)
+-- where a wreck's wheels are: { middleZ, axleZ (the front axle, the one that steers), maxAngle }, once for each wreck
+local function wheelLayout(wreck, node)
+    if wreck.wheelLayout ~= nil then
+        return wreck.wheelLayout
+    end
+    local zs, axleZ, maxAngle = {}, nil, nil
+    for _, wheel in ipairs(wreck.vehicle.spec_wheels ~= nil and wreck.vehicle.spec_wheels.wheels or {}) do
+        if wheel.physics ~= nil and nodeExists(wheel.repr) then
+            local _, _, z = worldToLocal(node, getWorldTranslation(wheel.repr))
+            table.insert(zs, z)
+            if (wheel.physics.rotSpeed or 0) ~= 0 then
+                axleZ = math.max(axleZ or z, z)
+                maxAngle = math.max(maxAngle or 0, math.abs(wheel.physics.rotMax or 0))
+            end
+        end
+    end
+    local layout = RseWreckRules.axleLayout(zs, RseConfig)
+    layout.axleZ = axleZ
+    layout.maxAngle = maxAngle ~= nil and maxAngle > 0 and maxAngle or nil
+    wreck.wheelLayout = layout
+    return layout
+end
+
+-- the axle a wreck follows on, towed from hookZ, in its own axes; nil if it has no wheels to go by
+function RseWrecks:farAxleZ(wreck, node, hookZ)
+    return RseWreckRules.farAxleZ(wheelLayout(wreck, node), hookZ)
+end
+
+-- A wheel that can't steer gives way along the line (RseWreckRules.freeWheelAngle): every wheel of a trailer while you reel, and on any wreck those at the
+-- end being pulled. The picture doesn't turn: its tires look dragged sideways. The game keeps a steering angle written on a wheel with no steering of its
+-- own.
+local function lineUpFreeWheels(wreck, node, hx, hy, hz, reeling, layout, ease)
+    local vehicle = wreck.vehicle
+    local aimX, _, hitchZ = worldToLocal(node, hx, hy, hz)
+    local allFree = reeling and not hasSteering(vehicle)
     for _, wheel in ipairs(vehicle.spec_wheels ~= nil and vehicle.spec_wheels.wheels or {}) do
         local physics = wheel.physics
-        if physics ~= nil and nodeExists(wheel.repr) then
+        if physics ~= nil and nodeExists(wheel.repr) and (physics.rotSpeed or 0) == 0 then
             physics.showSteeringAngle = false
-            local wx, wy, wz = getWorldTranslation(wheel.repr)
-            local dx, _, dz = worldDirectionToLocal(node, hx - wx, hy - wy, hz - wz)
-            local target = RseWreckRules.freeWheelAngle(dx, dz, reeling, RseConfig)
-            physics.steeringAngle = physics.steeringAngle + (target - physics.steeringAngle) * RseConfig.TOW_STEER_EASE
+            local _, _, wheelZ = worldToLocal(node, getWorldTranslation(wheel.repr))
+            local target = 0
+            if allFree or (not layout.single and RseWreckRules.isNearAxle(wheelZ, hitchZ, layout.middleZ)) then
+                -- from the middle of the axle: from each wheel's own place, the two of them would point in at each other and scrub
+                target = RseWreckRules.freeWheelAngle(aimX, hitchZ - wheelZ, true, RseConfig)
+            end
+            physics.steeringAngle = physics.steeringAngle + (target - physics.steeringAngle) * ease
         end
     end
 end
 
--- A wreck on a strap: the brakes follow the strap (RseWreckRules.towBrake), because a parked vehicle keeps them on (Wheels:brake),
--- and the front wheels turn to the vehicle pulling it, as a
--- driver would steer it, so it follows instead of running wide. (hx, hy, hz): the far end of the strap.
-function RseWrecks:assistTow(wreck, hx, hy, hz, brake, towing, reeling)
+-- A vehicle nobody is driving isn't active, and the game only hands a wheel's steering on to the physics for an active one (WheelPhysics:serverUpdate). So
+-- whatever we set never reached the ground: from 0.4.7.2 until 0.9.5.1 the wheels of a wreck on a strap stayed straight, with no error, and it rolled along
+-- its own heading (Z). We hand it on ourselves, for this vehicle's wheels only, without making it active: that would start up everything else an active
+-- vehicle does. A wheel with no steering of its own is left out of the game's own update of the angle: on a car, crab steering
+-- (CrabSteering:loadWheelFromXML) has that update run for every wheel, and it puts our angle back to zero (0.9.5.1's log: the wheels at 0 degrees all the
+-- way).
+local function pushWheels(vehicle, dt)
+    for _, wheel in ipairs(vehicle.spec_wheels ~= nil and vehicle.spec_wheels.wheels or {}) do
+        local physics = wheel.physics
+        if physics ~= nil and physics.updateSteeringAngle ~= nil and physics.updatePhysics ~= nil then
+            if (physics.rotSpeed or 0) ~= 0 then
+                physics:updateSteeringAngle(dt)
+            end
+            local pedal = wheel.brakePedal or 0
+            physics:updatePhysics(pedal > 0 and vehicle:getBrakeForce() * pedal or 0)
+        end
+    end
+end
+
+-- A wreck on a strap: the brakes follow the strap (RseWreckRules.towBrake), because a parked vehicle keeps them on (Wheels:brake), and the wheels at the end
+-- being pulled follow what pulls them, so it tracks on its far axle instead of rolling along its own heading. (hx, hy, hz): where they aim.
+function RseWrecks:assistTow(wreck, hx, hy, hz, brake, reeling, dt)
     local vehicle = wreck.vehicle
     local node = rootNodeOf(vehicle)
     if node == nil or vehicle.isDeleted then
@@ -547,14 +788,16 @@ function RseWrecks:assistTow(wreck, hx, hy, hz, brake, towing, reeling)
     if vehicle.brake ~= nil and wheels ~= nil and wheels.brakePedal ~= pedal then
         vehicle:brake(pedal)
     end
-    if not hasSteering(vehicle) then
-        lineUpFreeWheels(vehicle, node, hx, hy, hz, reeling)
-    else
+    local layout = wheelLayout(wreck, node)
+    local ease = RseWreckRules.frameShare(RseConfig.TOW_STEER_EASE, dt, RseConfig)
+    lineUpFreeWheels(wreck, node, hx, hy, hz, reeling, layout, ease)
+    if hasSteering(vehicle) then
         local localX, _, localZ = worldToLocal(node, hx, hy, hz)
-        local steer = RseWreckRules.towSteer(localX, localZ, towing, RseConfig)
+        local steer = RseWreckRules.towSteer(localX, localZ, RseConfig, layout.axleZ, layout.maxAngle)
         local target = steer >= 0 and steer * vehicle.maxRotTime or -steer * vehicle.minRotTime
-        vehicle.rotatedTime = vehicle.rotatedTime + (target - vehicle.rotatedTime) * RseConfig.TOW_STEER_EASE
+        vehicle.rotatedTime = vehicle.rotatedTime + (target - vehicle.rotatedTime) * ease
     end
+    pushWheels(vehicle, dt or 0)
     if vehicle.raiseActive ~= nil then
         vehicle:raiseActive()
     end
@@ -571,19 +814,60 @@ function RseWrecks:endTow(vehicle)
     if vehicle.rotatedTime ~= nil then
         vehicle.rotatedTime = 0
     end
-    if not hasSteering(vehicle) and vehicle.spec_wheels ~= nil then
+    if vehicle.spec_wheels ~= nil then
         for _, wheel in ipairs(vehicle.spec_wheels.wheels) do
-            if wheel.physics ~= nil then
+            if wheel.physics ~= nil and (wheel.physics.rotSpeed or 0) == 0 then
                 wheel.physics.steeringAngle = 0
             end
         end
+        pushWheels(vehicle, 0)
     end
 end
 
--- a strap has pulled a wreck on its side: it comes over (RseStrap)
-function RseWrecks:release(wreck)
+-- A strap has pulled a wreck on its side: it comes over (RseStrap). Or a line is on a held one, or a train is coming for it: it is free to move.
+function RseWrecks:release(wreck, what)
     unpin(wreck)
-    RseLog.info("wreck %s let go by the strap", wreck.kind)
+    if wreck.state == "held" then
+        wreck.state = "ready"
+    end
+    RseLog.info("wreck %s let go by %s", wreck.kind, what or "the strap")
+end
+
+-- The train has hit it. The game's own push is only a shove (Z: an anticlimax), so it goes flying, and looks it. (alongX, alongZ): the way the train runs;
+-- (awayX, awayZ): away from the track, so that the train doesn't run it down again. Both are unit vectors.
+function RseWrecks:throw(wreck, alongX, alongZ, awayX, awayZ)
+    local node = rootNodeOf(wreck.vehicle)
+    if node == nil then
+        return
+    end
+    local along, away, spin = RseConfig.CROSSING_THROW_ALONG, RseConfig.CROSSING_THROW_AWAY, RseConfig.CROSSING_THROW_SPIN
+    setLinearVelocity(node, alongX * along + awayX * away, RseConfig.CROSSING_THROW_UP, alongZ * along + awayZ * away)
+    setAngularVelocity(node, (math.random() * 2 - 1) * spin, (math.random() * 2 - 1) * spin, (math.random() * 2 - 1) * spin)
+    if wreck.vehicle.setDamageAmount ~= nil then
+        wreck.vehicle:setDamageAmount(0.9, true)
+    end
+    if wreck.smoke == nil then
+        startSmoke(wreck)
+    end
+end
+
+-- A held wreck only comes loose for a line (Z: ramming it mustn't move it). Our strap lets it go itself once it pulls (RseStrap). This looks for the others:
+-- a Better Winch line, or anything that has hitched up to it the game's own way.
+local function lineOn(wreck)
+    local vehicle = wreck.vehicle
+    if vehicle.getAttacherVehicle ~= nil and vehicle:getAttacherVehicle() ~= nil then
+        return "a vehicle hitched to it"
+    end
+    local winch = wreck.winchApi
+    local object = winch ~= nil and winch.getAttachableObject ~= nil and winch:getAttachableObject(vehicle, true) or nil
+    if object ~= nil and object.getIsAttached ~= nil and not wreck.winchAskFailed then
+        local ok, attached = RseLog.try("ask Better Winch", object.getIsAttached, object)
+        wreck.winchAskFailed = not ok
+        if ok and attached then
+            return "a winch line"
+        end
+    end
+    return nil
 end
 
 -- where the vehicle is now, or nil
@@ -618,12 +902,34 @@ function RseWrecks:update(wreck, dt)
         wreck.pinInMs = wreck.pinInMs - dt
         if wreck.pinInMs <= 0 then
             wreck.pinInMs = nil
-            if wreck.def.tipped then
+            if wreck.def.tipped and wreck.state == "locked" then
                 RseLog.try("lay the wreck on its side", layOnSide, wreck) -- once more, from wherever a frame of gravity took it
+            else
+                RseLog.try("hold the wreck where it was put", holdWherePlaced, wreck)
             end
             local ok, data = RseLog.try("pin the wreck", pin, wreck.vehicle)
             wreck.pin = ok and data or nil
             RseLog.info("wreck %s held, uprightness %s (0 on its side, 1 on its wheels)", wreck.kind, string.format("%.2f", uprightness(wreck) or -9))
+        end
+    end
+    if wreck.state == "held" and wreck.pin ~= nil then
+        if not wreck.winchOffered then
+            wreck.winchOffered = true
+            wreck.winchApi = betterWinch()
+            RseLog.try("offer winch points", offerWinchPoints, wreck)
+        end
+        local line = lineOn(wreck)
+        if line ~= nil then
+            self:release(wreck, line)
+        end
+    end
+    if wreck.def.honks and wreck.state == "locked" and wreck.pin ~= nil then
+        wreck.hornMs = (wreck.hornMs or RseConfig.TREE_HORN_MS[1]) - dt
+        if wreck.hornMs <= 0 then
+            local range = RseConfig.TREE_HORN_MS
+            wreck.hornMs = range[1] + math.random() * (range[2] - range[1])
+            local x, y, z = getWorldTranslation(wreck.vehicle.rootNode)
+            RseSound:play(RseConfig.TREE_HORN_FILE, x, y + 1, z, RseConfig.TREE_HORN_RANGE)
         end
     end
     if wreck.showDriverInMs ~= nil then
@@ -720,7 +1026,19 @@ function RseWrecks:removeVehicle(wreck)
     end
 end
 
--- the job ended without a delivery (another contractor, canceled): everything goes
+-- The job is over and the vehicle waits for the county (Cleanup.lua): no prompt, and our strap lets go. A pin still holds it where it is.
+function RseWrecks:retire(wreck)
+    wreck.retired = true
+    if wreck.activatable ~= nil then
+        g_currentMission.activatableObjectsSystem:removeActivatable(wreck.activatable)
+        wreck.activatable = nil
+    end
+    if wreck.vehicle ~= nil then
+        RseStrap:releaseForVehicle(wreck.vehicle)
+    end
+end
+
+-- the vehicle and its bales go: the county has cleared up (Cleanup.lua)
 function RseWrecks:remove(wreck)
     self:removeVehicle(wreck)
     for _, item in ipairs(wreck.bales) do
@@ -731,7 +1049,8 @@ end
 
 -- what the savegame keeps of a wreck and its bales
 function RseWrecks:saveData(wreck)
-    local data = { kind = wreck.kind, state = wreck.state, delivered = wreck.delivered, load = wreck.load ~= nil and wreck.load.id or nil, bales = {} }
+    local data = { kind = wreck.kind, file = wreck.variant ~= nil and wreck.variant.file or nil, state = wreck.state, delivered = wreck.delivered,
+        load = wreck.load ~= nil and wreck.load.id or nil, bales = {} }
     local node = rootNodeOf(wreck.vehicle)
     if node ~= nil then
         data.x, data.y, data.z = getWorldTranslation(node)
@@ -753,6 +1072,9 @@ function RseWrecks:unload()
     self.byVehicle = setmetatable({}, { __mode = "k" })
     self.everWreck = setmetatable({}, { __mode = "k" })
     self.resetCopies = {}
+    self.lastFile = {}
+    self.forcedVariant = nil
+    self.planned = nil
     if self.resetSubscribed and g_messageCenter ~= nil then
         g_messageCenter:unsubscribeAll(self)
     end

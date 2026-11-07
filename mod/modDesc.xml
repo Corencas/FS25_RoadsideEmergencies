@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="106">
     <author>Corencas</author>
-    <version>0.9.0.0</version>
+    <version>0.9.9.3</version>
     <title>
         <en>Roadside Emergencies</en>
         <de>Roadside Emergencies</de>
     </title>
     <description>
-        <en><![CDATA[Adds 14 new road and roadside callouts to the free Emergency Pack DLC. You are the local contractor county dispatch calls when something goes wrong on the road, and you handle it with whatever vehicles and attachments you own.
+        <en><![CDATA[REQUIRES the free Emergency Pack DLC: without it, no calls come.
+
+Adds 19 new road and roadside callouts to the free Emergency Pack DLC. You are the local contractor county dispatch calls when something goes wrong on the road, and you handle it with whatever vehicles and attachments you own.
 
 The calls:
 - Animals hit on the road: deer, wild boar, pigs, sheep, goats, cattle, horses and water buffalo
@@ -17,8 +19,15 @@ The calls:
 - A livestock trailer crash, with loose animals to catch
 - Storm damage after a twister
 - A downed power line
+- A logging crash, with logs across the road
+- A vehicle stalled on a railroad crossing, with the train on its way
+- A car in the water, with the driver still inside
+- A tree on a car, with the driver trapped inside
+- A flock of sheep on the road, to drive into a pen
 
-Calls come from anywhere on the map's roads, and traffic stops behind them until the road is clear. Place cones and barricades by hand, load the animals, hook the recovery strap where you aim, and tow wrecks in or reel them onto a rollback. Whatever you bring to a drop-off or recovery point earns the full pay, and warning lights earn a bonus.
+Calls come from anywhere on the map's roads, and traffic stops behind them until the road is clear. Before you answer, the pager says where the call is, what is there, what it takes and which of your vehicles can do it, how long you have and about what it pays. You only get calls your farm can finish. While a job runs, a panel at the side of the screen lists its steps and ticks them off.
+
+Place cones and barricades by hand, load the animals, hook the recovery strap where you aim, and tow wrecks in or reel them onto a rollback. Whatever you bring to a drop-off or recovery point earns the full pay, and warning lights earn a bonus.
 
 Press H on foot for the guide and the settings.
 
@@ -27,7 +36,9 @@ Requires the Emergency Pack DLC. Single player only for now.
 This is a public beta. Official download and bug reports: https://github.com/Corencas/FS25_RoadsideEmergencies
 
 Mod for Farming Simulator.]]></en>
-        <de><![CDATA[Bringt 14 neue Einsätze auf und neben der Straße in das kostenlose Emergency-Pack-DLC. Du bist der örtliche Dienstleister, den die Leitstelle des Landkreises ruft, wenn auf der Straße etwas passiert, und du erledigst es mit den Fahrzeugen und Geräten, die du besitzt.
+        <de><![CDATA[BENÖTIGT das kostenlose Emergency-Pack-DLC: Ohne es kommen keine Einsätze.
+
+Bringt 19 neue Einsätze auf und neben der Straße in das kostenlose Emergency-Pack-DLC. Du bist der örtliche Dienstleister, den die Leitstelle des Landkreises ruft, wenn auf der Straße etwas passiert, und du erledigst es mit den Fahrzeugen und Geräten, die du besitzt.
 
 Die Einsätze:
 - Angefahrene Tiere auf der Straße: Rehe, Wildschweine, Schweine, Schafe, Ziegen, Rinder, Pferde und Wasserbüffel
@@ -37,8 +48,15 @@ Die Einsätze:
 - Ein Unfall mit einem Viehanhänger, bei dem Tiere frei herumlaufen
 - Sturmschäden nach einem Tornado
 - Eine umgestürzte Stromleitung
+- Ein Unfall mit einem Holzanhänger und Stämmen auf der Straße
+- Ein liegengebliebenes Fahrzeug auf einem Bahnübergang, und der Zug ist unterwegs
+- Ein Auto im Wasser, der Fahrer sitzt noch darin
+- Ein Baum auf einem Auto, der Fahrer ist eingeschlossen
+- Eine Schafherde auf der Straße, die in einen Pferch getrieben werden muss
 
-Einsätze kommen von überall auf den Straßen der Karte, und der Verkehr staut sich, bis die Straße frei ist. Stelle Leitkegel und Absperrungen von Hand auf, lade die Tiere auf, hake den Bergungsgurt dort ein, wo du hinzielst, und schleppe Wracks ab oder ziehe sie auf einen Abschleppwagen. Was du zu einer Abgabe- oder Bergungsstelle bringst, wird voll bezahlt, und Warnlichter bringen einen Bonus.
+Einsätze kommen von überall auf den Straßen der Karte, und der Verkehr staut sich, bis die Straße frei ist. Bevor du antwortest, sagt der Pager, wo der Einsatz ist, was dort ist, was er braucht und welches deiner Fahrzeuge das kann, wie viel Zeit du hast und etwa die Bezahlung. Du bekommst nur Einsätze, die dein Hof schaffen kann. Während eines Auftrags listet eine Anzeige am Bildschirmrand seine Schritte auf und hakt sie ab.
+
+Stelle Leitkegel und Absperrungen von Hand auf, lade die Tiere auf, hake den Bergungsgurt dort ein, wo du hinzielst, und schleppe Wracks ab oder ziehe sie auf einen Abschleppwagen. Was du zu einer Abgabe- oder Bergungsstelle bringst, wird voll bezahlt, und Warnlichter bringen einen Bonus.
 
 Drücke zu Fuß H für die Anleitung und die Einstellungen.
 
@@ -51,6 +69,11 @@ Mod für den Landwirtschafts-Simulator.]]></de>
     <iconFilename>icon_roadsideEmergencies.dds</iconFilename>
     <multiplayer supported="false"/>
 
+    <!-- the calls run on the Emergency Pack, so the game has to know it is required (Z) -->
+    <dependencies>
+        <dependency>pdlc_emergencyPack</dependency>
+    </dependencies>
+
     <extraSourceFiles>
         <!-- engine-free core (unit-tested in tests/) -->
         <sourceFile filename="scripts/core/Config.lua"/>
@@ -62,6 +85,9 @@ Mod für den Landwirtschafts-Simulator.]]></de>
         <sourceFile filename="scripts/core/Settings.lua"/>
         <sourceFile filename="scripts/core/Store.lua"/>
         <sourceFile filename="scripts/core/RoadClearRule.lua"/>
+        <sourceFile filename="scripts/core/FlockRules.lua"/>
+        <sourceFile filename="scripts/core/GroundRules.lua"/>
+        <sourceFile filename="scripts/core/Theme.lua"/>
         <sourceFile filename="scripts/core/SceneSpec.lua"/>
         <sourceFile filename="scripts/core/CallPlanner.lua"/>
         <sourceFile filename="scripts/core/KitRules.lua"/>
@@ -75,9 +101,16 @@ Mod für den Landwirtschafts-Simulator.]]></de>
         <sourceFile filename="scripts/core/WreckRules.lua"/>
         <sourceFile filename="scripts/core/TwisterRules.lua"/>
         <sourceFile filename="scripts/core/LineRules.lua"/>
+        <sourceFile filename="scripts/core/LogRules.lua"/>
+        <sourceFile filename="scripts/core/WaterRules.lua"/>
+        <sourceFile filename="scripts/core/CrossingRules.lua"/>
         <sourceFile filename="scripts/core/ToolRules.lua"/>
+        <sourceFile filename="scripts/core/PanelRules.lua"/>
+        <sourceFile filename="scripts/core/CrewRules.lua"/>
+        <sourceFile filename="scripts/core/PagerRules.lua"/>
         <!-- game adapters -->
         <sourceFile filename="scripts/game/Text.lua"/>
+        <sourceFile filename="scripts/game/Draw.lua"/>
         <sourceFile filename="scripts/game/Carcass.lua"/>
         <sourceFile filename="scripts/game/Carcasses.lua"/>
         <sourceFile filename="scripts/game/CarcassDrag.lua"/>
@@ -87,17 +120,30 @@ Mod für den Landwirtschafts-Simulator.]]></de>
         <sourceFile filename="scripts/game/Roads.lua"/>
         <sourceFile filename="scripts/game/Survivors.lua"/>
         <sourceFile filename="scripts/game/Wrecks.lua"/>
+        <sourceFile filename="scripts/game/SavedLogs.lua"/>
+        <sourceFile filename="scripts/game/UtilityCrew.lua"/>
         <sourceFile filename="scripts/game/PowerLine.lua"/>
+        <sourceFile filename="scripts/game/LogSpill.lua"/>
+        <sourceFile filename="scripts/game/Cleanup.lua"/>
+        <sourceFile filename="scripts/game/RiverPlaces.lua"/>
+        <sourceFile filename="scripts/game/Sound.lua"/>
+        <sourceFile filename="scripts/game/FlockPlaces.lua"/>
+        <sourceFile filename="scripts/game/Flock.lua"/>
+        <sourceFile filename="scripts/game/LevelCrossing.lua"/>
         <sourceFile filename="scripts/game/ToolSwitch.lua"/>
         <sourceFile filename="scripts/game/Scenes.lua"/>
         <sourceFile filename="scripts/game/EpBridge.lua"/>
         <sourceFile filename="scripts/game/EpSteps.lua"/>
         <sourceFile filename="scripts/game/TwisterTravel.lua"/>
+        <sourceFile filename="scripts/game/PlayerFile.lua"/>
+        <sourceFile filename="scripts/game/Welcome.lua"/>
+        <sourceFile filename="scripts/game/CallPlan.lua"/>
         <sourceFile filename="scripts/game/Calls.lua"/>
         <sourceFile filename="scripts/game/Markers.lua"/>
         <sourceFile filename="scripts/game/MapClicks.lua"/>
         <sourceFile filename="scripts/game/SettingsPanel.lua"/>
         <sourceFile filename="scripts/game/Kit.lua"/>
+        <sourceFile filename="scripts/game/CallPanel.lua"/>
         <sourceFile filename="scripts/game/Console.lua"/>
         <sourceFile filename="scripts/game/RoadsideEmergencies.lua"/>
     </extraSourceFiles>

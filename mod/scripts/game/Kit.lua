@@ -375,7 +375,7 @@ function RseKit:registerActionEvents()
     self.shown = {}
     -- high priority: the help list only has room for so many lines, and 0.2.0.4's U line didn't make it
     if menuId ~= nil then
-        g_inputBinding:setActionEventText(menuId, RseText.get("rse_kit_open"))
+        g_inputBinding:setActionEventText(menuId, RseText.action("rse_kit_open"))
         g_inputBinding:setActionEventTextPriority(menuId, GS_PRIO_VERY_HIGH)
         g_inputBinding:setActionEventTextVisibility(menuId, false)
     end
@@ -384,17 +384,16 @@ function RseKit:registerActionEvents()
         g_inputBinding:setActionEventTextVisibility(useId, false)
     end
     if turnId ~= nil then
-        g_inputBinding:setActionEventText(turnId, RseText.get("rse_kit_turn"))
         g_inputBinding:setActionEventTextPriority(turnId, GS_PRIO_VERY_HIGH)
         g_inputBinding:setActionEventTextVisibility(turnId, false)
     end
     if nextId ~= nil then
-        g_inputBinding:setActionEventText(nextId, RseText.get("rse_kit_next"))
+        g_inputBinding:setActionEventText(nextId, RseText.action("rse_kit_next"))
         g_inputBinding:setActionEventTextPriority(nextId, GS_PRIO_VERY_HIGH)
         g_inputBinding:setActionEventTextVisibility(nextId, false)
     end
     if settingsId ~= nil then
-        g_inputBinding:setActionEventText(settingsId, RseText.get("rse_set_open"))
+        g_inputBinding:setActionEventText(settingsId, RseText.action("rse_set_open"))
     end
     g_inputBinding:endActionEventsModification()
 end
@@ -489,18 +488,20 @@ function RseKit:update(dt)
     local aimed = cx ~= nil and aimedEntry(self, cx, cy, cz, dx, dy, dz) or nil
     local placing = foot and self.current ~= nil
 
+    -- F1 lines name the item in hand or aimed at (Z: "Set down: pylon barrier" while holding a cone, and "Turn it" said nothing)
     local useText = nil
     if aimed ~= nil then
-        useText = RseText.get("rse_kit_pickup", RseText.get(aimed.def.textKey))
+        useText = RseText.action("rse_kit_pickup", RseText.get("rse_kitShort_" .. aimed.def.id))
     elseif placing and self.groundHit ~= nil then
-        useText = RseText.get("rse_kit_place", RseText.get(self.current.textKey))
+        useText = RseText.action("rse_kit_place", RseText.get("rse_kitShort_" .. self.current.id))
     end
     showEvent(self, "use", self.useEventId, useText ~= nil, useText ~= nil, useText)
-    showEvent(self, "turn", self.turnEventId, placing, placing)
-    showEvent(self, "next", self.nextEventId, placing, placing, RseText.get("rse_kit_next"))
-    showEvent(self, "settings", self.settingsEventId, foot, foot, RseText.get("rse_set_open"))
-    -- the U key and its help line exist only where placing is open
-    showEvent(self, "menu", self.menuEventId, canPlace, canPlace, RseText.get(placing and "rse_kit_stop" or "rse_kit_open"))
+    showEvent(self, "turn", self.turnEventId, placing, placing,
+        placing and RseText.action("rse_kit_turn", RseText.get("rse_kitShort_" .. self.current.id)) or nil)
+    showEvent(self, "next", self.nextEventId, placing, placing, RseText.action("rse_kit_next"))
+    showEvent(self, "settings", self.settingsEventId, foot, foot, RseText.action("rse_set_open"))
+    -- the menu key and its help line exist only where placing is open
+    showEvent(self, "menu", self.menuEventId, canPlace, canPlace, RseText.action(placing and "rse_kit_stop" or "rse_kit_open"))
 
     updateOwed(self, dt)
 end
@@ -531,7 +532,7 @@ local function drawStrip(self)
         local selected = def == self.current
         drawFilledRect(x, y, tileW, tileH, 0, 0, 0, selected and 0.72 or 0.48)
         if selected then
-            drawFilledRect(x, y + tileH - 5 * sy, tileW, 5 * sy, 0.36, 0.72, 0.1, 1)
+            RseDraw.rect(RseTheme.ACCENT, x, y + tileH - 5 * sy, tileW, 5 * sy)
         end
         local icon = iconFor(self, def)
         icon:setDimension(ICON_SIZE * sx, ICON_SIZE * sy)

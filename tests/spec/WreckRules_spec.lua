@@ -1,4 +1,30 @@
 describe("RseWreckRules", function()
+    it("never picks a vehicle the farm couldn't recover", function()
+        local fleet = { canPull = true, canPullHeavy = false }
+        local function fits(_, variant)
+            return RseWreckRules.canRecover(variant, fleet)
+        end
+        for _, kind in ipairs({ "crossing", "trailer", "livestock" }) do
+            for roll = 0, 0.99, 0.01 do
+                local variant = RseWreckRules.pickVariant(RseConfig.WRECKS[kind], roll, nil, fits)
+                expectTrue(variant ~= nil and not variant.heavy, kind)
+            end
+        end
+        expectNil(RseWreckRules.pickVariant(RseConfig.WRECKS.truck, 0.5, nil, fits), "the wrecked trucks are all big")
+    end)
+
+    it("spills no big bales for a farm with nothing to lift them", function()
+        local fleet = { canLift = false }
+        for roll = 0, 0.99, 0.01 do
+            expectEqual(RseWreckRules.pickLoad(RseConfig.WRECKS.trailer, roll, RseConfig, fleet).id, "small")
+        end
+        local seen = {}
+        for roll = 0, 0.99, 0.01 do
+            seen[RseWreckRules.pickLoad(RseConfig.WRECKS.trailer, roll, RseConfig, { canLift = true }).id] = true
+        end
+        expectTrue(seen.small and seen.big, "with one, either")
+    end)
+
     local function largest(_, b)
         return b
     end
@@ -23,15 +49,13 @@ describe("RseWreckRules", function()
         expectTrue(not RseWreckRules.isUpright(nil, RseConfig))
     end)
 
-    it("turns the wheels toward the pull from either end, except when really towing by the rear", function()
-        expectEqual(RseWreckRules.towSteer(0, 5, false, RseConfig), 0, "straight ahead")
-        expectEqual(RseWreckRules.towSteer(5, 5, false, RseConfig), 1, "front, to one side")
-        expectEqual(RseWreckRules.towSteer(-5, 5, false, RseConfig), -1, "front, to the other")
-        expectEqual(RseWreckRules.towSteer(5, -5, false, RseConfig), 1, "rear, as when you back up")
-        expectEqual(RseWreckRules.towSteer(-5, -5, false, RseConfig), -1, "rear, to the other side")
-        expectEqual(RseWreckRules.towSteer(5, 5, true, RseConfig), 1, "towing by the front")
-        expectEqual(RseWreckRules.towSteer(5, -5, true, RseConfig), 0, "towing by the rear")
-        local slight = RseWreckRules.towSteer(0.3, 5, false, RseConfig)
+    it("turns the front wheels toward a pull at the front, and leaves them straight for one at the rear", function()
+        expectEqual(RseWreckRules.towSteer(0, 5, RseConfig), 0, "straight ahead")
+        expectEqual(RseWreckRules.towSteer(5, 5, RseConfig), 1, "front, to one side")
+        expectEqual(RseWreckRules.towSteer(-5, 5, RseConfig), -1, "front, to the other")
+        expectEqual(RseWreckRules.towSteer(5, -5, RseConfig), 0, "rear: they are the far axle")
+        expectEqual(RseWreckRules.towSteer(-5, -5, RseConfig), 0, "rear, the other side")
+        local slight = RseWreckRules.towSteer(0.3, 5, RseConfig)
         expectTrue(slight > 0 and slight < 1, "a small angle, a small turn")
     end)
 
@@ -66,7 +90,7 @@ describe("RseWreckRules", function()
                 big = load
             end
         end
-        local trailer, storm = RseConfig.WRECKS.trailer, RseConfig.WRECKS.storm
+        local trailer, storm = RseConfig.WRECKS.trailer.variants[1], RseConfig.WRECKS.storm
         expectEqual(RseWreckRules.baleCount(big, largest, "large", trailer), trailer.loadLimit.big)
         expectEqual(RseWreckRules.baleCount(big, largest, "small", trailer), big.count.min)
         expectEqual(RseWreckRules.baleCount(big, largest, "large", storm), big.count.max)
@@ -245,7 +269,10 @@ describe("RseWreckRules", function()
     it("has a model for every wreck, and pay", function()
         for _, kind in ipairs({ "truck", "tractor", "trailer", "livestock" }) do
             local def = RseConfig.WRECKS[kind]
-            expectTrue(def ~= nil and type(def.file) == "string" and type(def.pay) == "number", kind)
+            expectTrue(def ~= nil and #def.variants > 0 and type(def.pay) == "number", kind)
+            for _, variant in ipairs(def.variants) do
+                expectTrue(type(variant.file) == "string" and type(variant.length) == "number", variant.file)
+            end
         end
         expectTrue(RseConfig.WRECKS.storm.noVehicle, "the storm has no vehicle")
     end)
@@ -254,5 +281,191 @@ describe("RseWreckRules", function()
         for _, kind in ipairs(RseConfig.WRECKS.livestock.kinds) do
             expectTrue(RseAnimalCatalog.get(kind).subType ~= nil, kind)
         end
+    end)
+
+    it("picks a vehicle the game has, and not the same one twice while there is another", function()
+        local def = { variants = { { file = "a" }, { file = "b" }, { file = "c" } } }
+        expectEqual(RseWreckRules.pickVariant(def, 0, nil).file, "a")
+        expectEqual(RseWreckRules.pickVariant(def, 0.999, nil).file, "c")
+        expectEqual(RseWreckRules.pickVariant(def, 0, "a").file, "b", "not the last one again")
+        local onlyB = function(file)
+            return file == "b"
+        end
+        expectEqual(RseWreckRules.pickVariant(def, 0.9, nil, onlyB).file, "b")
+        expectEqual(RseWreckRules.pickVariant(def, 0.9, "b", onlyB).file, "b", "the last one if it is all there is")
+        expectNil(RseWreckRules.pickVariant(def, 0.5, nil, function()
+            return false
+        end))
+        expectNil(RseWreckRules.pickVariant(RseConfig.WRECKS.storm, 0.5), "a storm has no vehicle")
+    end)
+
+    it("brings back the vehicle a saved job had", function()
+        local def = { variants = { { file = "a" }, { file = "b" } } }
+        expectEqual(RseWreckRules.variantByFile(def, "b").file, "b")
+        expectEqual(RseWreckRules.variantByFile(def, nil).file, "a", "a save from before there was a choice")
+        expectEqual(RseWreckRules.variantByFile(def, "gone").file, "a", "a vehicle no longer on the list")
+        expectNil(RseWreckRules.variantByFile(RseConfig.WRECKS.storm, nil))
+    end)
+
+    it("picks by weight, so bigger vehicles are rarer than smaller ones", function()
+        local def = { variants = { { file = "small", weight = 3 }, { file = "big", weight = 1 } } }
+        expectEqual(RseWreckRules.pickVariant(def, 0.74, nil).file, "small")
+        expectEqual(RseWreckRules.pickVariant(def, 0.76, nil).file, "big")
+        for _, kind in ipairs({ "truck", "tractor", "trailer", "livestock", "powerline" }) do
+            local smallest, biggest = 0, math.huge
+            for _, variant in ipairs(RseConfig.WRECKS[kind].variants) do
+                smallest, biggest = math.max(smallest, variant.weight), math.min(biggest, variant.weight)
+            end
+            expectTrue(smallest > biggest, kind .. " has rarer vehicles")
+        end
+    end)
+
+    it("knows which vehicles a pickup truck can't tow, and which call has which", function()
+        for _, emergency in ipairs(RseConfig.EMERGENCIES) do
+            if emergency.wreck ~= nil then
+                expectTrue(RseConfig.WRECKS[emergency.wreck].variants ~= nil, emergency.id)
+            end
+        end
+        local function heavyOf(kind, part)
+            for _, variant in ipairs(RseConfig.WRECKS[kind].variants) do
+                if string.find(variant.file, part, 1, true) ~= nil then
+                    return variant.heavy == true
+                end
+            end
+            error("no " .. part)
+        end
+        expectTrue(heavyOf("crossing", "multiPurposeTruck"), "Z towed the Dragon with a pickup, and couldn't")
+        expectTrue(not heavyOf("crossing", "fabia"), "a small car")
+        expectTrue(not heavyOf("powerline", "pickup2017"), "a pickup tows a pickup")
+        expectTrue(heavyOf("tractor", "farmall120C"), "even the smallest tractor is over 3 t")
+        expectTrue(heavyOf("livestock", "noahTTW140"), "very long")
+    end)
+
+    describe("towing like a trailer", function()
+        local config = RseConfig
+        it("stops towing the moment you back toward it, or it rides on the vehicle", function()
+            local state = {}
+            RseWreckRules.isTowing(state, 2000, { speed = 20, slack = 0 }, config)
+            expectTrue(state.towing)
+            expectTrue(not RseWreckRules.isTowing(state, 16, { speed = 5, slack = 0, pushing = true }, config), "a strap doesn't push")
+            RseWreckRules.isTowing(state, 2000, { speed = 20, slack = 0 }, config)
+            expectTrue(state.towing, "pull away again and it is towing again")
+            expectTrue(not RseWreckRules.isTowing(state, 16, { speed = 20, slack = 0, carried = true }, config), "on a rollback")
+        end)
+
+        it("knows a wreck on the vehicle from one behind it", function()
+            expectTrue(RseWreckRules.isCarried(0, -1, 8, 0, 2.5), "over the bed")
+            expectTrue(not RseWreckRules.isCarried(0, -6, 8, 0, 2.5), "behind it")
+            expectTrue(not RseWreckRules.isCarried(3, -1, 8, 0, 2.5), "beside it")
+            expectTrue(not RseWreckRules.isCarried(0, 0, nil, 0, nil), "no size known")
+        end)
+
+        it("hangs the wreck on the vehicle's centre line, just past its end", function()
+            local x, z, endZ = RseWreckRules.hitchPoint(0.5, -2, -1, 5, 0, 1.8, config)
+            expectEqual(x, -0.5, "back to the middle, wherever the strap sits")
+            expectEqual(endZ, -2.5 + 2, "the vehicle's end, seen from the strap's point")
+            expectEqual(z, -2.5 - config.TOW_GAP + 2)
+            local _, frontZ = RseWreckRules.hitchPoint(0, 2, 1, 5, 0, 1.8, config)
+            expectEqual(frontZ, 2.5 + config.TOW_GAP - 2, "from its front as well")
+            local _, loneZ, loneEnd = RseWreckRules.hitchPoint(0, -2, -1, nil, 0, 1.8, config)
+            expectEqual(loneEnd, 0, "not on its main body: from the strap's point")
+            expectEqual(loneZ, -config.TOW_GAP)
+        end)
+
+        it("keeps a wide wreck far enough back for its corners to clear", function()
+            local _, z = RseWreckRules.hitchPoint(0, 0, -1, nil, 0, 3, config)
+            expectEqual(z, -(1.5 + config.TOW_GAP_SIDE))
+        end)
+
+        it("moves the hinge bit by bit and stops there", function()
+            local anchor = { x = 1, y = 0, z = -5 }
+            expectTrue(RseWreckRules.moveAnchor(anchor, 1, -3, 0.5))
+            expectEqual(anchor.z, -4.5)
+            expectTrue(RseWreckRules.moveAnchor(anchor, 1, -3, 100))
+            expectEqual(anchor.z, -3)
+            expectEqual(RseWreckRules.moveAnchor(anchor, 1, -3, 1), false)
+        end)
+
+        it("reads how far the wreck has run up on the hinge", function()
+            local travel = config.TOW_TRAVEL
+            expectNear(RseWreckRules.hitchSlack(-3 - travel, -3, -1, config), 0, 1e-6, "pulling: at the far end of its travel")
+            expectNear(RseWreckRules.hitchSlack(-3, -3, -1, config), travel, 1e-6, "in the middle")
+            expectNear(RseWreckRules.hitchSlack(-3 + travel, -3, -1, config), 2 * travel, 1e-6, "run right up")
+            expectNear(RseWreckRules.hitchSlack(3 + travel, 3, 1, config), 0, 1e-6, "from the front too")
+        end)
+
+        it("aims the front wheels from their own axle", function()
+            local fromMiddle = RseWreckRules.towSteer(1, 4, config)
+            local fromAxle = RseWreckRules.towSteer(1, 4, config, 1.4, 0.6)
+            expectTrue(fromAxle > fromMiddle, "a sharper angle, the true one")
+            expectEqual(RseWreckRules.towSteer(1, -4, config, 1.4, 0.6), 0, "towed by the rear, they stay straight")
+        end)
+
+        it("finds the axle a wreck follows on", function()
+            local config2 = { TOW_AXLE_SPAN = 0.5 }
+            local truck = RseWreckRules.axleLayout({ 2.6, 2.6, -2.2, -2.2, -3.6, -3.6 }, config2)
+            expectEqual(truck.single, false)
+            expectNear(RseWreckRules.farAxleZ(truck, 4), -2.9, 1e-9, "hooked at the front: between the two rear axles")
+            expectNear(RseWreckRules.farAxleZ(truck, -4.4), 2.6, 1e-9, "hooked at the rear: the front axle")
+            local trailer = RseWreckRules.axleLayout({ -1, -1, -1.2, -1.2 }, config2)
+            expectEqual(trailer.single, true, "one group of wheels")
+            expectNear(RseWreckRules.farAxleZ(trailer, 4), -1.1, 1e-9, "a single axle is the far axle from either end")
+            expectNear(RseWreckRules.farAxleZ(trailer, -4), -1.1, 1e-9)
+            expectEqual(RseWreckRules.farAxleZ(RseWreckRules.axleLayout({}, config2), 4), nil, "no wheels, nothing to go by")
+        end)
+
+        it("turns a towed wreck so that its far axle doesn't slide", function()
+            local config2 = { TOW_FOLLOW_MIN_ARM = 1 }
+            expectNear(RseWreckRules.followYaw(2, 4, -2.9, config2), 2 / 6.9, 1e-9, "the hinge going to +x turns +z toward +x")
+            expectNear(RseWreckRules.followYaw(2, -4.4, 2.6, config2), -2 / 7, 1e-9, "hooked at the other end, the other way")
+            expectEqual(RseWreckRules.followYaw(0, 4, -2.9, config2), 0, "going straight, none")
+            expectEqual(RseWreckRules.followYaw(2, 0.5, 0, config2), nil, "an axle at the hook says nothing")
+            expectEqual(RseWreckRules.followYaw(2, 4, nil, config2), nil, "nor no axle at all")
+        end)
+
+        it("follows about the hook, and takes the sideways speed off the hitch", function()
+            local input = { yaw = 0.5, wantYaw = 0.1, vx = 1, vz = 5, armX = 0, armZ = 3, hookVX = 2.5, hookVZ = 5, hingeVX = 0.5, hingeVZ = 5,
+                sideX = 2, sideZ = 0 }
+            local yaw, vx, vz = RseWreckRules.follow(input, 0.5, 0)
+            expectNear(yaw, 0.3, 1e-9, "half way to the yaw it should have")
+            -- the hook's speed is v + yaw * arm sideways: turning about the hook leaves that where it was
+            expectNear(vx + yaw * input.armZ, input.vx + input.yaw * input.armZ, 1e-9, "the hook doesn't jump")
+            expectNear(vz, 5, 1e-9)
+            yaw, vx, vz = RseWreckRules.follow(input, 0, 0.8)
+            expectNear(yaw, 0.5, 1e-9, "no yaw share, no yaw change")
+            expectNear(vx, 1 + (0.5 - 2.5) * 0.8, 1e-9, "most of the hook's speed against the hinge goes, and a side that isn't one unit long is no matter")
+            expectNear(vz, 5, 1e-9, "and nothing along the pull: the wreck's weight still counts")
+            input.wantYaw = nil
+            yaw = RseWreckRules.follow(input, 1, 0)
+            expectNear(yaw, 0.5, 1e-9, "nothing to go by: the yaw stays")
+        end)
+
+        it("stops following only if the engine's yaw keeps disagreeing with the wreck's speeds", function()
+            local config2 = { TOW_YAW_CHECK_RATE = 0.05, TOW_YAW_CHECK_MS = 500 }
+            local state = {}
+            expectTrue(RseWreckRules.yawAgrees(state, 0.3, 0.3, 400, config2), "the same way")
+            expectTrue(RseWreckRules.yawAgrees(state, 0.3, -0.3, 400, config2), "opposite, but not for long")
+            expectTrue(RseWreckRules.yawAgrees(state, 0.3, 0.3, 400, config2), "and that wipes it")
+            expectTrue(RseWreckRules.yawAgrees(state, 0.01, -0.3, 900, config2), "too small to tell")
+            expectTrue(RseWreckRules.yawAgrees(state, 0.3, -0.3, 400, config2))
+            expectTrue(not RseWreckRules.yawAgrees(state, 0.3, -0.3, 400, config2), "opposite for long enough")
+        end)
+
+        it("keeps the same feel at any frame rate", function()
+            local share = 0.1
+            expectNear(RseWreckRules.frameShare(share, config.TOW_FRAME_MS, config), share, 1e-9, "one frame of the size it is meant for")
+            local twoShort = 1 - (1 - RseWreckRules.frameShare(share, config.TOW_FRAME_MS / 2, config)) ^ 2
+            expectNear(twoShort, share, 1e-9, "two half frames come to the same")
+            expectTrue(RseWreckRules.frameShare(share, config.TOW_FRAME_MS * 2, config) > share, "a long frame does more")
+            expectNear(RseWreckRules.frameShare(share, nil, config), share, 1e-9, "no time known: one frame")
+            expectEqual(RseWreckRules.frameShare(share, 0, config), 0, "no time, nothing")
+        end)
+
+        it("frees the wheels at the end being pulled, and only those", function()
+            expectTrue(RseWreckRules.isNearAxle(1.3, 4, 0), "front wheels, front tow")
+            expectTrue(not RseWreckRules.isNearAxle(-1.3, 4, 0), "rear wheels, front tow")
+            expectTrue(RseWreckRules.isNearAxle(-1.3, -4, 0), "rear wheels, rear tow")
+            expectTrue(not RseWreckRules.isNearAxle(1.3, -4, 0), "front wheels, rear tow")
+        end)
     end)
 end)

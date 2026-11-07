@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!-- Roadside Emergencies: the welcome dialog (Welcome.lua). The game's own dialog parts (fs25_dialogBg and its three background pieces, the button bar
+     and its buttons, as the game's dialogs use them), with our own layout on top. Texts, the icon, the stripe and the colours are set from Lua, so they come
+     from the translations and from RseTheme. U0 proved a dialog of ours, 2026-11-06.
+     Positions are in the box's own pixels from its lower left corner. In a 720 x 470 box the game draws the visible panel from about x 5 to 702 and
+     y 28 to 461, its button bar from y 28 to 77 (measured on Z's screenshot of 0.9.7.0, where the stripe stood above the panel and the beta line ran into the
+     bar). So the box keeps that size, and everything stays well inside: x 28 to 678, y 90 to 445. -->
+<GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
+    <GuiProfiles>
+        <Profile name="rseWelcomeBox" extends="fs25_dialogBg">
+            <size value="720px 470px"/>
+        </Profile>
+        <Profile name="rseWelcomeIcon" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="28px 381px"/><size value="64px 64px"/>
+            <imageSliceId value="noSlice"/><imageUVs value="0 0 1 1"/><imageColor value="1 1 1 1"/>
+        </Profile>
+        <Profile name="rseWelcomeTitle" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="110px 413px"/><size value="568px 32px"/>
+            <textSize value="26px"/><textBold value="true"/><textAlignment value="left"/><textVerticalAlignment value="middle"/>
+        </Profile>
+        <Profile name="rseWelcomeSubtitle" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="110px 385px"/><size value="568px 24px"/>
+            <textSize value="15px"/><textAlignment value="left"/><textVerticalAlignment value="middle"/>
+        </Profile>
+        <!-- look B's hazard stripe, as a band under the heading: inside the panel, so it can't stick out past its edges -->
+        <Profile name="rseWelcomeStripe" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="28px 363px"/><size value="650px 6px"/>
+            <imageSliceId value="noSlice"/><imageUVs value="0 0 1 1"/><imageColor value="1 1 1 1"/>
+        </Profile>
+        <Profile name="rseWelcomeBody" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="28px 176px"/><size value="650px 173px"/>
+            <textSize value="16px"/><textAlignment value="left"/><textVerticalAlignment value="middle"/><textMaxNumLines value="10"/>
+        </Profile>
+        <Profile name="rseWelcomeNote" extends="baseReference">
+            <anchors value="0 0 0 0"/><pivot value="0 0"/><position value="28px 140px"/><size value="650px 24px"/>
+            <textSize value="15px"/><textAlignment value="left"/><textVerticalAlignment value="middle"/>
+        </Profile>
+        <!-- two lines: the beta note and where to report a bug. The game can't open a link (U0 and U1: openWebFile returns nothing, no browser shows), so
+             the address is written out -->
+        <Profile name="rseWelcomeBeta" extends="rseWelcomeNote">
+            <position value="28px 90px"/><size value="650px 44px"/><textVerticalAlignment value="top"/><textMaxNumLines value="2"/>
+        </Profile>
+    </GuiProfiles>
+
+    <GuiElement profile="newLayer"/>
+    <Bitmap profile="dialogFullscreenBg"/>
+
+    <GuiElement profile="rseWelcomeBox" id="dialogElement">
+        <ThreePartBitmap profile="fs25_dialogBgMiddle"/>
+        <ThreePartBitmap profile="fs25_dialogBgTop"/>
+        <ThreePartBitmap profile="fs25_dialogBgBottom"/>
+
+        <Bitmap profile="rseWelcomeIcon" id="welcomeIcon"/>
+        <Text profile="rseWelcomeTitle" id="welcomeTitle" text="Roadside Emergencies"/>
+        <Text profile="rseWelcomeSubtitle" id="welcomeSubtitle" text=""/>
+        <Bitmap profile="rseWelcomeStripe" id="welcomeStripe"/>
+        <Text profile="rseWelcomeBody" id="welcomeBody" text=""/>
+        <Text profile="rseWelcomeNote" id="welcomePack" text=""/>
+        <Text profile="rseWelcomeBeta" id="welcomeBeta" text=""/>
+
+        <BoxLayout profile="fs25_dialogButtonBox">
+            <Button profile="buttonOK" id="welcomeStart" text="Start" onClick="onClickStart"/>
+            <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+            <Button profile="buttonOK" id="welcomeGuide" text="Guide" inputAction="MENU_EXTRA_1" onClick="onClickGuide"/>
+        </BoxLayout>
+    </GuiElement>
+</GUI>

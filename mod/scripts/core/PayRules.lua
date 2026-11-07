@@ -77,6 +77,26 @@ function RsePayRules.withLightsBonus(reward, config)
     return math.floor(reward * (1 + config.CALL_LIGHTS_BONUS) + 0.5)
 end
 
+-- The warning lights bonus is earned by lights kept on at the scene, LIGHTS_EARN_MS in all (Z: pressing the button and pressing it off again earned it).
+-- on: lights of yours are on there right now. state: { ms, earned }, updated here. Returns "earned" the moment it is.
+function RsePayRules.tickLights(state, dt, on, config)
+    if state.earned or not on then
+        return nil
+    end
+    state.ms = (state.ms or 0) + dt
+    if state.ms >= config.LIGHTS_EARN_MS then
+        state.earned = true
+        return "earned"
+    end
+    return nil
+end
+
+-- What a job you said yes to costs if it ends with no pay: a small part of that pay, with the pay setting, in steps of $5 (Z).
+function RsePayRules.penalty(reward, factor, config)
+    local pay = RsePayRules.scaled(tonumber(reward) or 0, factor)
+    return math.floor(pay * config.JOB_PENALTY_SHARE / 5 + 0.5) * 5
+end
+
 -- the fee setting kept inside its allowed range
 function RsePayRules.clampFactor(factor, config)
     local f = tonumber(factor) or config.FEE_FACTOR_DEFAULT

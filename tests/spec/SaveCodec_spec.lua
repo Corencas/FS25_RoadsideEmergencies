@@ -17,6 +17,17 @@ describe("RseSaveCodec", function()
         expectEqual(data.scene.survivors[1].yaw, 1)
     end)
 
+    it("keeps a driver already out, so that the bonus isn't paid twice", function()
+        local data = RseSaveCodec.normalize({ scene = { id = "tree", x = 1, y = 2, z = 3, reward = 3000, rescueMs = "1500", rescueNoted = "true",
+            rescueEarned = "500",
+            wreck = { kind = "tree", state = "ready", x = 1, y = 2, z = 3, rx = 0, ry = 0, rz = 0 } } }, RseConfig)
+        expectEqual(data.scene.rescueMs, 1500)
+        expectEqual(data.scene.rescueNoted, true)
+        expectEqual(data.scene.rescueEarned, 500)
+        local none = RseSaveCodec.normalize({ scene = { id = "tree", x = 1, y = 2, z = 3 } }, RseConfig)
+        expectEqual(none.scene.rescueNoted, nil, "a save from before this has none")
+    end)
+
     it("keeps good data", function()
         local data, warnings = RseSaveCodec.normalize({
             version = 1,
@@ -174,5 +185,42 @@ describe("RseSaveCodec", function()
         expectEqual(#warnings, 0)
         expectEqual(data.settings.feeFactor, RseConfig.FEE_FACTOR_DEFAULT)
         expectEqual(#data.carcasses, 0)
+    end)
+
+    it("keeps which vehicle a saved wreck is", function()
+        local data = RseSaveCodec.normalize({ scene = { id = "wreck", x = 1, y = 2, z = 3,
+            wreck = { kind = "truck", state = "locked", file = "some/truck.xml", bales = {} } } }, RseConfig)
+        expectEqual(data.scene.wreck.file, "some/truck.xml")
+    end)
+
+    it("keeps the middle of a twister's area, when it is whole", function()
+        local data = RseSaveCodec.normalize({ twister = { x = 12.5, z = -3 } }, RseConfig)
+        expectEqual(data.twister.x, 12.5)
+        expectEqual(data.twister.z, -3)
+        expectEqual(RseSaveCodec.normalize({ twister = { x = 1 } }, RseConfig).twister, nil)
+        expectEqual(RseSaveCodec.normalize({}, RseConfig).twister, nil)
+    end)
+
+    it("keeps the logs of a job that is over, to be cleared after the load", function()
+        local data, warnings = RseSaveCodec.normalize({ cleanup = { { x = 10, z = -4, logs = { { x = 1, y = 2, z = 3 }, { x = 1 } } },
+            { x = 5, z = 5, logs = {} }, { z = 1, logs = { { x = 1, y = 2, z = 3 } } } } }, RseConfig)
+        expectEqual(#data.cleanup, 1, "only the one with a place and a whole log")
+        expectEqual(data.cleanup[1].x, 10)
+        expectEqual(#data.cleanup[1].logs, 1, "the log with no height is dropped")
+        expectEqual(data.cleanup[1].logs[1].z, 3)
+        expectEqual(#warnings, 2)
+        expectEqual(#RseSaveCodec.normalize({}, RseConfig).cleanup, 0, "an older save has none")
+        expectEqual(#RseSaveCodec.normalize(nil, RseConfig).cleanup, 0, "no save at all")
+    end)
+
+    it("keeps where our own log trees stand, and tells an older save (no list) from one with none", function()
+        local data, warnings = RseSaveCodec.normalize({ ownLogs = { { x = 1.5, z = -2 }, { x = 3 }, { x = "4", z = "5" } } }, RseConfig)
+        expectEqual(#data.ownLogs, 2, "the one with no place is dropped")
+        expectEqual(data.ownLogs[1].x, 1.5)
+        expectEqual(data.ownLogs[2].z, 5)
+        expectEqual(#warnings, 1)
+        expectEqual(#RseSaveCodec.normalize({ ownLogs = {} }, RseConfig).ownLogs, 0, "a save with the list, but none of our logs left")
+        expectEqual(RseSaveCodec.normalize({}, RseConfig).ownLogs, nil, "a save from before the list")
+        expectEqual(RseSaveCodec.normalize(nil, RseConfig).ownLogs, nil, "no save at all")
     end)
 end)

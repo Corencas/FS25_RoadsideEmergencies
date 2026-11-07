@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A storm has dropped a tree on a car, the driver trapped inside. The Emergency Pack runs it: pager, map marker, progress, hints and pay.
+     (spline); our first step moves it to a random spot on the road network. Only logs: one on the car, the rest in the road. Once the log is off the car the
+     door opens; the road, the driver and the car then go in any order, in one step, and the job pays when all are done. -->
+<scenario description="rse_ep_tree_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="25" wreck="tree" emergency="tree"/>
+        </checkpoint>
+        <checkpoint hint="rse_tree_hint" actionClass="FS25_RoadsideEmergencies.RseStepTree">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

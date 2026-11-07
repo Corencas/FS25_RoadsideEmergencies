@@ -8,6 +8,7 @@ RoadsideEmergencies = {
     moneyTypePay = nil,
     moneyTypeFee = nil,
     moneyTypeCollection = nil,
+    moneyTypePenalty = nil,
     pendingCarcasses = nil,
     pendingDelayMs = 0,
     packChecked = false
@@ -53,6 +54,7 @@ function RoadsideEmergencies:loadMap()
         self.moneyTypeFee = MoneyType.register("other", "rse_finance_disposalFee", self.MOD_NAME)
         self.moneyTypePay = MoneyType.register("other", "rse_finance_haulPay", self.MOD_NAME)
         self.moneyTypeCollection = MoneyType.register("other", "rse_finance_collection", self.MOD_NAME)
+        self.moneyTypePenalty = MoneyType.register("other", "rse_finance_penalty", self.MOD_NAME)
     end
     installInputHook()
     local saveHook = RseSaveLoad.install(function(object)
@@ -65,6 +67,7 @@ function RoadsideEmergencies:loadMap()
     RseScenes.store = self.store
     RseKit:init(self.store)
     RseSettingsPanel:init(self.store)
+    RseCallPanel:init(self.store)
     RseScenes.onEnded = function(scene)
         RseKit:onJobEnded(scene.id)
         if RseCalls.state ~= nil then
@@ -77,7 +80,16 @@ function RoadsideEmergencies:loadMap()
 
     -- saved settings and points now; carcasses once the world is running (update)
     local directory = g_currentMission.missionInfo ~= nil and g_currentMission.missionInfo.savegameDirectory or nil
-    local data, warnings = RseSaveCodec.normalize(RseSaveLoad.read(directory), RseConfig)
+    local raw = RseSaveLoad.read(directory)
+    local player = RsePlayerFile:read()
+    local hadSave = raw ~= nil
+    if raw == nil and player.settings ~= nil then
+        raw = { settings = player.settings } -- a new savegame starts with your last settings (Z, Gate U)
+        RseLog.info("a new savegame: it starts with your last settings")
+    end
+    local data, warnings = RseSaveCodec.normalize(raw, RseConfig)
+    RseSavedLogs:restore(data.ownLogs, hadSave) -- before the game loads its trees
+    RseCleanup:restore(data.cleanup)
     for _, warning in ipairs(warnings) do
         RseLog.info("savegame: %s", warning)
     end
@@ -98,6 +110,7 @@ function RoadsideEmergencies:loadMap()
     self.pendingStraps = data.straps
     self.pendingKit = data.kit
     self.pendingScene = data.scene
+    RseTwisterTravel.savedBase = data.twister
     self.pendingDelayMs = RseConfig.PLACE_DELAY_MS
 
     RseLog.info("loaded version %s (game %s); save hook: %s; strap key: %s; body types registered: %d; %d saved carcass(es) to place; calls %s",
@@ -112,7 +125,9 @@ function RoadsideEmergencies:onSave(object)
         directory = g_currentMission.missionInfo.savegameDirectory
     end
     local carcasses, indexOf = RseCarcasses:saveData()
-    RseSaveLoad.write(directory, self.store, carcasses, RseStrap:saveData(indexOf), RseKit:saveData(), RseScenes:saveData())
+    RseSaveLoad.write(directory, self.store, carcasses, RseStrap:saveData(indexOf), RseKit:saveData(), RseScenes:saveData(), RseTwisterTravel:saveData(),
+        RseSavedLogs:saveData(), RseCleanup:saveData())
+    RseLog.try("write the player file", RsePlayerFile.write, RsePlayerFile, self.store.settings)
 end
 
 -- game-side work for Store changes (money and messages)
@@ -131,9 +146,10 @@ function RoadsideEmergencies:onChange(kind, data, result)
             RseLog.try("addMoney(collection bill)", mission.addMoney, mission, -result.total, farmId, self.moneyTypeCollection or MoneyType.OTHER, true, true)
         end
         if result.unearned > 0 then
-            RseText.notify(RseText.get("rse_collectedUnearned", RseText.animal(result.record.kind), result.total, result.unearned), true)
+            RseText.notify(RseText.get("rse_collectedUnearned", RseText.animal(result.record.kind), RseText.money(result.total),
+                RseText.money(result.unearned)), true)
         else
-            RseText.notify(RseText.get("rse_collected", RseText.animal(result.record.kind), result.total), true)
+            RseText.notify(RseText.get("rse_collected", RseText.animal(result.record.kind), RseText.money(result.total)), true)
         end
         RseLog.info("the county collected carcass %d (%s) left at %.0f, %.0f: fee $%d + charge $%d + pay taken back $%d", result.record.id,
             result.record.kind, data.x, data.z, result.fee, result.charge, result.unearned)
@@ -146,7 +162,8 @@ function RoadsideEmergencies:onChange(kind, data, result)
         if result.fee > 0 then
             RseLog.try("addMoney(disposal fee)", mission.addMoney, mission, -result.fee, farmId, self.moneyTypeFee or MoneyType.OTHER, true, true)
         end
-        RseText.notify(RseText.get("rse_delivered", RseText.animal(result.record.kind), result.pointName or "", result.pay, result.fee))
+        RseText.notify(RseText.get("rse_delivered", RseText.animal(result.record.kind), result.pointName or "", RseText.money(result.pay),
+            RseText.money(result.fee)))
         RseLog.info("delivered carcass %d (%s) at '%s': pay $%d, fee $%d", result.record.id, result.record.kind, tostring(result.pointName),
             result.pay, result.fee)
     end
@@ -158,8 +175,17 @@ function RoadsideEmergencies:update(dt)
     end
     if not self.packChecked then
         self.packChecked = true
-        RseEpBridge.check(self.MOD_NAME)
-        RseRoads.logTrafficNames()
+        self.packMissing = not RseEpBridge.check(self.MOD_NAME)
+        self.packFound = not self.packMissing
+        self.packNoticeMs = RseConfig.PACK_NOTICE_DELAY_MS
+        RseWrecks:logVehicles()
+    end
+    if self.packMissing then
+        self.packNoticeMs = self.packNoticeMs - dt
+        if self.packNoticeMs <= 0 and g_localPlayer ~= nil and not (g_gui ~= nil and g_gui:getIsGuiVisible()) then
+            self.packMissing = false
+            RseEpBridge.tellMissing()
+        end
     end
     if self.pendingCarcasses ~= nil then
         self.pendingDelayMs = self.pendingDelayMs - dt
@@ -214,7 +240,9 @@ function RoadsideEmergencies:update(dt)
     RseCarcasses:update(dt)
     RseStrap:update(dt)
     RseKit:update(dt)
+    RseCallPanel:update(dt)
     if g_currentMission:getIsServer() then
+        RseUtilityCrew:update(dt)
         RseScenes:update(dt)
         RseSurvivors:update(dt)
         RseCalls:update(dt, self.store)
@@ -224,6 +252,7 @@ end
 function RoadsideEmergencies:draw()
     RseKit:draw()
     RseScenes:draw()
+    RseCallPanel:draw()
     RseSettingsPanel:draw()
 end
 
@@ -239,6 +268,12 @@ function RoadsideEmergencies:deleteMap()
     RseWrecks:unload()
     RseCarcasses:unload()
     RsePoints:unload()
+    RseSavedLogs:unload()
+    RseWelcome:unload()
+    RseCallPlan:unload()
+    RseCallPanel:unload()
+    RseUtilityCrew:unload()
+    RseDraw.unload()
     RseConsole:unregister()
     RseSaveLoad.uninstall()
     uninstallInputHook()

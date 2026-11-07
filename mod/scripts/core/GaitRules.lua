@@ -59,15 +59,27 @@ function RseGaitRules.restLeg(points, isFront)
     return rest
 end
 
+-- How far the top joint reaches toward the hock, given how far it would need to: unchanged up to `soft` of the leg's full reach, then easing toward full
+-- reach without getting there. A two-bone leg nearly straight turns its middle joint very fast for the least change in reach, so without this the knee or
+-- elbow snapped early in every swing, the faster the worse (Z: a glitch whenever they speed up; 0.9.5.9's real legs, 47 rad/s at a walk).
+function RseGaitRules.softReach(reach, full, soft)
+    local start = full * (soft or 1)
+    if reach <= start or start >= full then
+        return reach
+    end
+    local room = full - start
+    return start + room * (1 - math.exp(-(reach - start) / room))
+end
+
 -- The turn of each of the four joints, from rest, that puts the fetlock `offsetZ` forward and `offsetY` up from where it rests, with the cannon bone
--- turned by `cannon` and the hoof by `hoof`. Out of reach, the leg goes as far as it can. Returns the four angles.
-function RseGaitRules.solveLeg(rest, offsetZ, offsetY, cannon, hoof)
+-- turned by `cannon` and the hoof by `hoof`. Out of reach, the leg goes as far as it can. soft: softReach's share, or nil. Returns the four angles.
+function RseGaitRules.solveLeg(rest, offsetZ, offsetY, cannon, hoof, soft)
     local c, s = math.cos(cannon), math.sin(cannon)
     -- the hock or wrist has to be where the turned cannon bone reaches the fetlock's new place
     local hockZ = rest.footZ + offsetZ - (rest.cannonY * s + rest.cannonZ * c)
     local hockY = rest.footY + offsetY - (rest.cannonY * c - rest.cannonZ * s)
     local dz, dy = hockZ - rest.hipZ, hockY - rest.hipY
-    local reach = math.sqrt(dz * dz + dy * dy)
+    local reach = RseGaitRules.softReach(math.sqrt(dz * dz + dy * dy), rest.upper + rest.lower, soft)
     reach = math.max(math.abs(rest.upper - rest.lower) + 0.001, math.min(rest.upper + rest.lower - 0.001, reach))
     local cosAtHip = (rest.upper * rest.upper + reach * reach - rest.lower * rest.lower) / (2 * rest.upper * reach)
     local upperAngle = pointing(dz, dy) + rest.side * math.acos(math.max(-1, math.min(1, cosAtHip)))
@@ -76,6 +88,51 @@ function RseGaitRules.solveLeg(rest, offsetZ, offsetY, cannon, hoof)
     local hipTurn = rest.upperAngle - upperAngle
     local lowerTurn = rest.lowerAngle - pointing(hockZ - kneeZ, hockY - kneeY)
     return hipTurn, lowerTurn - hipTurn, cannon - lowerTurn, hoof - cannon
+end
+
+-- How much of its folding a step gets: one reaching GAIT_FOLD_FULL of the leg's length folds the lower leg fully, a shuffle hardly at all. A full fold on a
+-- step a few centimetres long has the knee and the wrist doing what no sheep does.
+function RseGaitRules.foldShare(stride, legLength, config)
+    return math.min(1, math.max(0, stride) / (math.max(legLength, 0.1) * config.GAIT_FOLD_FULL))
+end
+
+local function wrapped(angle)
+    return (angle + math.pi) % (2 * math.pi) - math.pi
+end
+
+-- A leg's four turns kept to what a leg can do (GAIT_JOINT_LIMITS) and turning no faster than GAIT_JOINT_RATE from last frame's (last, or nil): whatever
+-- the numbers say, a leg never flies out (Z's pictures). Changes `angles` in place. Returns it, and true if any had to be held back from where the solver
+-- put it (not counting the speed limit, which a quick trot meets now and then).
+function RseGaitRules.limitLeg(angles, last, dt, config)
+    local held = false
+    local most = config.GAIT_JOINT_RATE * dt / 1000
+    for i = 1, 4 do
+        local angle = angles[i]
+        if angle ~= angle then
+            angle, held = 0, true
+        end
+        angle = wrapped(angle)
+        local range = config.GAIT_JOINT_LIMITS[i]
+        if angle < range[1] or angle > range[2] then
+            angle, held = math.max(range[1], math.min(range[2], angle)), true
+        end
+        if last ~= nil and last[i] ~= nil then
+            angle = last[i] + math.max(-most, math.min(most, angle - last[i]))
+        end
+        angles[i] = angle
+    end
+    return angles, held
+end
+
+-- The axis a tail bone swings side to side about, in the animal's own space (x left-right, y up, z forward), from the way the bone points (up, forward).
+-- Square to the bone and to the left-right axis: the up axis for a tail that sticks straight out back, the forward axis for one that hangs. Turning a
+-- hanging tail about the up axis only twists it (Z: the tails glitched).
+function RseGaitRules.swingAxis(up, forward)
+    local length = math.sqrt(up * up + forward * forward)
+    if length < 1e-6 then
+        return 0, 1, 0
+    end
+    return 0, -forward / length, up / length
 end
 
 -- the turn by `angle` about a unit axis, as a quaternion x, y, z, w

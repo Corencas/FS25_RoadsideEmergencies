@@ -18,8 +18,11 @@ function RseLineRules.afterPenalty(reward, state, config)
     return reward
 end
 
--- how long until the crew has cut the power, in whole seconds
-function RseLineRules.secondsLeft(state, config)
+-- how long until the crew has cut the power, in whole seconds. crew: { underway, secondsLeft } when a crew truck is on the job, or nil
+function RseLineRules.secondsLeft(state, config, crew)
+    if crew ~= nil and crew.underway and crew.secondsLeft ~= nil then
+        return math.max(1, crew.secondsLeft)
+    end
     return math.max(1, math.ceil((config.LINE_POWER_CUT_MS - (state.liveMs or 0)) / 1000))
 end
 
@@ -40,13 +43,19 @@ function RseLineRules.savedPoleSpot(data, x, z)
 end
 
 -- The clock on the live wires. inside: the player is in the danger zone. state: { liveMs, insideMs, warned, penalized, powerOff }, updated here.
+-- crew: { underway, done } when a crew truck is on the job (UtilityCrew.lua), or nil. The power goes off when the crew is done; with a crew on its way the
+-- timer only stands behind it (LINE_CREW_BACKSTOP_MS), and without one it is the timer (LINE_POWER_CUT_MS).
 -- Returns nil, "warn" (just went in), "cut" (stayed too long) or "off" (the crew has cut the power).
-function RseLineRules.tickPower(state, dt, inside, config)
+function RseLineRules.tickPower(state, dt, inside, config, crew)
     if state.powerOff then
         return nil
     end
     state.liveMs = (state.liveMs or 0) + dt
-    if state.liveMs >= config.LINE_POWER_CUT_MS then
+    local limit = config.LINE_POWER_CUT_MS
+    if crew ~= nil and crew.underway then
+        limit = config.LINE_CREW_BACKSTOP_MS
+    end
+    if (crew ~= nil and crew.done) or state.liveMs >= limit then
         state.powerOff = true
         return "off"
     end
@@ -83,10 +92,26 @@ function RseLineRules.roadside(x, z, dirX, dirZ, segments, config)
     return plus >= minus and 1 or -1
 end
 
--- Where everything goes around (x, z), on a road running along (dirX, dirZ), a unit vector. side: from roadside.
+-- The layouts to try at a spot, in order: the side away from the other lanes first, at the usual distance and spacing, then nearer, further, wider apart and
+-- closer together, then the other side. Each { side, standingSide, along }.
+function RseLineRules.shapes(preferred, config)
+    local list = {}
+    for _, side in ipairs({ preferred, -preferred }) do
+        for _, standingSide in ipairs(config.LINE_STANDING_SIDES) do
+            for _, along in ipairs(config.LINE_STANDING_ALONGS) do
+                table.insert(list, { side = side, standingSide = standingSide, along = { -along, along } })
+            end
+        end
+    end
+    return list
+end
+
+-- Where everything goes around (x, z), on a road running along (dirX, dirZ), a unit vector. side: from roadside. shape: one of shapes, or nil for the usual.
 -- Returns { pole = { x, z, dirX, dirZ }, standing = { { x, z }, ... }, wires = { { x, z, pole }, ... } }: the fallen pole from its foot at the roadside across
 -- the lane, the two poles still standing, and the wires from those to the road.
-function RseLineRules.layout(x, z, dirX, dirZ, side, wireCount, config)
+function RseLineRules.layout(x, z, dirX, dirZ, side, wireCount, config, shape)
+    local standingSide = shape ~= nil and shape.standingSide or config.LINE_STANDING_SIDE
+    local standingAlong = shape ~= nil and shape.along or config.LINE_STANDING_ALONG
     local acrossX, acrossZ = -dirZ * side, dirX * side
     local function at(along, across)
         return x + dirX * along + acrossX * across, z + dirZ * along + acrossZ * across
@@ -96,8 +121,8 @@ function RseLineRules.layout(x, z, dirX, dirZ, side, wireCount, config)
     local poleDirX, poleDirZ = -acrossX + dirX * skew, -acrossZ + dirZ * skew
     local length = math.sqrt(poleDirX * poleDirX + poleDirZ * poleDirZ)
     local result = { pole = { x = footX, z = footZ, dirX = poleDirX / length, dirZ = poleDirZ / length }, standing = {}, wires = {} }
-    for i, along in ipairs(config.LINE_STANDING_ALONG) do
-        local px, pz = at(along, config.LINE_STANDING_SIDE)
+    for i, along in ipairs(standingAlong) do
+        local px, pz = at(along, standingSide)
         result.standing[i] = { x = px, z = pz }
     end
     for i = 1, wireCount do

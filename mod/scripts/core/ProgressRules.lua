@@ -17,7 +17,7 @@ function RseProgressRules.wreck(state, delivered, towed, tipped, config)
     if delivered then
         return 1
     end
-    if state == "locked" then
+    if state == "locked" or state == "held" then
         return 0
     end
     if state == "tipped" then

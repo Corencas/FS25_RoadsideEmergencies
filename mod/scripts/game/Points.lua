@@ -65,17 +65,7 @@ end
 function RsePoints:refreshHotspots()
     self:removeHotspots()
     if not RseConfig.MAP_MARKERS then
-        if not self.markerTypesLogged and PlaceableHotspot ~= nil then
-            self.markerTypesLogged = true
-            local names = {}
-            for name in pairs(type(PlaceableHotspot.TYPE) == "table" and PlaceableHotspot.TYPE or {}) do
-                table.insert(names, tostring(name))
-            end
-            table.sort(names)
-            RseLog.info("PlaceableHotspot markers stay off (they broke the menu in 0.1.0.0); types: %s; UNLOADING -> %s", table.concat(names, " "),
-                tostring(PlaceableHotspot.getTypeByName ~= nil and PlaceableHotspot.getTypeByName("UNLOADING")))
-        end
-        return
+        return -- PlaceableHotspot markers stay off: they broke the menu in 0.1.0.0
     end
     if PlaceableHotspot == nil then
         return

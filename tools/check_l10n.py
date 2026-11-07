@@ -2,7 +2,7 @@
 
 Keys used: string literals starting with "rse_" or "input_RSE_" in mod Lua files, "$l10n_rse_..." references and
 description/hint/postMessage attributes in mod XML files, and "input_<ACTION>" for every input action in modDesc.
-Exit code 1 if a used key is missing from a translation, or a hint is too long: past HINT_MAX characters it runs under the
+Exit code 1 if a used key is missing from a translation, a key is there twice, or a hint is too long: past HINT_MAX characters it runs under the
 game's F1 list (seen in M2 round 9).
 
 Usage: python tools/check_l10n.py
@@ -30,12 +30,33 @@ def translation_keys(lang):
     return {t.get("name") for t in root.iter("text")}
 
 
+def shown(text):
+    """The length on screen: a {key:...} is one key's name, a {mass:...} or {distance:...} a few characters (RseText.get fills them in)."""
+    text = re.sub(r"\{key:[A-Z_]+\}", "K", text)
+    text = re.sub(r"\{distance:[0-9.]+\}", "131 ft", text)
+    return re.sub(r"\{mass:[0-9.]+\}", "3 t", text)
+
+
 def long_hints(lang):
     path = project.MOD_SOURCE / "translations" / ("translation_%s.xml" % lang)
     if not path.exists():
         return []
-    return [(t.get("name"), len(t.get("text"))) for t in ET.parse(path).getroot().iter("text")
-            if "_hint" in t.get("name") and len(t.get("text")) > HINT_MAX]
+    return [(t.get("name"), len(shown(t.get("text")))) for t in ET.parse(path).getroot().iter("text")
+            if "_hint" in t.get("name") and len(shown(t.get("text"))) > HINT_MAX]
+
+
+def duplicates(lang):
+    """Keys defined more than once (the game uses the first and logs a warning; 0.9.7.1 left an old guide line behind)."""
+    path = project.MOD_SOURCE / "translations" / ("translation_%s.xml" % lang)
+    if not path.exists():
+        return []
+    seen, twice = set(), []
+    for t in ET.parse(path).getroot().iter("text"):
+        name = t.get("name")
+        if name in seen and name not in twice:
+            twice.append(name)
+        seen.add(name)
+    return twice
 
 
 def used_keys():
@@ -85,6 +106,9 @@ def main():
             if not any(key.startswith(prefix) for key in keys):
                 print("[%s] no keys for prefix %s" % (lang, prefix))
                 problems += 1
+        for name in duplicates(lang):
+            print("[%s] key %s is there more than once: the game keeps the first and warns" % (lang, name))
+            problems += 1
         for name, length in long_hints(lang):
             print("[%s] hint %s is too long: %d characters, at most %d" % (lang, name, length, HINT_MAX))
             problems += 1

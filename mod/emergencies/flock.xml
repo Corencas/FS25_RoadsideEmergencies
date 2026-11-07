@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!-- A flock has got out and is all over the road. The Emergency Pack runs it: pager, map marker, progress, hints and pay. It starts on a road lane (spline); our first
+     step moves it to a random spot on the road network. Drive or walk the flock into the pen the farmer has put up nearby (Flock.lua). Pay: our amount (Config.lua, WRECKS). -->
+<scenario description="rse_ep_flock_description" postMessage="rse_ep_doneWreck" startStrategy="spline"
+          engagementDistance="10" rewardDifficultyCategory="1" rewardTeeSizeCategory="1" width="12" height="6" length="16">
+    <checkpoints>
+        <checkpoint hint="rse_ep_hint_arrive" actionClass="FS25_RoadsideEmergencies.RseStepArrive">
+            <action range="35" wreck="flock" emergency="flock"/>
+        </checkpoint>
+        <checkpoint hint="rse_flock_hint" actionClass="FS25_RoadsideEmergencies.RseStepFlock">
+            <action/>
+        </checkpoint>
+    </checkpoints>
+</scenario>

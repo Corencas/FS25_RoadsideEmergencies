@@ -7,19 +7,21 @@ RseConsole = {
 local COMMANDS = {
     { "rseHelp", "List the Roadside Emergencies console commands", "consoleHelp" },
     { "rseDebug", "Turn debug logging on or off", "consoleDebug" },
-    { "rseStart", "rseStart [emergency]: dispatch calls now (an animal, wreck, rollover, trailer, livestock, powerline or storm; none: a random one)",
+    { "rseStart", "rseStart [emergency]: dispatch calls now (an animal, wreck, rollover, trailer, livestock, powerline, logging, crossing or storm; none: any)",
         "consoleStart" },
     { "rseCalls", "rseCalls [on|off]: show or switch the calls that come by themselves", "consoleCalls" },
     { "rseScene", "Log the emergency scenes and where each animal is (in the road, at the roadside, loaded)", "consoleScene" },
     { "rseRoad", "Log the road where you stand (lanes found, distance, direction)", "consoleRoad" },
     { "rseJobSize", "rseJobSize [small|normal|large|random]: show or set how much work a call is (how many animals)", "consoleJobSize" },
     { "rseLoad", "rseLoad [small|big|random]: test: which bales a spilled load has", "consoleLoad" },
+    { "rseFleet", "rseFleet [pickup|nothing|off]: what your farm can do and which calls that brings; pickup or nothing: as if that were all you owned",
+        "consoleFleet" },
+    { "rseVehicle", "rseVehicle [kind] [number]: test: list the vehicles a wreck can be, or choose the next one of a kind", "consoleVehicle" },
     { "rseHere", "rseHere [metres]: test: the next call comes from a road this close to you (default 60), for instance on a bridge", "consoleHere" },
     { "rseKit", "Log the scene kit items in the world; rseKit clear removes all of them", "consoleKit" },
     { "rseMarkers", "rseMarkers [on|off]: show or switch the map markers", "consoleMarkers" },
     { "rseCarcass", "rseCarcass [animal] [count]: place dead animals 6 m ahead (deer, boar, pig, sheep, goat, cow, buffalo, horse)", "consoleCarcass" },
     { "rseCarcassClear", "Remove every carcass", "consoleCarcassClear" },
-    { "rseLive", "Test: rseLive [animal] puts a loose animal 6 m ahead, and the log says its model and clips; rseLive clear removes them", "consoleLive" },
     { "rseTwister", "Test: spawn the game's twister (spring and summer only); when it ends, a storm call comes from a road nearby", "consoleTwister" },
     { "rseExpireSoon", "rseExpireSoon [seconds]: test: the job you haven't reached goes to another contractor sooner (default in 30 s)", "consoleExpireSoon" },
     { "rseLeftSoon", "rseLeftSoon [seconds]: test: collect and bill the carcasses left lying in that many seconds (default 30)", "consoleLeftSoon" },
@@ -28,7 +30,8 @@ local COMMANDS = {
     { "rsePointAdd", "rsePointAdd [disposal|recovery|both] [name]: a point where you stand", "consolePointAdd" },
     { "rsePointRemove", "rsePointRemove <id>: remove one of your points", "consolePointRemove" },
     { "rseFee", "rseFee [factor]: show or set the factor on disposal fees and collection bills (0 to 5)", "consoleFee" },
-    { "rseState", "Log everything the mod tracks", "consoleState" }
+    { "rseState", "Log everything the mod tracks", "consoleState" },
+    { "rseWelcome", "Show the welcome dialog again", "consoleWelcome" }
 }
 
 function RseConsole:register(owner)
@@ -110,22 +113,6 @@ function RseConsole:consoleCarcassClear()
     return "Removed " .. counted(count, "carcass", "carcasses")
 end
 
-function RseConsole:consoleLive(arg)
-    if arg == "clear" then
-        RseSurvivors:clearTest()
-        return "The test animals are gone"
-    end
-    local def = RseAnimalCatalog.get(arg or "sheep")
-    if def == nil or def.subType == nil then
-        return "Use a farm animal: sheep, pig, goat, cow, buffalo or horse"
-    end
-    local frame = ahead(6)
-    if frame == nil then
-        return "Get out of the vehicle first"
-    end
-    return counted(RseSurvivors:spawnTest(def.kind, frame.x, frame.z, frame.yaw), "test animal", "test animals") .. " out (see log.txt)"
-end
-
 function RseConsole:consoleTwister()
     local environment = g_currentMission.environment
     local weather = environment ~= nil and environment.weather or nil
@@ -151,7 +138,8 @@ end
 function RseConsole:consoleExpireSoon(secondsArg)
     local state = RseEpSteps.waiting
     if state == nil or RseScenes:activeCount() == 0 then
-        return "No job on its way: accept one first, and stay away from it"
+        -- only a call you haven't reached yet can go to another contractor: once you are there, it is yours
+        return "No call on its way: this only works before you reach a call. Answer one with Yes, stay more than 30 m from it, then try again"
     end
     local seconds = math.max(0, tonumber(secondsArg) or 30)
     state.waitMs = math.max(0, RseConfig.JOB_EXPIRE_MS - seconds * 1000)
@@ -253,7 +241,40 @@ function RseConsole:consoleStart(idArg)
         end
         return "No call: " .. tostring(reason)
     end
+    if reason == "wait" then
+        return "The crossing call comes when the train is the right time away, within about one lap of the track: a few minutes. Keep playing"
+    end
+    if RseCalls:outOfReach()[picked] then
+        return string.format("County dispatch is calling (%s), only because you asked: your farm couldn't finish this one, so it would never come by itself",
+            tostring(picked))
+    end
     return string.format("County dispatch is calling (%s): answer the pager", tostring(picked))
+end
+
+function RseConsole:consoleFleet(arg)
+    if arg == "pickup" then
+        RseCalls.pretendFleet = RseJobRules.fleetFrom({ { motorized = true, mass = 2.5, carries = true } }, RseConfig)
+    elseif arg == "nothing" then
+        RseCalls.pretendFleet = RseJobRules.fleetFrom({}, RseConfig)
+    elseif arg == "off" then
+        RseCalls.pretendFleet = nil
+    elseif arg ~= nil then
+        return "Use rseFleet pickup, rseFleet nothing or rseFleet off"
+    end
+    local fleet = RseCalls:fleet()
+    local out = RseCalls:outOfReach()
+    local comes, stays = {}, {}
+    for _, emergency in ipairs(RseConfig.EMERGENCIES) do
+        table.insert(out[emergency.id] and stays or comes, emergency.id)
+    end
+    local function yes(value)
+        return value and "yes" or "no"
+    end
+    return string.format("%sA pickup or bigger: %s. 3 t or bigger: %s. Lifts bales: %s. Carries them: %s. Livestock trailer: %s.\n"
+        .. "Calls that can come: %s\nCalls that won't: %s",
+        RseCalls.pretendFleet ~= nil and "PRETENDING. " or "", yes(fleet.canPull), yes(fleet.canPullHeavy), yes(fleet.canLift), yes(fleet.canCarry),
+        yes(fleet.hasLivestockTrailer),
+        #comes > 0 and table.concat(comes, ", ") or "none", #stays > 0 and table.concat(stays, ", ") or "none")
 end
 
 function RseConsole:consoleCalls(arg)
@@ -338,6 +359,34 @@ function RseConsole:consoleLoad(arg)
     return "Spilled loads: " .. tostring(RseScenes.forcedLoad or "random")
 end
 
+function RseConsole:consoleVehicle(kind, number)
+    local def = RseConfig.WRECKS[kind or ""]
+    if def == nil or def.variants == nil then
+        local kinds = {}
+        for name, item in pairs(RseConfig.WRECKS) do
+            if item.variants ~= nil then
+                table.insert(kinds, name)
+            end
+        end
+        table.sort(kinds)
+        local lines = { "rseVehicle <kind> <number>: the next wreck of that kind is that vehicle. rseStart wreck is the kind truck, rollover is tractor" }
+        for _, name in ipairs(kinds) do
+            local files = {}
+            for i, variant in ipairs(RseConfig.WRECKS[name].variants) do
+                table.insert(files, string.format("%d %s", i, string.match(variant.file, "([^/]+)%.xml$") or variant.file))
+            end
+            table.insert(lines, name .. ": " .. table.concat(files, ", "))
+        end
+        return table.concat(lines, "\n")
+    end
+    local index = tonumber(number)
+    if index == nil or def.variants[index] == nil then
+        return string.format("%s has vehicles 1 to %d", kind, #def.variants)
+    end
+    RseWrecks.forcedVariant = { kind = kind, number = index }
+    return string.format("The next %s wreck is %s", kind, def.variants[index].file)
+end
+
 function RseConsole:consoleHere(arg)
     if g_localPlayer == nil then
         return "You are not in the world yet"
@@ -368,6 +417,12 @@ function RseConsole:consoleMarkers(arg)
         return "Use rseMarkers on or rseMarkers off"
     end
     return "Map markers: " .. (RseMarkers.enabled and "on" or "off")
+end
+
+function RseConsole:consoleWelcome()
+    RsePlayerFile:forgetWelcome()
+    local ok, shown = RseLog.try("the welcome dialog", RseWelcome.show, RseWelcome)
+    return ok and shown and "Welcome dialog shown" or "The welcome dialog could not be shown: see log.txt"
 end
 
 function RseConsole:consoleState()

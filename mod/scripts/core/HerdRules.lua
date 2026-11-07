@@ -51,6 +51,8 @@ local function go(animal, target, rate, dt)
     animal.z = animal.z + math.cos(animal.yaw) * step
 end
 
+RseHerdRules.turn, RseHerdRules.go = turn, go
+
 -- where the next few steps go: away from where it started, roughly; back again once it has gone far enough
 local function wanderYaw(animal, world, config, random)
     local fromHome = distance(animal.x, animal.z, world.homeX, world.homeZ)

@@ -31,9 +31,9 @@ function RseCarcassActivatable:getIsActivatable()
     if node == nil or not onFoot() or RseCarcasses:isMounted(entry) or RseStrap:isStrapped(entry) then
         return false
     end
-    local name = RseText.animal(entry.kind)
+    local name = RseText.animalShort(entry.kind)
     if RseCarcassDrag.dragged == entry then
-        self.activateText = RseText.get("rse_action_letGo", name)
+        self.activateText = RseText.action("rse_action_letGo", name)
         return true
     end
     local px, _, pz = g_localPlayer:getPosition()
@@ -42,9 +42,9 @@ function RseCarcassActivatable:getIsActivatable()
         return false
     end
     if RseAnimalCatalog.isDraggable(entry.kind, RseConfig.DRAG_MAX_MASS_KG) then
-        self.activateText = RseText.get("rse_action_drag", name)
+        self.activateText = RseText.action("rse_action_drag", name)
     else
-        self.activateText = RseText.get("rse_action_tooHeavy", name)
+        self.activateText = RseText.action("rse_action_tooHeavyShort") -- pressing it says why, in full
     end
     return true
 end

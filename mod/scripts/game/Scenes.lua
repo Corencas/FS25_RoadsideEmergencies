@@ -18,6 +18,10 @@ RseScenes = {
     store = nil,
     resuming = nil,    -- { data, entries, timerMs }: a saved call on its way back after loading
     spotNear = nil,    -- { x, z, radius }: the next call comes from around here (a twister's end)
+    spotExact = nil,   -- a spot: the next call comes from exactly here (a railroad crossing)
+    plannedKinds = nil, -- the animals the pager promised (CallPlan.lua), for the next scene
+    plannedLoad = nil,  -- and the load
+    lastPayRatio = nil, -- what the pack paid for our amount last time (CallPanel.lua asks it), for the pager's "about"
     forcedLoad = nil,  -- test: the load of every spilled-load job (rseLoad)
     drawFailed = false
 }
@@ -33,8 +37,8 @@ function RseScenes:get(id)
 end
 
 -- the road around x, z (empty if it can't be measured)
-local function measureRoad(x, z)
-    local ok, road = RseLog.try("measure the road", RseRoads.around, x, z, RseConfig.ROAD_SEARCH_RADIUS)
+local function measureRoad(x, z, radius)
+    local ok, road = RseLog.try("measure the road", RseRoads.around, x, z, radius or RseConfig.ROAD_SEARCH_RADIUS)
     if not ok or road == nil then
         return { segments = {}, lanes = 0 }
     end
@@ -51,17 +55,17 @@ local function groundAt(x, y, z)
 end
 
 -- not inside a wreck at x, z: pushed along the road, out of its way
-local function clearOfWreck(p, x, z, dirX, dirZ)
+local function clearOfWreck(p, x, z, dirX, dirZ, radius)
     local away = math.sqrt((p.x - x) ^ 2 + (p.z - z) ^ 2)
-    if away < RseConfig.WRECK_BALE_CLEAR then
+    if away < radius then
         local dirLength = math.max(math.sqrt(dirX * dirX + dirZ * dirZ), 1e-6)
         local along = ((p.x - x) * dirX + (p.z - z) * dirZ) >= 0 and 1 or -1
-        local push = (RseConfig.WRECK_BALE_CLEAR - away) * along / dirLength
+        local push = (radius - away) * along / dirLength
         p.x, p.z = p.x + dirX * push, p.z + dirZ * push
     end
 end
 
--- dead animals scattered over the road, added to the scene's entries; aroundWreck: a wreck lies in the middle
+-- dead animals scattered over the road, added to the scene's entries; aroundWreck: a wreck lies in the middle, and they stay this far from it
 local function layAnimals(scene, kinds, road, aroundWreck)
     local gap = RseConfig.SCATTER_GAP.small
     for _, kind in ipairs(kinds) do
@@ -78,7 +82,7 @@ local function layAnimals(scene, kinds, road, aroundWreck)
     for i, kind in ipairs(kinds) do
         local p = positions[i]
         if aroundWreck then
-            clearOfWreck(p, scene.x, scene.z, road.dirX or 1, road.dirZ or 0)
+            clearOfWreck(p, scene.x, scene.z, road.dirX or 1, road.dirZ or 0, aroundWreck)
         end
         local def = RseAnimalCatalog.get(kind)
         local entry, reason = RseCarcasses:spawn(kind, p.x, groundAt(p.x, scene.y, p.z) + bodyHeight(def) / 2 + 0.05, p.z, 0, p.yaw, 0)
@@ -100,7 +104,8 @@ function RseScenes:create(x, y, z, spec, emergency)
     for _, warning in ipairs(warnings) do
         RseLog.info("scene '%s': %s", tostring(label), warning)
     end
-    local kinds = RseSceneSpec.pick(parts, math.random, self.store ~= nil and self.store.settings.jobSize or nil)
+    local kinds = self.plannedKinds or RseSceneSpec.pick(parts, math.random, self.store ~= nil and self.store.settings.jobSize or nil)
+    self.plannedKinds, self.plannedLoad = nil, nil
     if #kinds == 0 then
         return nil, "no animals in '" .. tostring(spec) .. "'"
     end
@@ -186,13 +191,40 @@ local function haulPayFrom(self, def, x, z)
     return RseWreckRules.haulPay(def, math.sqrt((point.x - x) ^ 2 + (point.z - z) ^ 2), RseConfig)
 end
 
+-- what the haul from (x, z) to the nearest recovery point pays, for the pager (CallPlan.lua)
+function RseScenes:haulPayAt(def, x, z)
+    return haulPayFrom(self, def, x, z)
+end
+
 -- A wreck scene (F9, F10, F15, F16, F17): the wreck across the lane or in the ditch, a spilled load scattered around it. It ends at a recovery point.
 function RseScenes:createWreck(x, y, z, kind, emergency)
     local def = RseConfig.WRECKS[kind]
-    local road = measureRoad(x, z)
+    local road = measureRoad(x, z, def.flock ~= nil and RseConfig.FLOCK_ROAD_RADIUS or nil)
     local dirX, dirZ = road.dirX or 1, road.dirZ or 0
     local yaw = math.atan2(dirX, dirZ)
-    local position = { x = x, z = z, yaw = yaw + math.pi / 2 + (math.random() - 0.5) * 0.5 }
+    local variant = RseWrecks:takeVariant(kind)
+    local wreckLength = variant ~= nil and variant.length or 0
+    local across = wreckLength > RseConfig.WRECK_LONG and math.pi / 4 or math.pi / 2
+    local clear = math.max(RseConfig.WRECK_BALE_CLEAR, wreckLength / 2 + 1) -- nothing is laid inside it
+    local position = { x = x, z = z, yaw = yaw + across + (math.random() - 0.5) * 0.5 }
+    if def.crossing then
+        position.y, position.yaw = y, math.random() * 2 * math.pi -- any which way on the tracks (Z), at the height of the rails, above any road surface
+    end
+    local waterPlace = def.water and RseRiver:takeChosen() or nil
+    if waterPlace ~= nil then
+        position.yaw = waterPlace.yaw + (math.random() - 0.5) * RseConfig.WATER_YAW_JITTER
+    end
+    if def.treeOnCar then
+        position.yaw = yaw + (math.random() < 0.5 and math.pi or 0) + (math.random() - 0.5) * RseConfig.TREE_CAR_JITTER -- going either way along its lane
+    end
+    local penPlace = nil
+    if def.flock ~= nil then
+        penPlace = RseFlockPlaces:takePen(x, z, road)
+        if penPlace ~= nil then
+            local truck = RseFlockRules.truckSpot(RseFlockRules.newPen(penPlace.x, penPlace.z, penPlace.gateYaw, RseConfig), RseConfig)
+            position = { x = truck.x, z = truck.z, yaw = truck.yaw }
+        end
+    end
     if def.ditch then
         local length = math.sqrt(dirX * dirX + dirZ * dirZ)
         local side = math.random() < 0.5 and -1 or 1
@@ -201,26 +233,55 @@ function RseScenes:createWreck(x, y, z, kind, emergency)
         position.yaw = yaw
     end
     local size = self.store ~= nil and self.store.settings.jobSize or nil
-    local load = RseWreckRules.pickLoad(def, math.random(), RseConfig)
+    local load = self.plannedLoad or RseWreckRules.pickLoad(def, math.random(), RseConfig, RseCalls ~= nil and RseCalls:fleet() or nil)
+    self.plannedKinds, self.plannedLoad = nil, nil
     if load ~= nil and self.forcedLoad ~= nil then
         load = RseWreckRules.loadById(def, self.forcedLoad, RseConfig)
     end
     local spots = {}
-    local count = RseWreckRules.baleCount(load, math.random, size, def)
+    local count = RseWreckRules.baleCount(load, math.random, size, variant or def)
     if count > 0 then
         local scattered = RseSceneSpec.scatter(count, x, z, dirX, dirZ, { span = RseConfig.WRECK_BALE_SPREAD, width = RseConfig.WRECK_BALE_WIDTH,
             gap = load.gap, maxRoadDistance = RseConfig.CLEAR_DISTANCE }, math.random, road.segments)
         for _, p in ipairs(scattered) do
-            clearOfWreck(p, x, z, dirX, dirZ)
+            clearOfWreck(p, x, z, dirX, dirZ, clear)
             table.insert(spots, { x = p.x, y = groundAt(p.x, y, p.z) + load.size[2] / 2 + 0.1, z = p.z, ry = p.yaw })
         end
     end
     local id = self.nextId
     self.nextId = id + 1
     local scene = { id = id, emergency = emergency, label = kind, x = x, y = y, z = z, segments = road.segments, entries = {}, kinds = {}, finished = false }
-    scene.wreck = RseWrecks:spawn(kind, position, "locked", spots, false, load)
+    scene.wreck = RseWrecks:spawn(kind, position, def.held and "held" or "locked", spots, false, load, variant)
+    if def.water and waterPlace == nil then
+        scene.wreck.failed = true -- no water to be had after all: the call is cancelled, with no pay and no penalty
+    end
+    if def.crossing and not RseLevelCrossing:begin(scene) then
+        scene.wreck.failed = true -- no train to be had after all: the call is cancelled, with no pay and no penalty
+    end
     if def.line then
         RseLog.try("lay out the power line", RsePowerLine.spawn, RsePowerLine, scene, road, size)
+    end
+    if def.flock ~= nil and penPlace == nil then
+        scene.wreck.failed = true -- no meadow for the pen here: the call is cancelled, with no pay and no penalty, rather than a pen on the road
+    elseif def.flock ~= nil then
+        local animal = def.flockKinds[math.random(#def.flockKinds)]
+        local ok = RseLog.try("lay out the flock", RseFlock.spawn, RseFlock, scene, road, animal, RseSceneSpec.count(def.flock, math.random, size), penPlace)
+        if not ok or scene.flock == nil or scene.flock.total == 0 then
+            scene.wreck.failed = true
+        end
+    end
+    if def.treeOnCar then
+        scene.wreck.waitForTree = scene
+    end
+    if def.logs ~= nil then
+        local logSpots = RseSceneSpec.scatter(RseSceneSpec.count(def.logs, math.random, size), x, z, dirX, dirZ, { span = RseConfig.LOG_SPREAD,
+            width = RseConfig.WRECK_BALE_WIDTH, gap = RseConfig.LOG_GAP, maxRoadDistance = RseConfig.CLEAR_DISTANCE }, math.random, road.segments)
+        for _, p in ipairs(logSpots) do
+            clearOfWreck(p, x, z, dirX, dirZ, clear)
+        end
+        if not RseLog.try("lay out the logs", RseLogSpill.spawn, RseLogSpill, scene, road, logSpots, def.treeOnCar == true) then
+            scene.wreck.failed = true
+        end
     end
     if def.kinds ~= nil then
         -- a livestock trailer: dead animals in the road, loose ones around it, one kind per call
@@ -229,7 +290,7 @@ function RseScenes:createWreck(x, y, z, kind, emergency)
         for _ = 1, RseSceneSpec.count(def.dead, math.random, size) do
             table.insert(dead, animal)
         end
-        layAnimals(scene, dead, road, true)
+        layAnimals(scene, dead, road, clear)
         for _, entry in ipairs(scene.entries) do
             table.insert(scene.kinds, entry.kind)
         end
@@ -241,13 +302,19 @@ function RseScenes:createWreck(x, y, z, kind, emergency)
         }, math.random, road.segments)
         local survivorSpots = {}
         for _, p in ipairs(standing) do
-            clearOfWreck(p, x, z, dirX, dirZ)
+            clearOfWreck(p, x, z, dirX, dirZ, clear)
             table.insert(survivorSpots, { x = p.x, y = groundAt(p.x, y, p.z), z = p.z, yaw = p.yaw })
         end
         RseSurvivors:spawn(scene, animal, survivorSpots)
     end
     scene.haulPay = haulPayFrom(self, def, x, z)
     scene.reward = RseWreckRules.reward(def, #scene.wreck.bales, load, scene.haulPay)
+    if scene.spill ~= nil then
+        scene.reward = RseLogRules.pay(def, scene.spill.total, 1) + scene.haulPay
+    end
+    if scene.flock ~= nil then
+        scene.reward = RseFlockRules.pay(def, 0, scene.flock.total, false)
+    end
     if def.twoParts then
         scene.handover, scene.led = {}, 0
     end
@@ -275,10 +342,121 @@ function RseScenes:finishWreck(scene)
     end
 end
 
+local function currentPayFactor(self)
+    return self.store ~= nil and self.store.settings.payFactor or 1
+end
+
+-- A job you said yes to that ends with no pay costs a small part of that pay (Z). Saying no costs nothing. Returns what it cost.
+function RseScenes:chargePenalty(scene)
+    if scene.penaltyCharged then
+        return 0
+    end
+    scene.penaltyCharged = true
+    local amount = RsePayRules.penalty(scene.reward, currentPayFactor(self), RseConfig)
+    local mission = g_currentMission
+    if amount > 0 and mission ~= nil and mission.addMoney ~= nil then
+        local farmId = mission.getFarmId ~= nil and mission:getFarmId() or 1
+        RseLog.try("addMoney(job penalty)", mission.addMoney, mission, -amount, farmId, RoadsideEmergencies.moneyTypePenalty or MoneyType.OTHER, true, true)
+        RseLog.info("scene %d (%s): a job left with no pay costs $%d", scene.id, tostring(scene.label), amount)
+    end
+    return amount
+end
+
+-- what handing the running job over would cost, for the settings panel
+function RseScenes:handOverFee()
+    local scene = self:get(self:activeId())
+    return scene ~= nil and RsePayRules.penalty(scene.reward, currentPayFactor(self), RseConfig) or 0
+end
+
+-- The train got there first (Z: you can fail this one). No pay, and the vehicle stays where the train left it until the county has been (Cleanup.lua).
+function RseScenes:loseCrossing(scene)
+    if scene.finished then
+        return
+    end
+    scene.finished = true
+    local fee = self:chargePenalty(scene)
+    RseText.notify(fee > 0 and RseText.get("rse_crossing_hitFee", RseText.money(fee)) or RseText.get("rse_crossing_hit"), true)
+    local item = RseCleanup.newItem(scene)
+    item.wreck = scene.wreck
+    RseCleanup:add(item)
+    scene.wreck = nil
+    self.scenes[scene.id] = nil
+    RseLog.info("scene %d: the train hit the vehicle on the crossing, and the job is lost", scene.id)
+    if self.onEnded ~= nil then
+        self.onEnded(scene)
+    end
+    RseEpBridge.cancel()
+end
+
+-- The logs are in, or handed over with some of them in: the pay follows the logs, and the trailer and the logs wait for the owner's crew (Z).
+function RseScenes:finishLogs(scene)
+    if scene.finished then
+        return
+    end
+    local handedOver = scene.handOverNow == true
+    local def = RseConfig.WRECKS[scene.wreck.kind]
+    local carIn = scene.wreck.delivered == true
+    if def.treeOnCar then
+        -- handed over: what you have done of the three parts
+        scene.reward = RseLogRules.logsPay(def, scene.spill.total, RseLogSpill:share(scene)) + (scene.rescueEarned or 0)
+            + (carIn and def.pay + (scene.haulPay or 0) or 0)
+    else
+        scene.reward = RseLogRules.pay(def, scene.spill.total, handedOver and RseLogSpill:share(scene) or 1)
+    end
+    local item = RseCleanup.newItem(scene)
+    if not carIn then
+        item.wreck = scene.wreck
+    end
+    local yours = RseLogSpill:leaveBehind(scene, item, handedOver)
+    RseCleanup:add(item)
+    local says = handedOver and "rse_logs_crewLeft" or "rse_logs_crew"
+    RseText.notify(RseText.get(def.treeOnCar and "rse_tree_handedOver" or says))
+    if yours > 0 then
+        RseText.notify(RseText.get("rse_logs_yours"))
+    end
+    self:finishWreck(scene)
+end
+
+-- The flock is in, or handed over with some of them in: the farmer sees to the rest, and everything stays until you have gone.
+function RseScenes:finishFlock(scene)
+    if scene.finished then
+        return
+    end
+    local handedOver = scene.handOverNow == true
+    scene.reward = RseFlockRules.pay(RseConfig.WRECKS[scene.wreck.kind], RseFlock:pennedCount(scene), scene.flock.total, handedOver)
+    if not handedOver then
+        RseLog.try("close the gate", RseFlock.closeGate, RseFlock, scene)
+    end
+    local item = RseCleanup.newItem(scene)
+    item.wreck = scene.wreck
+    RseFlock:leaveBehind(scene, item)
+    RseSurvivors:leaveBehind(scene, item)
+    RseCleanup:add(item)
+    RseText.notify(handedOver and RseText.get("rse_flock_handedOver") or RseText.get("rse_flock_done", scene.flock.total))
+    self:finishWreck(scene)
+end
+
+-- the driver is out: in time for the bonus? (Z asked for more to the missions.)
+function RseScenes:noteRescue(scene)
+    local def = RseConfig.WRECKS[scene.wreck.kind]
+    if not def.treeOnCar or scene.rescueNoted then
+        return
+    end
+    scene.rescueNoted = true
+    if (scene.rescueMs or 0) <= RseConfig.TREE_RESCUE_MS then
+        scene.rescueEarned = def.rescueBonus
+        scene.reward = scene.reward + def.rescueBonus
+        RseText.notify(RseText.get("rse_tree_rescueBonus",
+            RseText.money(RsePayRules.scaled(def.rescueBonus, self.store ~= nil and self.store.settings.payFactor or 1))))
+    end
+end
+
 -- A job with no second part, handed over with only some of its load in: each bale that came in pays (Z), and the rest is someone else's.
 function RseScenes:finishPartial(scene)
     scene.reward = RseWreckRules.partialReward(scene.wreck.load, scene.wreck.balesIn)
-    RseWrecks:remove(scene.wreck)
+    local item = RseCleanup.newItem(scene)
+    item.wreck = scene.wreck
+    RseCleanup:add(item)
     RseText.notify(RseText.get("rse_crash_handedOver"))
     self:finishWreck(scene)
 end
@@ -359,6 +537,55 @@ function RseScenes:updateCrash(scene, scenario, dt)
     return event == "finish"
 end
 
+-- A tree on a car, every frame: get the log off and the door opens; the driver, the road and the car can then go in whatever order suits you (Z: the door opens
+-- for realism, but the job can't finish before all of it is done). Returns true when it is.
+function RseScenes:updateTree(scene, scenario, dt)
+    local wreck = scene.wreck
+    if wreck.state == "locked" then
+        scene.rescueMs = (scene.rescueMs or 0) + dt
+        scene.doorCheckMs = (scene.doorCheckMs or 0) - dt
+        if not scene.doorFree and scene.doorCheckMs <= 0 then
+            scene.doorCheckMs = RseConfig.TREE_DOOR_CHECK_MS
+            if not RseLogSpill:carBlocked(scene) then
+                scene.doorFree = true
+                RseText.notify(RseText.get("rse_tree_doorFree"))
+            end
+        end
+    elseif not scene.driverSaid then
+        scene.driverSaid = true
+        self:noteRescue(scene)
+        if not wreck.delivered then
+            RseText.notify(RseText.get("rse_wreck_hint_deliver"))
+        end
+    end
+    RseWrecks:checkDelivered(wreck, dt)
+    moveCrashMarker(self, scene, scenario)
+    local road = RseLogSpill:isDone(scene)
+    if road and wreck.delivered then
+        return true
+    end
+    if road and not scene.roadSaid then
+        scene.roadSaid = true
+        RseText.notify(RseText.get(wreck.state == "locked" and "rse_tree_roadClearDriver" or "rse_tree_roadClear"))
+    elseif wreck.delivered and not scene.carSaid then
+        scene.carSaid = true
+        RseText.notify(RseText.get("rse_tree_carIn"))
+    end
+    return false
+end
+
+-- All of it is done: the pay stands, and all the logs go with the job (Z), also those you have loaded
+function RseScenes:finishTree(scene)
+    if scene.finished then
+        return
+    end
+    local item = RseCleanup.newItem(scene)
+    RseLogSpill:leaveBehind(scene, item, false)
+    RseCleanup:add(item)
+    RseText.notify(RseText.get("rse_tree_crew"))
+    self:finishWreck(scene)
+end
+
 -- Something else has removed the wreck: see RseWrecks:onVehicleReset. It doesn't count as brought in: the rest goes to another contractor, with pay for what
 -- you did. Returns true when that has just happened.
 function RseScenes:checkWreckGone(scene)
@@ -368,7 +595,7 @@ function RseScenes:checkWreckGone(scene)
     end
     RseLog.info("scene %d: the %s wreck was removed by something else", scene.id, wreck.kind)
     RseWrecks:removeVehicle(wreck)
-    self:handOver()
+    self:handOver(true) -- not the player's doing, so it costs nothing
     return true
 end
 
@@ -382,6 +609,12 @@ function RseScenes:handOverPays()
     local scene = self:get(self:activeId())
     if scene == nil or scene.wreck == nil then
         return false
+    end
+    if scene.flock ~= nil then
+        return RseFlock:pennedCount(scene) > 0
+    end
+    if scene.spill ~= nil then
+        return RseLogSpill:hasProgress(scene) or (scene.rescueEarned or 0) > 0 or scene.wreck.delivered == true
     end
     if scene.handover == nil then
         return (scene.wreck.balesIn or 0) > 0
@@ -397,7 +630,7 @@ function RseScenes:handOverPays()
     return false
 end
 
-function RseScenes:handOver()
+function RseScenes:handOver(noFee)
     local scene = self:get(self:activeId())
     if scene == nil then
         return
@@ -406,7 +639,8 @@ function RseScenes:handOver()
         scene.handOverNow = true
     elseif RseEpBridge.cancel() then
         RseLog.info("scene %d (%s) handed to another contractor by the player", scene.id, tostring(scene.label))
-        RseText.notify(RseText.get("rse_call_handedOver"), true)
+        local fee = noFee and 0 or self:chargePenalty(scene)
+        RseText.notify(fee > 0 and RseText.get("rse_call_handedOverFee", RseText.money(fee)) or RseText.get("rse_call_handedOver"), true)
     else
         RseText.notify(RseText.get("rse_call_cantHandOver"), true)
     end
@@ -425,8 +659,10 @@ function RseScenes:finishCrash(scene)
     local animals = RseSurvivors:remaining(scene) == 0 and (scene.wreck.balesLeft or #scene.wreck.bales) == 0 and RsePowerLine:remaining(scene) == 0
     local balesIn = scene.wreck.balesIn or 0
     local linePay = RsePowerLine:pay(scene)
-    RsePowerLine:remove(scene)
-    RseSurvivors:remove(scene)
+    local item = RseCleanup.newItem(scene)
+    item.wreck = scene.wreck
+    RsePowerLine:leaveBehind(scene, item)
+    RseSurvivors:leaveBehind(scene, item)
     local dealtWith = {}
     for _, kind in ipairs(scene.kinds) do
         table.insert(dealtWith, kind)
@@ -449,11 +685,11 @@ function RseScenes:finishCrash(scene)
                         break
                     end
                 end
-                RseCarcasses:remove(entry)
+                table.insert(item.carcasses, entry)
             end
         end
     end
-    RseWrecks:remove(scene.wreck)
+    RseCleanup:add(item)
     local done = { trailer = trailer, animals = animals, kinds = dealtWith, roadsideKinds = roadsideKinds, led = scene.led, bales = balesIn,
         haulPay = scene.haulPay, payPerBale = RseWreckRules.balePay(scene.wreck.load, trailer), linePay = linePay }
     local reward, bonus = RseWreckRules.crashReward(def, done, RseConfig)
@@ -488,15 +724,19 @@ function RseScenes:isLoaded(entry)
     if RseCarcasses:isMounted(entry) then
         return true
     end
-    local x, y, z = getWorldTranslation(RseCarcasses:bodyNode(entry))
-    self.rayHit = false
+    return self:isOnVehicle(getWorldTranslation(RseCarcasses:bodyNode(entry)))
+end
+
+-- a vehicle right below this point; the job's own wreck doesn't count, if `except` names it
+function RseScenes:isOnVehicle(x, y, z, except)
+    self.rayHit, self.rayExcept = false, except
     raycastClosest(x, y, z, 0, -1, 0, RseConfig.LOADED_RAY, "onLoadedRaycast", self, CollisionFlag.VEHICLE)
     return self.rayHit
 end
 
 function RseScenes:onLoadedRaycast(hitObjectId)
     if hitObjectId ~= nil and hitObjectId ~= 0 then
-        self.rayHit = true
+        self.rayHit = self.rayExcept == nil or g_currentMission:getNodeObject(hitObjectId) ~= self.rayExcept
         return false
     end
     return true
@@ -531,6 +771,17 @@ function RseScenes:isClear(scene)
     return true
 end
 
+-- dead animals of the scene still in the road, and how many there were, for the call panel
+function RseScenes:animalsLeft(scene)
+    local left = 0
+    for _, entry in ipairs(scene.entries) do
+        if exists(entry) and not RseRoadClearRule.isClear(entry.sceneStatus) then
+            left = left + 1
+        end
+    end
+    return left, #(scene.kinds or {})
+end
+
 -- counts per status, for the log and rseScene
 function RseScenes:counts(scene)
     local counts = { onRoad = 0, verge = 0, loaded = 0, away = 0, gone = 0 }
@@ -553,6 +804,12 @@ function RseScenes:announce(scene)
     elseif away ~= nil then
         RseText.notify(RseText.get("rse_call_details", caller, away))
     end
+    if scene.wreck ~= nil and scene.wreck.variant ~= nil and not scene.wreck.def.scenery then
+        scene.towReminderMs = RseConfig.TOW_REMINDER_MS
+    end
+    if scene.crossing ~= nil and scene.crossing.seconds ~= nil then
+        RseText.notify(RseText.get("rse_crossing_call", RseCrossingRules.clock(scene.crossing.seconds)), true)
+    end
     -- what the load is, while you can still choose what to bring
     if scene.wreck ~= nil and scene.wreck.load ~= nil then
         RseText.notify(RseText.get("rse_load_call_" .. scene.wreck.load.id))
@@ -567,7 +824,14 @@ function RseScenes:announceArrival(scene)
             count = count + 1
         end
     end
-    if scene.wreck ~= nil and scene.wreck.load ~= nil then
+    if scene.flock ~= nil then
+        RseText.notify(RseText.get("rse_flock_arrived", scene.flock.total))
+    elseif scene.wreck ~= nil and scene.wreck.def.treeOnCar then
+        RseText.notify(RseText.get("rse_tree_arrived", math.floor(RseConfig.TREE_RESCUE_MS / 60000 + 0.5),
+            RseText.money(RsePayRules.scaled(scene.wreck.def.rescueBonus, self.store ~= nil and self.store.settings.payFactor or 1))))
+    elseif scene.spill ~= nil then
+        RseText.notify(RseText.get("rse_logs_arrived", scene.spill.total))
+    elseif scene.wreck ~= nil and scene.wreck.load ~= nil then
         RseText.notify(RseText.get("rse_crash_arrivedLoad", #scene.wreck.bales))
         RseText.notify(RseText.get("rse_load_arrived_" .. scene.wreck.load.id))
     elseif scene.handover ~= nil and scene.line == nil then -- at a power line, the step's hint says what you find
@@ -582,25 +846,58 @@ function RseScenes:announceArrival(scene)
     end
 end
 
--- warning lights at the scene: beacons or hazards on any of the farm's vehicles near it, at any moment of the job, earn the bonus
-local function checkLights(scene)
-    if scene.lightsOn then
-        return
+local function hasAny(list)
+    return type(list) == "table" and next(list) ~= nil
+end
+
+-- Does the vehicle really have turn signal lamps? The game sets the hazard state on any vehicle, lamps or not (Lights.setTurnLightState).
+local function hasHazardLamps(spec)
+    local static = spec.staticLights or {}
+    if hasAny(static.turnLightsLeft) or hasAny(static.turnLightsRight) then
+        return true
     end
+    for _, setup in pairs(spec.realLights or {}) do
+        if type(setup) == "table" and (hasAny(setup.turnLightsLeft) or hasAny(setup.turnLightsRight)) then
+            return true
+        end
+    end
+    return false
+end
+
+-- are warning lights of yours on at the scene right now? Beacons or hazards that the vehicle really has: the game takes the beacon button on a vehicle
+-- with no beacons too (Lights.setBeaconLightsVisibility), and that counted (Z)
+local function lightsOnAt(scene)
     local range = RseConfig.LIGHTS_RANGE
     for _, vehicle in ipairs(g_currentMission.vehicleSystem ~= nil and g_currentMission.vehicleSystem.vehicles or {}) do
-        if vehicle.spec_lights ~= nil and vehicle.rootNode ~= nil and RseWrecks.byVehicle[vehicle] == nil then -- a wreck's own lights earn nothing
+        local spec = vehicle.spec_lights
+        -- a wreck's own lights earn nothing, nor the county crew's
+        if spec ~= nil and vehicle.rootNode ~= nil and RseWrecks.byVehicle[vehicle] == nil and not RseUtilityCrew:owns(vehicle) then
             local x, _, z = getWorldTranslation(vehicle.rootNode)
             if (x - scene.x) ^ 2 + (z - scene.z) ^ 2 <= range * range then
-                local beacons = vehicle.spec_lights.beaconLightsActive == true
-                local hazards = vehicle.getTurnLightState ~= nil and vehicle:getTurnLightState() == Lights.TURNLIGHT_HAZARD
+                local beacons = spec.beaconLightsActive == true and hasAny(spec.beaconLights)
+                local hazards = vehicle.getTurnLightState ~= nil and vehicle:getTurnLightState() == Lights.TURNLIGHT_HAZARD and hasHazardLamps(spec)
                 if beacons or hazards then
-                    scene.lightsOn = true
-                    RseLog.debug("scene %d: warning lights on", scene.id)
-                    return
+                    return true
                 end
             end
         end
+    end
+    return false
+end
+
+-- warning lights at the scene: kept on there LIGHTS_EARN_MS in all, at any time during the job, they earn the bonus. Until then the call panel shows
+-- whether they are on now.
+local function checkLights(scene, elapsed)
+    if scene.lightsOn then
+        scene.lightsLive = false
+        return
+    end
+    scene.lightsLive = lightsOnAt(scene)
+    scene.lightsState = scene.lightsState or {}
+    if RsePayRules.tickLights(scene.lightsState, elapsed, scene.lightsLive, RseConfig) == "earned" then
+        scene.lightsOn = true
+        RseLog.debug("scene %d: warning lights bonus earned", scene.id)
+        RseText.notify(RseText.get("rse_call_lightsEarned", math.floor(RseConfig.CALL_LIGHTS_BONUS * 100 + 0.5)))
     end
 end
 
@@ -658,31 +955,31 @@ function RseScenes:applyPayFactor(scene, paid)
     end
 end
 
--- the emergency ended before the road was clear (declined midway, cancelled, a save reloaded)
+-- The emergency ended before the job was done (out of time, handed over with nothing done, called off): no pay, and what is left at the scene waits for
+-- the county (Cleanup.lua). Dead animals you loaded or towed away stay yours.
 function RseScenes:abandon(scene)
     if scene.finished then
         return
     end
     scene.finished = true
     removePins(scene)
-    if scene.wreck ~= nil then
-        RseWrecks:remove(scene.wreck)
-    end
-    RsePowerLine:remove(scene)
-    RseSurvivors:remove(scene)
-    local removed = 0
+    local item = RseCleanup.newItem(scene)
+    item.wreck = scene.wreck
+    RsePowerLine:leaveBehind(scene, item)
+    RseLogSpill:leaveBehind(scene, item, false)
+    RseFlock:leaveBehind(scene, item)
+    RseSurvivors:leaveBehind(scene, item)
     for _, entry in ipairs(scene.entries) do
         if exists(entry) then
             entry.sceneId = nil
             if entry.sceneStatus ~= "loaded" and entry.sceneStatus ~= "away" then
-                RseCarcasses:remove(entry)
-                removed = removed + 1
+                table.insert(item.carcasses, entry)
             end
         end
     end
+    RseCleanup:add(item)
     self.scenes[scene.id] = nil
-    RseLog.info("scene %d (%s) ended before the road was clear: %d animal(s) removed from the scene", scene.id,
-        tostring(scene.label), removed)
+    RseLog.info("scene %d (%s) ended before the job was done", scene.id, tostring(scene.label))
     if self.onEnded ~= nil then
         self.onEnded(scene)
     end
@@ -751,6 +1048,23 @@ local function updateMarkers(scene)
     end
 end
 
+-- Z: with an animal left from an earlier job, the red marker led to that animal and not to the new call. Nothing of ours aims it there, so the cause isn't
+-- proven. While a job runs, none of our map markers may hold the game's map target: it goes back to the job's.
+local function keepTargetOnJob(self)
+    local mission = g_currentMission
+    local current = mission.currentMapTargetHotspot
+    if type(current) ~= "table" or current.rseMarker == nil or mission.setMapTargetHotspot == nil then
+        return
+    end
+    for _, scene in pairs(self.scenes) do
+        local hotspot = scene.scenario ~= nil and scene.scenario.mapHotspot or nil
+        if type(hotspot) == "table" and not scene.targetHidden then
+            RseLog.try("put the map target back", mission.setMapTargetHotspot, mission, hotspot)
+            return
+        end
+    end
+end
+
 -- Anything drawn every frame can take the whole GUI down (M1): not behind menus, and one failure switches it off.
 function RseScenes:draw()
     if self.drawFailed or next(self.scenes) == nil or (g_gui ~= nil and g_gui:getIsGuiVisible()) then
@@ -763,7 +1077,7 @@ function RseScenes:draw()
                 return
             end
         end
-        if not RseSurvivors:draw(scene) or not RsePowerLine:draw(scene) then
+        if not RseSurvivors:draw(scene) or not RsePowerLine:draw(scene) or not RseLogSpill:draw(scene) or not RseLevelCrossing:draw(scene) then
             self.drawFailed = true
             return
         end
@@ -783,7 +1097,7 @@ local function updateLeftBehind(self, dt)
     local warnings = {}
     for _, entry in ipairs(list) do
         entry.left = entry.left or { leftMs = 0 }
-        local exempt = entry.sceneId ~= nil or entry.resuming == true
+        local exempt = entry.sceneId ~= nil or entry.resuming == true or entry.crewTakes == true
         local isHeld = self:isLoaded(entry) or RseCarcassDrag.dragged == entry or RseStrap:isStrapped(entry)
         local held = not exempt and isHeld
         local x, _, z = getWorldTranslation(RseCarcasses:bodyNode(entry))
@@ -802,7 +1116,8 @@ local function updateLeftBehind(self, dt)
                 local title = RseText.get("rse_marker_left", RseText.animal(entry.kind))
                 entry.markerInfo = entry.markerInfo or { kind = "dead", entry = entry, title = title,
                     image = Utils.getFilename("icons/hud_fill_" .. entry.kind .. ".dds", RoadsideEmergencies.MOD_DIR) }
-                RseMarkers:show(entry, x, z, { name = title, image = "left", info = entry.markerInfo })
+                -- while a job runs it keeps quiet, so the only thing calling you is the job
+                RseMarkers:show(entry, x, z, { name = title, image = "left", info = entry.markerInfo, quiet = next(self.scenes) ~= nil })
             else
                 RseMarkers:hide(entry)
             end
@@ -842,7 +1157,7 @@ local function reportProgress(self, scene)
     end
     local wreck = scene.wreck
     if wreck ~= nil then
-        if not wreck.def.noVehicle then
+        if not wreck.def.noVehicle and not wreck.def.scenery then
             local towed = wreck.state == "ready" and not wreck.delivered and towShare(self, scene) or 0
             table.insert(parts, RseProgressRules.wreck(wreck.state, wreck.delivered, towed, wreck.def.tipped, RseConfig))
         end
@@ -851,6 +1166,12 @@ local function reportProgress(self, scene)
         end
         if scene.line ~= nil then
             table.insert(parts, RsePowerLine:share(scene))
+        end
+        if scene.spill ~= nil then
+            table.insert(parts, RseLogSpill:share(scene))
+        end
+        if scene.flock ~= nil then
+            table.insert(parts, RseFlock:share(scene))
         end
     end
     local progress = math.max(scene.progress or 0, RseProgressRules.scene(scene.arrived == true, parts, RseConfig))
@@ -890,6 +1211,22 @@ local function updatePointMarkers(self)
     end
 end
 
+-- A few seconds after yes, on its own: what the pager said about the vehicle (Z didn't see it among the messages that come with yes).
+local function remindTow(scene, elapsed)
+    if scene.towReminderMs == nil then
+        return
+    end
+    scene.towReminderMs = scene.towReminderMs - elapsed
+    if scene.towReminderMs > 0 then
+        return
+    end
+    scene.towReminderMs = nil
+    if scene.wreck ~= nil and scene.wreck.variant ~= nil then
+        RseText.notify(RseWrecks:towText(scene.wreck.variant), scene.wreck.variant.heavy == true)
+        RseLog.info("scene %d: told the player again what the vehicle takes", scene.id)
+    end
+end
+
 function RseScenes:update(dt)
     self.checkMs = self.checkMs + dt
     if self.checkMs < CHECK_INTERVAL_MS then
@@ -899,17 +1236,20 @@ function RseScenes:update(dt)
     self.checkMs = 0
     RseWrecks:removeResetCopies()
     for _, scene in pairs(self.scenes) do
+        remindTow(scene, elapsed)
         for _, entry in ipairs(scene.entries) do
             if exists(entry) then
                 judge(self, scene, entry, elapsed)
             end
         end
         updateMarkers(scene)
-        checkLights(scene)
+        checkLights(scene, elapsed)
         reportProgress(self, scene)
     end
     updateLeftBehind(self, elapsed)
     updatePointMarkers(self)
+    keepTargetOnJob(self)
+    RseCleanup:update(elapsed)
     if self.resuming ~= nil then
         self.resuming.timerMs = self.resuming.timerMs - elapsed
         if self.resuming.timerMs <= 0 then
@@ -935,6 +1275,11 @@ function RseScenes:nextSpot(onGround)
     if self.resuming ~= nil then
         local data = self.resuming.data
         return { x = data.x, y = data.y, z = data.z, dirX = 1, dirY = 0, dirZ = 0 }
+    end
+    if self.spotExact ~= nil then
+        local exact = self.spotExact
+        self.spotExact = nil
+        return exact
     end
     local near = self.spotNear
     self.spotNear = nil
@@ -973,7 +1318,10 @@ function RseScenes:saveData()
     return { id = scene.emergency, label = scene.label, x = scene.x, y = scene.y, z = scene.z, kinds = scene.kinds,
         wreck = scene.wreck ~= nil and RseWrecks:saveData(scene.wreck) or nil, survivors = RseSurvivors:saveData(scene),
         reward = scene.wreck ~= nil and scene.reward or nil, arrived = scene.arrived == true, led = scene.led,
-        balesIn = scene.wreck ~= nil and scene.wreck.balesIn or 0, line = RsePowerLine:saveData(scene) }
+        balesIn = scene.wreck ~= nil and scene.wreck.balesIn or 0, line = RsePowerLine:saveData(scene), logs = RseLogSpill:saveData(scene),
+        flock = RseFlock:saveData(scene),
+        crossing = RseLevelCrossing:saveData(scene),
+        rescueMs = scene.rescueMs, rescueNoted = scene.rescueNoted, rescueEarned = scene.rescueEarned }
 end
 
 function RseScenes:isResuming()
@@ -1023,12 +1371,41 @@ function RseScenes:adopt()
             yaw = saved.ry, rx = saved.rx, rz = saved.rz }
         local def = RseConfig.WRECKS[saved.kind]
         local load = RseWreckRules.loadById(def, saved.load, RseConfig)
-        scene.wreck = RseWrecks:spawn(saved.kind, position, saved.state, saved.bales, saved.delivered, load)
+        scene.wreck = RseWrecks:spawn(saved.kind, position, saved.state, saved.bales, saved.delivered, load, RseWreckRules.variantByFile(def, saved.file))
         if def.line and data.line ~= nil then
             RseLog.try("bring back the power line", RsePowerLine.restore, RsePowerLine, scene, data.line)
         end
-        for _, animal in ipairs(data.survivors or {}) do
-            RseSurvivors:spawn(scene, animal.kind, { animal })
+        if def.water then
+            RseRiver:noteLast(data.x, data.z)
+        end
+        if def.flock ~= nil then
+            RseFlockPlaces:noteLast(data.x, data.z)
+        end
+        if def.crossing then
+            local ok, found = false, false
+            if data.crossing ~= nil then
+                ok, found = RseLog.try("bring back the crossing", RseLevelCrossing.restore, RseLevelCrossing, scene, data.crossing)
+            end
+            if not (ok and found) then
+                scene.wreck.failed = true
+            end
+        end
+        if def.logs ~= nil and (data.logs == nil or not RseLog.try("bring back the logs", RseLogSpill.restore, RseLogSpill, scene, data.logs)) then
+            scene.wreck.failed = true -- the job can't go on without them: the call is cancelled, with no pay and no penalty
+        end
+        if def.treeOnCar then
+            scene.wreck.waitForTree = scene
+            -- a driver already out isn't paid for twice
+            scene.rescueMs, scene.rescueNoted, scene.rescueEarned = data.rescueMs, data.rescueNoted, data.rescueEarned
+        end
+        if def.flock ~= nil then
+            if data.flock == nil or not RseLog.try("bring back the flock", RseFlock.restore, RseFlock, scene, data.flock, data.survivors or {}) then
+                scene.wreck.failed = true
+            end
+        else
+            for _, animal in ipairs(data.survivors or {}) do
+                RseSurvivors:spawn(scene, animal.kind, { animal })
+            end
         end
         -- fixed when the job began: bales and animals already brought in still count
         scene.haulPay = haulPayFrom(self, def, data.x, data.z)
@@ -1049,25 +1426,34 @@ function RseScenes:adopt()
     return scene
 end
 
--- the saved call can't come back: its animals still at the scene go, what is loaded or towed away stays, its items are owed
+-- The saved call can't come back: its animals still at the scene and its logs wait for the county (Cleanup.lua; the game has put the logs back from the
+-- savegame), what is loaded or towed away stays, its items are owed. Nothing else of it is in the world: the rest only came back with the call.
 function RseScenes:cancelResume(reason)
     local resuming = self.resuming
     self.resuming = nil
-    local removed = 0
+    local data = resuming.data
+    local item = RseCleanup.newItem(data)
     for _, entry in ipairs(resuming.entries) do
         entry.resuming = nil
         if exists(entry) then
             local x, _, z = getWorldTranslation(RseCarcasses:bodyNode(entry))
             local status = RseRoadClearRule.status({ x = x, z = z, loaded = self:isLoaded(entry), atRest = false },
-                { x = resuming.data.x, z = resuming.data.z }, RseConfig)
+                { x = data.x, z = data.z }, RseConfig)
             if status ~= "loaded" and status ~= "away" then
-                RseCarcasses:remove(entry)
-                removed = removed + 1
+                table.insert(item.carcasses, entry)
             end
         end
     end
+    RseCleanup:add(item)
+    local logs = {}
+    for _, list in ipairs({ data.logs ~= nil and data.logs.pieces or {}, data.line ~= nil and data.line.pieces or {} }) do
+        for _, place in ipairs(list) do
+            table.insert(logs, { x = place.x, y = place.y, z = place.z })
+        end
+    end
+    RseCleanup:findLater(data.x, data.z, logs)
     RseText.notify(RseText.get("rse_scene_resumeFailed"), true)
-    RseLog.info("the call in progress could not come back (%s): %d animal(s) removed from the scene", tostring(reason), removed)
+    RseLog.info("the call in progress could not come back (%s): %d animal(s) and %d log(s) left for the county", tostring(reason), #item.carcasses, #logs)
     if self.onEnded ~= nil then
         self.onEnded({ id = "resume" })
     end
@@ -1089,9 +1475,15 @@ end
 
 -- while the map unloads: the carcasses go with RseCarcasses:unload
 function RseScenes:unload()
+    RseLog.try("clear up what jobs left", RseCleanup.unload, RseCleanup)
+    RseLog.try("unload the crossing", RseLevelCrossing.unload, RseLevelCrossing)
+    RseLog.try("unload the pager text", RseEpBridge.unload)
+    RseLog.try("unload the sounds", RseSound.unload, RseSound)
+    RseLog.try("unload the logs", RseLogSpill.unload, RseLogSpill)
     RseLog.try("unload the power line", RsePowerLine.unload, RsePowerLine)
     for _, scene in pairs(self.scenes) do
         removePins(scene)
+        RseLog.try("take down the pen", RseFlock.remove, RseFlock, scene)
         RseLog.try("remove the live animals", RseSurvivors.remove, RseSurvivors, scene)
     end
     self.drawFailed = false

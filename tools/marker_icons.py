@@ -6,6 +6,7 @@ draws every marker in the colour stored on it and overrides anything set on the 
   mod/icons/marker_loose          a loose animal
   mod/icons/marker_left           a dead animal left behind
   mod/icons/marker_kit            your cones and barricades
+  mod/icons/marker_flockPen       the pen a flock goes into
 
   mod/icons/map_dropoff           the picture in a drop-off point's map box
 
@@ -89,6 +90,15 @@ def cone():
     return img
 
 
+def pen():
+    img, d, size = disc(GREEN)
+    width = size * 0.075
+    # a ring of hurdles, open at the bottom, seen from above
+    box = (size * 0.24, size * 0.24, size * 0.76, size * 0.76)
+    d.arc(box, start=125, end=55, fill=WHITE, width=int(width))
+    return img
+
+
 def dropoff_picture():
     """The picture in a drop-off point's map box: a container with an arrow going in."""
     size = 256 * SCALE
@@ -114,6 +124,7 @@ def images():
     jobs["left"] = letter("!", RED)
     jobs["loose"] = animal()
     jobs["kit"] = cone()
+    jobs["flockPen"] = pen()
     return jobs
 
 

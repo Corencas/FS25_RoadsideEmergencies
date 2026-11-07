@@ -2,7 +2,8 @@
 -- its own, as the game's text boxes do, so the arrow keys work it instead of turning the camera, and the player stands still: Up and Down choose a row, Left
 -- and Right change it, Enter confirms, H or Esc closes. It also adds and removes your own drop-off points, returns the settings to default, and hands the
 -- job in progress to another contractor at any moment.
--- It also shows the guide (core/Guide.lua), a page at a time with the same keys: by itself once in a new savegame, and from its first row whenever you want it.
+-- It also shows the guide (core/Guide.lua), a screen at a time with the same keys: from the welcome dialog's Guide button, and from its first row whenever you
+-- want it. A page with more than fits on one screen goes on over the next (RseGuide.layout), laid out once each time the guide opens.
 -- A panel of our own rather than a tab in the game's menu: patching that menu is what broke it in 0.1.0.0, and a panel can't. It draws only while open, not
 -- behind menus, and one failure switches it off for the session. Opening and closing wait for the next update, away from the input being handled, and it
 -- closes by itself after a long time without input, so that no failure can leave the player without controls.
@@ -14,7 +15,8 @@ RseSettingsPanel = {
     wantsGuide = false,
     guide = false,       -- showing the guide rather than the settings
     guideFromPanel = false,
-    page = 1,
+    page = 1,            -- the guide's screen: a page, or part of one
+    screens = nil,       -- the guide laid out on screens (RseGuide.layout), from when it is first drawn
     introMs = nil,
     index = 1,
     idleMs = 0,
@@ -55,6 +57,7 @@ function RseSettingsPanel:init(store)
     self.isOpen, self.wantsOpen, self.wantsClose, self.wantsGuide, self.guide = false, false, false, false, false
     self.index, self.page = 1, 1
     self.introMs = RseConfig.GUIDE_INTRO_DELAY_MS
+    self.introDone = false
     self.drawFailed = false
 end
 
@@ -83,16 +86,24 @@ function RseSettingsPanel:requestOpen()
     self.wantsOpen = true
 end
 
--- the guide opens by itself once in a savegame, the first time you are on foot with nothing else on the screen
+-- The welcome dialog opens once for each player (Welcome.lua), the first time you are on foot with nothing else on the screen. It replaces the guide
+-- opening by itself once in each savegame; its Guide button opens the guide.
 local function checkIntro(self, dt)
-    if self.store == nil or self.store.settings.guideSeen or self.isOpen or self.wantsOpen or self.drawFailed then
+    if self.store == nil or self.introDone or self.isOpen or self.wantsOpen or self.drawFailed then
         return
     end
     self.introMs = (self.introMs or RseConfig.GUIDE_INTRO_DELAY_MS) - dt
     if self.introMs > 0 or g_localPlayer == nil or g_localPlayer:getCurrentVehicle() ~= nil or (g_gui ~= nil and g_gui:getIsGuiVisible()) then
         return
     end
-    self.store:apply("setGuideSeen", { seen = true })
+    self.introDone = true
+    if RseWelcome:shouldShow(RoadsideEmergencies.packFound == true) then
+        RseLog.try("the welcome dialog", RseWelcome.show, RseWelcome)
+    end
+end
+
+-- the guide, from the welcome dialog's Guide button
+function RseSettingsPanel:openGuide()
     self.wantsOpen, self.wantsGuide = true, true
 end
 
@@ -110,7 +121,7 @@ function RseSettingsPanel:update(dt)
         if not self.isOpen and self.store ~= nil and not self.drawFailed then
             self.isOpen = RseLog.try("open the settings panel", enterInput, self) == true
             self.index, self.idleMs, self.held = 1, 0, {}
-            self.guide, self.guideFromPanel, self.page = self.wantsGuide, false, 1
+            self.guide, self.guideFromPanel, self.page, self.screens = self.wantsGuide, false, 1, nil
             self.wantsGuide = false
         end
     elseif self.isOpen then
@@ -119,6 +130,11 @@ function RseSettingsPanel:update(dt)
             self.wantsClose = true
         end
     end
+end
+
+-- how many screens the guide has: its pages until it has been laid out
+local function guideCount(self)
+    return self.screens ~= nil and #self.screens or #RseGuide.PAGES
 end
 
 -- the selected row; the last row can go away while the panel is open
@@ -167,7 +183,7 @@ function RseSettingsPanel:onUpDown(_, inputValue)
         return
     end
     if self.guide then
-        self.page = RseGuide.turn(self.page, -sign)
+        self.page = RseGuide.turn(self.page, -sign, guideCount(self))
         return
     end
     local list = rows()
@@ -234,7 +250,7 @@ end
 function RseSettingsPanel:onLeftRight(_, inputValue)
     local sign = arrowStep(self, "leftRight", inputValue)
     if sign ~= nil and self.guide then
-        self.page = RseGuide.turn(self.page, sign)
+        self.page = RseGuide.turn(self.page, sign, guideCount(self))
         return
     end
     local row = currentRow(self, rows())
@@ -250,8 +266,8 @@ end
 function RseSettingsPanel:onAccept()
     self.idleMs = 0
     if self.guide then
-        if self.page < #RseGuide.PAGES then
-            self.page = RseGuide.turn(self.page, 1)
+        if self.page < guideCount(self) then
+            self.page = RseGuide.turn(self.page, 1, guideCount(self))
         else
             self:onClose()
         end
@@ -259,7 +275,7 @@ function RseSettingsPanel:onAccept()
     end
     local row = currentRow(self, rows())
     if row.action == "guide" then
-        self.guide, self.guideFromPanel, self.page = true, true, 1
+        self.guide, self.guideFromPanel, self.page, self.screens = true, true, 1, nil
     elseif row.action == "handOver" then
         RseScenes:handOver()
         self.wantsClose = true
@@ -283,7 +299,11 @@ local function valueText(self, row)
         end
         return string.format("%d: %s", RsePoints:numberOf(point) or 0, point.name)
     elseif row.action == "handOver" then
-        return RseText.get(RseScenes:handOverPays() and "rse_set_handOverPaid" or "rse_set_handOverNone")
+        if RseScenes:handOverPays() then
+            return RseText.get("rse_set_handOverPaid")
+        end
+        local fee = RseScenes:handOverFee()
+        return fee > 0 and RseText.get("rse_set_handOverFee", RseText.money(fee)) or RseText.get("rse_set_handOverNone")
     elseif row.action ~= nil then
         return ""
     end
@@ -292,6 +312,8 @@ local function valueText(self, row)
         return RseText.get(value and "rse_set_on" or "rse_set_off")
     elseif row.kind == "size" then
         return RseText.get("rse_set_size_" .. tostring(value))
+    elseif row.kind == "frequency" then
+        return RseText.get("rse_set_frequency_" .. tostring(value))
     elseif row.kind == "percent" then
         return string.format("%d %%", math.floor((value or 0) * 100 + 0.5))
     elseif row.kind == "minutes" then
@@ -301,7 +323,7 @@ local function valueText(self, row)
 end
 
 -- sizes in pixels at 1920 x 1080
-local PANEL_WIDTH, ROW_HEIGHT, TITLE_HEIGHT, HELP_HEIGHT, MARGIN = 680, 34, 46, 34, 18
+local PANEL_WIDTH, ROW_HEIGHT, TITLE_HEIGHT, HELP_HEIGHT, MARGIN, STRIPE_HEIGHT = 680, 34, 46, 34, 18, 6
 local TEXT_SIZE, TITLE_SIZE, HELP_SIZE = 0.0135, 0.017, 0.0115
 
 local function drawPanel(self)
@@ -310,10 +332,11 @@ local function drawPanel(self)
     currentRow(self, list)
     local width, height = PANEL_WIDTH * sx, (TITLE_HEIGHT + #list * ROW_HEIGHT + HELP_HEIGHT + MARGIN) * sy
     local left, bottom = 0.5 - width / 2, 0.5 - height / 2
-    drawFilledRect(left, bottom, width, height, 0, 0, 0, 0.78)
+    RseDraw.rect(RseTheme.PANEL, left, bottom, width, height)
+    RseDraw.stripeAt(left, bottom + height - STRIPE_HEIGHT * sy, width, STRIPE_HEIGHT * sy)
     setTextBold(true)
     setTextAlignment(RenderText.ALIGN_LEFT)
-    setTextColor(1, 1, 1, 1)
+    RseDraw.textColor(RseTheme.ACCENT)
     local y = bottom + height - TITLE_HEIGHT * sy
     renderText(left + MARGIN * sx, y + 12 * sy, TITLE_SIZE, RseText.get("rse_set_title"))
     setTextBold(false)
@@ -321,9 +344,9 @@ local function drawPanel(self)
         y = y - ROW_HEIGHT * sy
         local selected = i == self.index
         if selected then
-            drawFilledRect(left, y, width, ROW_HEIGHT * sy, 0.36, 0.72, 0.1, 0.55)
+            RseDraw.selectedRow(left, y, width, ROW_HEIGHT * sy, sx)
         end
-        setTextColor(1, 1, 1, selected and 1 or 0.8)
+        RseDraw.textColor(RseTheme.TEXT, selected and 1 or 0.8)
         setTextAlignment(RenderText.ALIGN_LEFT)
         renderText(left + MARGIN * sx, y + 10 * sy, TEXT_SIZE, RseText.get(row.textKey))
         local value = valueText(self, row)
@@ -335,45 +358,79 @@ local function drawPanel(self)
             renderText(left + width - MARGIN * sx, y + 10 * sy, TEXT_SIZE, value)
         end
     end
-    setTextColor(1, 1, 1, 0.7)
+    RseDraw.textColor(RseTheme.TEXT_MUTED)
     setTextAlignment(RenderText.ALIGN_LEFT)
     renderText(left + MARGIN * sx, bottom + (MARGIN + 2) * sy, HELP_SIZE, RseText.get("rse_set_help"))
     setTextColor(1, 1, 1, 1)
 end
 
 -- sizes in pixels at 1920 x 1080
-local GUIDE_WIDTH, GUIDE_HEIGHT, GUIDE_GAP = 860, 520, 16
+local GUIDE_WIDTH, GUIDE_HEIGHT, GUIDE_GAP = 940, 640, 14
 local GUIDE_TEXT_SIZE, GUIDE_HEADING_SIZE = 0.0155, 0.0175
 
--- one page of the guide. Lines wrap downward from where they start.
-local function drawGuide(self)
+-- the guide's frame on screen: where it is, and where its lines go (from top, down to floor)
+local function guideFrame()
     local sx, sy = (1 / 1920) * ((16 / 9) / g_screenAspectRatio), 1 / 1080
     local width, height = GUIDE_WIDTH * sx, GUIDE_HEIGHT * sy
     local left, bottom = 0.5 - width / 2, 0.5 - height / 2
+    local top = bottom + height - (TITLE_HEIGHT + ROW_HEIGHT + MARGIN) * sy
+    local floor = bottom + (2 * MARGIN + 2) * sy + HELP_SIZE
+    return sx, sy, left, bottom, width, height, top, floor
+end
+
+-- every page's lines measured at the guide's width, then split over screens: done once each time the guide opens, as the texts (and the keys they name)
+-- may have changed since
+local function layOutGuide(self, sx, sy, width, top, floor)
+    setTextWrapWidth(width - 2 * MARGIN * sx)
+    local heights = {}
+    for i, page in ipairs(RseGuide.PAGES) do
+        heights[i] = {}
+        for j, key in ipairs(page.lines) do
+            heights[i][j] = getTextHeight(GUIDE_TEXT_SIZE, RseText.get(key))
+        end
+    end
+    setTextWrapWidth(0)
+    self.screens = RseGuide.layout(heights, top - floor, GUIDE_GAP * sy)
+    self.page = math.max(1, math.min(self.page, #self.screens))
+end
+
+-- one screen of the guide. Lines wrap downward from where they start.
+local function drawGuide(self)
+    local sx, sy, left, bottom, width, height, top, floor = guideFrame()
+    if self.screens == nil then
+        layOutGuide(self, sx, sy, width, top, floor)
+    end
+    local screen = self.screens[self.page]
+    local page = RseGuide.PAGES[screen.page]
     local x = left + MARGIN * sx
-    local page = RseGuide.PAGES[self.page]
-    drawFilledRect(left, bottom, width, height, 0, 0, 0, 0.78)
+    RseDraw.rect(RseTheme.PANEL, left, bottom, width, height)
+    RseDraw.stripeAt(left, bottom + height - STRIPE_HEIGHT * sy, width, STRIPE_HEIGHT * sy)
     setTextAlignment(RenderText.ALIGN_LEFT)
-    setTextColor(1, 1, 1, 1)
+    RseDraw.textColor(RseTheme.ACCENT)
     setTextBold(true)
     local y = bottom + height - TITLE_HEIGHT * sy
     renderText(x, y + 12 * sy, TITLE_SIZE, RseText.get("rse_guide_title"))
     setTextBold(false)
     y = y - ROW_HEIGHT * sy
-    drawFilledRect(left, y, width, ROW_HEIGHT * sy, 0.36, 0.72, 0.1, 0.55)
-    renderText(x, y + 9 * sy, GUIDE_HEADING_SIZE, RseText.get(page.title))
-    y = y - MARGIN * sy
+    RseDraw.selectedRow(left, y, width, ROW_HEIGHT * sy, sx)
+    RseDraw.textColor(RseTheme.TEXT)
+    local heading = RseText.get(page.title)
+    if screen.parts > 1 then
+        heading = RseText.get("rse_guide_part", heading, screen.part, screen.parts)
+    end
+    renderText(x, y + 9 * sy, GUIDE_HEADING_SIZE, heading)
+    y = top
     setTextWrapWidth(width - 2 * MARGIN * sx)
-    for _, key in ipairs(page.lines) do
-        local text = RseText.get(key)
+    for i = screen.first, screen.last do
+        local text = RseText.get(page.lines[i])
         renderText(x, y - GUIDE_TEXT_SIZE, GUIDE_TEXT_SIZE, text)
         y = y - getTextHeight(GUIDE_TEXT_SIZE, text) - GUIDE_GAP * sy
     end
     setTextWrapWidth(0)
-    setTextColor(1, 1, 1, 0.7)
+    RseDraw.textColor(RseTheme.TEXT_MUTED)
     renderText(x, bottom + (MARGIN + 2) * sy, HELP_SIZE, RseText.get("rse_guide_help"))
     setTextAlignment(RenderText.ALIGN_RIGHT)
-    renderText(left + width - MARGIN * sx, bottom + (MARGIN + 2) * sy, HELP_SIZE, RseText.get("rse_guide_page", self.page, #RseGuide.PAGES))
+    renderText(left + width - MARGIN * sx, bottom + (MARGIN + 2) * sy, HELP_SIZE, RseText.get("rse_guide_page", self.page, #self.screens))
     setTextAlignment(RenderText.ALIGN_LEFT)
     setTextColor(1, 1, 1, 1)
 end

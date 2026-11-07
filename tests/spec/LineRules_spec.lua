@@ -108,6 +108,23 @@ describe("RseLineRules", function()
             expectTrue(not state.warned)
             expectTrue(not state.penalized)
         end)
+
+        it("waits for a crew truck on its way, with the timer only behind it", function()
+            local crewConfig = { LINE_POWER_CUT_MS = 10000, LINE_CREW_BACKSTOP_MS = 30000, LINE_DANGER_GRACE_MS = 3000 }
+            local state, crew = {}, { underway = true }
+            expectEqual(RseLineRules.tickPower(state, 20000, false, crewConfig, crew), nil, "past the old timer: the crew is not there yet")
+            crew.done = true
+            expectEqual(RseLineRules.tickPower(state, 100, false, crewConfig, crew), "off", "the crew has cut it")
+            state = {}
+            expectEqual(RseLineRules.tickPower(state, 30000, false, crewConfig, { underway = true }), "off", "held up somewhere: off anyway")
+            state = {}
+            expectEqual(RseLineRules.tickPower(state, 10000, false, crewConfig, { underway = false }), "off", "no truck could come: the timer")
+        end)
+
+        it("says how long the crew truck still needs", function()
+            expectEqual(RseLineRules.secondsLeft({ liveMs = 0 }, config, { underway = true, secondsLeft = 42 }), 42)
+            expectEqual(RseLineRules.secondsLeft({ liveMs = 0 }, config, { underway = false, secondsLeft = 42 }), 10, "no truck: the timer")
+        end)
     end)
 
     describe("the layout", function()
@@ -136,6 +153,17 @@ describe("RseLineRules", function()
             for _, wire in ipairs(layout.wires) do
                 expectTrue(layout.standing[wire.pole] ~= nil)
             end
+        end)
+
+        it("has other layouts to try where the usual one doesn't fit, the preferred side first (Z: a pole in a building)", function()
+            local shapes = RseLineRules.shapes(1, RseConfig)
+            expectEqual(#shapes, 2 * #RseConfig.LINE_STANDING_SIDES * #RseConfig.LINE_STANDING_ALONGS)
+            expectEqual(shapes[1].side, 1, "the preferred side first")
+            expectEqual(shapes[1].standingSide, RseConfig.LINE_STANDING_SIDE, "at the usual distance")
+            expectEqual(shapes[#shapes].side, -1, "the other side last")
+            local layout = RseLineRules.layout(0, 0, 1, 0, 1, 2, RseConfig, { standingSide = 10.5, along = { -30, 30 } })
+            expectNear(layout.standing[1].x, -30, 1e-6, "along the road as asked")
+            expectNear(math.abs(layout.standing[1].z), 10.5, 1e-6, "out from the lane as asked")
         end)
     end)
 end)
