@@ -42,7 +42,7 @@ read_globals = {
     "getMaterial", "setMaterial", "setMaterialDiffuseMapFromFile", "getWorldRotation", "entityExists",
     "setCollisionFilterGroup", "setCollisionFilterMask", "XMLSchema", "XMLFile", "ForestryRope",
     "raycastClosest", "CollisionFlag", "g_cameraManager", "localDirectionToWorld", "worldDirectionToLocal", "worldToLocal",
-    "getAngularVelocity", "getVelocityAtWorldPos", "getLinearVelocity", "createAudioSource", "getAudioSourceSample", "setAudioSourceAutoPlay", "setSampleGroup", "playSample", "AudioGroup",
+    "getAngularVelocity", "getVelocityAtWorldPos", "getLinearVelocity", "createAudioSource", "createSample", "loadSample", "getAudioSourceSample", "setAudioSourceAutoPlay", "setSampleGroup", "playSample", "AudioGroup",
     "setDirection", "getRotation", "getIsSplitShapeSplit", "getCenterOfMass", "getSplitShapeStats", "removeFromPhysics", "getParent", "VehicleConfigurationItem", "g_vehicleConfigurationManager", "AttacherJoints",
     "getShapeBoundingSphere", "getHasShaderParameter", "setShaderParameter", "getVisibility", "getTranslation",
     "g_inputBinding", "InputAction", "GS_PRIO_VERY_HIGH", "renderText", "setTextAlignment", "RenderText",

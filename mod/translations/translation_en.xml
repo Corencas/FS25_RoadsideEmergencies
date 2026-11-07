@@ -108,6 +108,7 @@
         <text name="rse_set_size_random" text="Random"/>
         <text name="rse_set_calls" text="County dispatch calls by itself"/>
         <text name="rse_set_frequency" text="How often calls come"/>
+        <text name="rse_set_pagerSound" text="Pager sound"/>
         <text name="rse_set_frequency_rare" text="Rarely"/>
         <text name="rse_set_frequency_normal" text="Normal"/>
         <text name="rse_set_frequency_often" text="Often"/>
@@ -387,7 +388,7 @@
         <text name="rse_guide_tools_5" text="Some calls take one thing more. Big bales need a bale fork, bale grab, bale loader or forklift. Storm damage needs a trailer or a pickup bed. A livestock trailer crash needs your own livestock trailer."/>
         <text name="rse_guide_tools_6" text="The pager says what a job takes before you answer. If your equipment is at the other end of the map, say no: that costs nothing."/>
         <text name="rse_guide_title_calls" text="A call, step by step"/>
-        <text name="rse_guide_calls_1" text="A pager asks whether you will take the call. It says what happened and, a line each: where it is, what is there (the animals, or the vehicle and its load), what the job takes and which of your vehicles can do it, how long you have, and about what it pays. Saying no costs nothing."/>
+        <text name="rse_guide_calls_1" text="A pager beeps and asks whether you will take the call. It says what happened and, a line each: where it is, what is there (the animals, or the vehicle and its load), what the job takes and which of your vehicles can do it, how long you have, and about what it pays. Saying no costs nothing."/>
         <text name="rse_guide_calls_2" text="Say yes and follow the marker on your map. The call panel at the right of the screen lists the job's steps and ticks each one off, and shows the way to go, the time that counts and about what the job pays. Pins over the scene show each animal or log you still have to deal with."/>
         <text name="rse_guide_calls_3" text="Get there in time: a call you haven't reached after 20 minutes of play goes to another contractor, with a warning 5 minutes before (you can change the time in the settings). Once you have reached the scene, the call stays yours, except at a railroad crossing, where the train sets the clock."/>
         <text name="rse_guide_calls_4" text="Traffic stops behind whatever blocks the road, so the road stays shut until you clear it. The game may take away a car that has been stuck for a long time."/>
@@ -469,7 +470,7 @@
         <text name="rse_guide_markers_4" text="You can turn the map markers off in the settings."/>
         <text name="rse_guide_title_settings" text="Settings"/>
         <text name="rse_guide_settings_1" text="On foot, {key:RSE_SETTINGS} opens the settings. Up and Down choose a row, Left and Right change it, Enter confirms, and {key:RSE_SETTINGS} or Esc closes."/>
-        <text name="rse_guide_settings_2" text="The rows: whether dispatch calls by itself; how often calls come; animal calls; wreck and spilled load calls; job size (how many animals or bales: small, normal, large or random); income (50% to 200%); disposal fees and county bills (0% to 200%); when the county collects what you leave behind; when another contractor takes over a call you haven't reached; map markers; and the call panel."/>
+        <text name="rse_guide_settings_2" text="The rows: whether dispatch calls by itself; how often calls come; the pager's beeps; animal calls; wreck and spilled load calls; job size (how many animals or bales: small, normal, large or random); income (50% to 200%); disposal fees and county bills (0% to 200%); when the county collects what you leave behind; when another contractor takes over a call you haven't reached; map markers; and the call panel."/>
         <text name="rse_guide_settings_3" text="Your settings are kept with the savegame, and a new savegame starts with the ones you used last. &quot;Return all settings to default&quot; keeps your drop-off points."/>
         <text name="rse_guide_title_mods" text="Works well with"/>
         <text name="rse_guide_mods_1" text="You don't need any of these mods, but they suit the work. The ones named here have been tested with Roadside Emergencies."/>

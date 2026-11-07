@@ -239,6 +239,7 @@ function RseCalls:update(dt, store)
     RseRiver:update()
     RseFlockPlaces:update()
     RseEpBridge.checkPager(dt)
+    RseEpBridge.ring(dt, store ~= nil and store.settings.pagerSound ~= false)
     watchTwister(self, store, dt)
     if self.crossingWaitMs ~= nil then
         RseLog.try("wait for the crossing call", waitForCrossing, self, store, dt)

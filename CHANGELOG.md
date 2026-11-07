@@ -2,6 +2,10 @@
 
 Versions match the mod's version in the game.
 
+## 0.9.9.4
+
+- **The pager beeps** when a call comes in, at the game's interface volume. The settings (`H`) can turn it off.
+
 ## 0.9.9.3: first public beta
 
 **Requires the free Emergency Pack DLC.** Everything is new.

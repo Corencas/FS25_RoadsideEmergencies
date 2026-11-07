@@ -5,6 +5,7 @@ RseSettings = {
     ROWS = {
         { key = "callsEnabled", textKey = "rse_set_calls", kind = "onOff", values = { true, false }, default = true, legacy = true },
         { key = "callFrequency", textKey = "rse_set_frequency", kind = "frequency", values = { "rare", "normal", "often" }, default = "normal" },
+        { key = "pagerSound", textKey = "rse_set_pagerSound", kind = "onOff", values = { true, false }, default = true },
         { key = "animalCalls", textKey = "rse_set_animalCalls", kind = "onOff", values = { true, false }, default = true },
         { key = "wreckCalls", textKey = "rse_set_wreckCalls", kind = "onOff", values = { true, false }, default = true },
         { key = "jobSize", textKey = "rse_set_jobSize", kind = "size", values = { "small", "normal", "large", "random" }, default = "normal", legacy = true },

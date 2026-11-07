@@ -109,6 +109,7 @@
         <text name="rse_set_size_random" text="Zufällig"/>
         <text name="rse_set_calls" text="Leitstelle ruft von selbst an"/>
         <text name="rse_set_frequency" text="Wie oft Einsätze kommen"/>
+        <text name="rse_set_pagerSound" text="Pager-Ton"/>
         <text name="rse_set_frequency_rare" text="Selten"/>
         <text name="rse_set_frequency_normal" text="Normal"/>
         <text name="rse_set_frequency_often" text="Oft"/>
@@ -388,7 +389,7 @@
         <text name="rse_guide_tools_5" text="Manche Einsätze brauchen noch etwas mehr. Große Ballen brauchen eine Ballengabel, Ballenzange, einen Ballenlader oder Gabelstapler. Sturmschäden brauchen einen Anhänger oder eine Pickup-Ladefläche. Ein Viehtransporter-Unfall braucht deinen eigenen Viehanhänger."/>
         <text name="rse_guide_tools_6" text="Der Pager sagt vor deiner Antwort, was der Auftrag braucht. Steht deine Ausrüstung am anderen Ende der Karte, lehne einfach ab: Das kostet nichts."/>
         <text name="rse_guide_title_calls" text="Ein Einsatz, Schritt für Schritt"/>
-        <text name="rse_guide_calls_1" text="Ein Pager fragt, ob du den Einsatz übernimmst. Er sagt, was passiert ist, und je eine Zeile: wo es ist, was dort ist (die Tiere, oder das Fahrzeug und seine Ladung), was der Auftrag braucht und welches deiner Fahrzeuge das kann, wie viel Zeit du hast und etwa die Bezahlung. Absagen kostet nichts."/>
+        <text name="rse_guide_calls_1" text="Ein Pager piept und fragt, ob du den Einsatz übernimmst. Er sagt, was passiert ist, und je eine Zeile: wo es ist, was dort ist (die Tiere, oder das Fahrzeug und seine Ladung), was der Auftrag braucht und welches deiner Fahrzeuge das kann, wie viel Zeit du hast und etwa die Bezahlung. Absagen kostet nichts."/>
         <text name="rse_guide_calls_2" text="Sag zu und folge der Markierung auf der Karte. Die Einsatzanzeige rechts am Bildschirm listet die Schritte des Auftrags auf, hakt jeden ab und zeigt den Weg, die Zeit, die zählt, und etwa die Bezahlung. Pins über dem Einsatzort zeigen jedes Tier und jeden Stamm, um die du dich noch kümmern musst."/>
         <text name="rse_guide_calls_3" text="Sei rechtzeitig da: Einen Einsatz, den du nach 20 Minuten Spielzeit nicht erreicht hast, übernimmt ein anderer Dienstleister; 5 Minuten vorher wirst du gewarnt (die Zeit stellst du in den Einstellungen ein). Bist du einmal am Einsatzort, bleibt der Einsatz deiner, außer an einem Bahnübergang, wo der Zug die Uhr vorgibt."/>
         <text name="rse_guide_calls_4" text="Der Verkehr hält vor allem an, was die Straße blockiert; sie bleibt also gesperrt, bis du sie räumst. Ein Auto, das lange feststeckt, kann das Spiel entfernen."/>
@@ -470,7 +471,7 @@
         <text name="rse_guide_markers_4" text="Die Kartenmarkierungen schaltest du in den Einstellungen ab."/>
         <text name="rse_guide_title_settings" text="Einstellungen"/>
         <text name="rse_guide_settings_1" text="Zu Fuß öffnet {key:RSE_SETTINGS} die Einstellungen. Hoch und Runter wählen eine Zeile, Links und Rechts ändern sie, Eingabe bestätigt, {key:RSE_SETTINGS} oder Esc schließt."/>
-        <text name="rse_guide_settings_2" text="Die Zeilen: ob die Leitstelle von selbst anruft; wie oft Einsätze kommen; Einsätze mit Tieren; Einsätze mit Wracks und verlorener Ladung; Einsatzgröße (wie viele Tiere oder Ballen: klein, normal, groß oder zufällig); Einkommen (50 % bis 200 %); Entsorgungsgebühren und Rechnungen des Landkreises (0 % bis 200 %); wann der Landkreis Zurückgelassenes abholt; wann ein anderer Dienstleister einen nicht erreichten Einsatz übernimmt; Kartenmarkierungen; und die Einsatzanzeige."/>
+        <text name="rse_guide_settings_2" text="Die Zeilen: ob die Leitstelle von selbst anruft; wie oft Einsätze kommen; der Piepton des Pagers; Einsätze mit Tieren; Einsätze mit Wracks und verlorener Ladung; Einsatzgröße (wie viele Tiere oder Ballen: klein, normal, groß oder zufällig); Einkommen (50 % bis 200 %); Entsorgungsgebühren und Rechnungen des Landkreises (0 % bis 200 %); wann der Landkreis Zurückgelassenes abholt; wann ein anderer Dienstleister einen nicht erreichten Einsatz übernimmt; Kartenmarkierungen; und die Einsatzanzeige."/>
         <text name="rse_guide_settings_3" text="Deine Einstellungen werden mit dem Spielstand gespeichert, und ein neuer Spielstand beginnt mit den zuletzt benutzten. &quot;Alle Einstellungen zurücksetzen&quot; behält deine Abgabestellen."/>
         <text name="rse_guide_title_mods" text="Passt gut dazu"/>
         <text name="rse_guide_mods_1" text="Du brauchst keine dieser Mods, aber sie passen gut zur Arbeit. Die hier genannten wurden mit Roadside Emergencies getestet."/>

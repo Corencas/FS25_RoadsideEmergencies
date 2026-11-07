@@ -203,6 +203,27 @@ end
 function RseEpBridge.unload()
     restorePagerText()
     RseEpBridge.pagerText, RseEpBridge.pagerShort, RseEpBridge.pagerBase, RseEpBridge.pagerCheckMs = nil, nil, nil, nil
+    RseEpBridge.ringMs = nil
+end
+
+-- The pager beeps (Z) once the pack has our call waiting for an answer, which is when its pager is on the screen; a call the pack never shows stays silent.
+-- enabled: the settings row.
+function RseEpBridge.ring(dt, enabled)
+    if RseEpBridge.ringMs == nil then
+        return
+    end
+    RseEpBridge.ringMs = RseEpBridge.ringMs - dt
+    local instance = rolePlay()
+    local pending = instance ~= nil and type(instance.pendingScenarios) == "table" and instance.pendingScenarios[farmId()] or nil
+    if pending ~= nil then
+        RseEpBridge.ringMs = nil
+        if enabled then
+            RseSound:playUi(RseConfig.PAGER_SOUND_FILE, RseConfig.PAGER_SOUND_VOLUME)
+        end
+    elseif RseEpBridge.ringMs <= 0 then
+        RseEpBridge.ringMs = nil
+        RseLog.info("the pager didn't come up within %d s of asking, so it didn't beep", math.floor(RseConfig.PAGER_RING_WAIT_MS / 1000))
+    end
 end
 
 -- A moment after a call: our text goes back to what it was, and did the fields reach the emergency the pager asks about? If they did, the emergency's own copy
@@ -274,5 +295,6 @@ function RseEpBridge.request(poolName, pagerKey, pagerText, pagerShort)
         return false, "the pack refused (see log)"
     end
     RseLog.info("asked the Emergency Pack for an emergency from pool '%s'", poolName)
+    RseEpBridge.ringMs = RseConfig.PAGER_RING_WAIT_MS
     return true
 end
