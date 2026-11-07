@@ -285,5 +285,3 @@ See also the [changelog](CHANGELOG.md), [how to contribute](CONTRIBUTING.md) and
 Free to play. You may play it, make videos and streams with it, and read its code. Please don't re-upload it, publish changed versions, or reuse its parts without asking. Links to this page are welcome. The full terms are in [LICENSE](LICENSE).
 
 Not affiliated with or endorsed by GIANTS Software or Creative Mesh.
-
-Built with [Claude Code](https://claude.com/claude-code).
