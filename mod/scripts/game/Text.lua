@@ -115,9 +115,25 @@ function RseText.animalName(kind)
     return RseText.get("rse_animalName_" .. tostring(kind))
 end
 
--- the animal counted, for the fill display: "Deer" or "Cow" for one, "Deer" or "Cows" for more (Z: "3 Deer", not "3pieces")
+-- the animal counted, for the fill display and the pager: "Deer" or "Cow" for one, "Deer" or "Cows" for more (Z: "3 Deer", not "3pieces"). A language
+-- whose rule (rse_plural_rule, RsePlural) has a form for 2 to 4 has rse_unit_<animal>_few as well; one that doesn't falls back to _many.
 function RseText.animalUnit(kind, count)
-    return RseText.get("rse_unit_" .. tostring(kind) .. (count == 1 and "_one" or "_many"))
+    local base = "rse_unit_" .. tostring(kind)
+    local form = RsePlural.form(g_i18n:getText("rse_plural_rule"), count or 0)
+    if form == "few" and not g_i18n:hasText(base .. "_few") then
+        form = "many"
+    end
+    return RseText.get(base .. "_" .. form)
+end
+
+-- the animals named on their own, with no number before them (the call panel's title, "Cows on the road"): the form after a number, except in a
+-- language where the plain plural differs (Russian "5 коров", but "Коровы на дороге"), which has rse_unit_<animal>_plural for it
+function RseText.animalTitle(kind, count)
+    local plural = "rse_unit_" .. tostring(kind) .. "_plural"
+    if (count or 0) > 1 and g_i18n:hasText(plural) then
+        return RseText.get(plural)
+    end
+    return RseText.animalUnit(kind, count)
 end
 
 -- "1 minute", "5 minutes"

@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <texts>
+        <!-- which form a counted word takes (scripts/core/Plural.lua): default, eastSlavic, polish or czech -->
+        <text name="rse_plural_rule" text="polish"/>
+
+        <!-- keys -->
+        <text name="input_RSE_STRAP" text="RSE: Pas holowniczy"/>
+
+        <!-- animals -->
+        <text name="rse_animal_deer" text="sarna"/>
+        <text name="rse_animal_boar" text="dzik"/>
+        <text name="rse_animal_pig" text="świnia"/>
+        <text name="rse_animal_sheep" text="owca"/>
+        <text name="rse_animal_goat" text="koza"/>
+        <text name="rse_animal_cow" text="krowa"/>
+        <text name="rse_animal_buffalo" text="bawół"/>
+        <text name="rse_animal_horse" text="koń"/>
+
+        <!-- carcasses -->
+        <text name="rse_fillType_deer" text="Martwa sarna"/>
+        <text name="rse_fillType_boar" text="Martwy dzik"/>
+        <text name="rse_fillType_pig" text="Martwa świnia"/>
+        <text name="rse_fillType_sheep" text="Martwa owca"/>
+        <text name="rse_fillType_goat" text="Martwa koza"/>
+        <text name="rse_fillType_cow" text="Martwa krowa"/>
+        <text name="rse_fillType_buffalo" text="Martwy bawół"/>
+        <text name="rse_fillType_horse" text="Martwy koń"/>
+        <text name="rse_animalName_deer" text="Sarna"/>
+        <text name="rse_unit_deer_one" text="Sarna"/>
+        <text name="rse_unit_deer_many" text="Saren"/>
+        <text name="rse_unit_deer_few" text="Sarny"/>
+        <text name="rse_unit_deer_plural" text="Sarny"/>
+        <text name="rse_animalName_boar" text="Dzik"/>
+        <text name="rse_unit_boar_one" text="Dzik"/>
+        <text name="rse_unit_boar_many" text="Dzików"/>
+        <text name="rse_unit_boar_few" text="Dziki"/>
+        <text name="rse_unit_boar_plural" text="Dziki"/>
+        <text name="rse_animalName_pig" text="Świnia"/>
+        <text name="rse_unit_pig_one" text="Świnia"/>
+        <text name="rse_unit_pig_many" text="Świń"/>
+        <text name="rse_unit_pig_few" text="Świnie"/>
+        <text name="rse_unit_pig_plural" text="Świnie"/>
+        <text name="rse_animalName_sheep" text="Owca"/>
+        <text name="rse_unit_sheep_one" text="Owca"/>
+        <text name="rse_unit_sheep_many" text="Owiec"/>
+        <text name="rse_unit_sheep_few" text="Owce"/>
+        <text name="rse_unit_sheep_plural" text="Owce"/>
+        <text name="rse_animalName_goat" text="Koza"/>
+        <text name="rse_unit_goat_one" text="Koza"/>
+        <text name="rse_unit_goat_many" text="Kóz"/>
+        <text name="rse_unit_goat_few" text="Kozy"/>
+        <text name="rse_unit_goat_plural" text="Kozy"/>
+        <text name="rse_animalName_cow" text="Krowa"/>
+        <text name="rse_unit_cow_one" text="Krowa"/>
+        <text name="rse_unit_cow_many" text="Krów"/>
+        <text name="rse_unit_cow_few" text="Krowy"/>
+        <text name="rse_unit_cow_plural" text="Krowy"/>
+        <text name="rse_animalName_buffalo" text="Bawół"/>
+        <text name="rse_unit_buffalo_one" text="Bawół"/>
+        <text name="rse_unit_buffalo_many" text="Bawołów"/>
+        <text name="rse_unit_buffalo_few" text="Bawoły"/>
+        <text name="rse_unit_buffalo_plural" text="Bawoły"/>
+        <text name="rse_animalName_horse" text="Koń"/>
+        <text name="rse_unit_horse_one" text="Koń"/>
+        <text name="rse_unit_horse_many" text="Koni"/>
+        <text name="rse_unit_horse_few" text="Konie"/>
+        <text name="rse_unit_horse_plural" text="Konie"/>
+        <text name="rse_info_deadAnimal" text="Martwe zwierzę"/>
+        <text name="rse_info_mass" text="Masa"/>
+        <text name="rse_welcome_title" text="Roadside Emergencies"/>
+        <text name="rse_warning" text="UWAGA —"/>
+        <text name="rse_welcome_subtitle" text="Dyspozytor powiatowy dzwoni do ciebie, gdy na drodze coś się dzieje."/>
+        <text name="rse_welcome_body" text="Zgłoszenia przychodzą same, gdy pracujesz na farmie. Przyjmij je, jedź na miejsce i udrożnij drogę: zwierzęta, wraki, rozsypany ładunek, zerwana linia energetyczna, stado do zagrody.&#10;&#10;Zgłoszenie przychodzi tylko wtedy, gdy twoja farma ma to, czego wymaga praca. Do małych prac wystarczy pickup; ciężkie wraki wymagają lawety albo dużej ciężarówki.&#10;&#10;Poradnik wyjaśnia wszystko, a otworzysz go w każdej chwili klawiszem {key:RSE_SETTINGS}, gdy idziesz pieszo."/>
+        <text name="rse_welcome_pack" text="Wymaga darmowego DLC Emergency Pack, które jest zainstalowane."/>
+        <text name="rse_welcome_beta" text="To jest wersja beta. Znalazłeś błąd? Zgłoś go na GitHubie: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_start" text="Start"/>
+        <text name="rse_welcome_guide" text="Poradnik"/>
+        <text name="rse_action_tooHeavyShort" text="Za ciężkie"/>
+        <text name="rse_kitShort_cone" text="pachołek"/>
+        <text name="rse_kitShort_barricade" text="bariera"/>
+        <text name="rse_kitShort_coneTape" text="taśma"/>
+        <text name="rse_animalShort_deer" text="sarna"/>
+        <text name="rse_animalShort_boar" text="dzik"/>
+        <text name="rse_animalShort_pig" text="świnia"/>
+        <text name="rse_animalShort_sheep" text="owca"/>
+        <text name="rse_animalShort_goat" text="koza"/>
+        <text name="rse_animalShort_cow" text="krowa"/>
+        <text name="rse_animalShort_buffalo" text="bawół"/>
+        <text name="rse_animalShort_horse" text="koń"/>
+        <text name="rse_action_drag" text="Ciągnij: %s"/>
+        <text name="rse_action_letGo" text="Puść: %s"/>
+        <text name="rse_action_tooHeavy" text="Za ciężkie, by ciągnąć ręcznie (%s). Użyj pasa albo maszyny."/>
+
+        <!-- recovery strap -->
+        <text name="rse_strap_hook" text="Zaczep pas"/>
+        <text name="rse_strap_attach" text="Przypnij pas"/>
+        <text name="rse_strap_drop" text="Odłóż pas"/>
+        <text name="rse_strap_remove" text="Zdejmij pas"/>
+        <text name="rse_strap_hooked" text="Pas zaczepiony: %s. Teraz zaczep drugi koniec o pojazd."/>
+        <text name="rse_strap_attached" text="Pas przypięty: %s – %s."/>
+        <text name="rse_strap_tooFar" text="Za daleko: %s. Pas sięga na %s."/>
+        <text name="rse_strap_removed" text="Pas zdjęty."/>
+
+        <!-- disposal points -->
+        <text name="rse_point_shop" text="Sklep"/>
+        <text name="rse_point_player" text="Mój punkt %d"/>
+        <text name="rse_point_hotspot" text="Punkt odbioru %d: %s"/>
+        <text name="rse_marker_loose" text="Na wolności: %s"/>
+        <text name="rse_marker_left" text="Pozostawione martwe zwierzę: %s"/>
+        <text name="rse_delivered" text="Zwierzę dostarczone: %s (%s). Zapłata za transport: %s. Opłata za utylizację: %s."/>
+        <text name="rse_finance_haulPay" text="Transport padliny"/>
+        <text name="rse_collectedUnearned" text="Dyspozytor powiatowy: służby drogowe zabrały martwe zwierzę, którego nie dostarczyłeś (%s). Obciążono cię kwotą %s, w tym %s wypłacone ci za transport."/>
+        <text name="rse_collected" text="Dyspozytor powiatowy: służby drogowe zabrały martwe zwierzę, które zostawiłeś (%s). Obciążono cię kwotą %s."/>
+        <text name="rse_finance_collection" text="Rachunki za odbiór padliny"/>
+        <text name="rse_finance_penalty" text="Opłaty za zgłoszenia alarmowe"/>
+        <text name="rse_finance_disposalFee" text="Opłaty za utylizację padliny"/>
+
+        <!-- settings panel -->
+        <text name="input_RSE_SETTINGS" text="RSE: Ustawienia i poradnik"/>
+        <text name="rse_set_title" text="Ustawienia Roadside Emergencies"/>
+        <text name="rse_set_on" text="Wł."/>
+        <text name="rse_set_off" text="Wył."/>
+        <text name="rse_set_size_small" text="Mały"/>
+        <text name="rse_set_size_normal" text="Normalny"/>
+        <text name="rse_set_size_large" text="Duży"/>
+        <text name="rse_set_size_random" text="Losowy"/>
+        <text name="rse_set_calls" text="Dyspozytor powiatowy dzwoni sam"/>
+        <text name="rse_set_frequency" text="Jak często są zgłoszenia"/>
+        <text name="rse_set_pagerSound" text="Dźwięk pagera"/>
+        <text name="rse_set_frequency_rare" text="Rzadko"/>
+        <text name="rse_set_frequency_normal" text="Normalnie"/>
+        <text name="rse_set_frequency_often" text="Często"/>
+        <text name="rse_set_animalCalls" text="Zgłoszenia ze zwierzętami"/>
+        <text name="rse_set_wreckCalls" text="Zgłoszenia z wrakami i ładunkiem"/>
+        <text name="rse_set_jobSize" text="Wielkość pracy (ile zwierząt lub bel)"/>
+        <text name="rse_set_pay" text="Dochód ze zgłoszeń i transportu"/>
+        <text name="rse_set_fees" text="Opłaty za utylizację i rachunki powiatu"/>
+        <text name="rse_set_left" text="Powiat zabiera, co zostawisz, po"/>
+        <text name="rse_set_expire" text="Inny wykonawca przejmuje po"/>
+        <text name="rse_set_markers" text="Znaczniki na mapie"/>
+        <text name="rse_panel_title_animals" text="%s na drodze"/>
+        <text name="rse_panel_title_call" text="Zgłoszenie drogowe"/>
+        <text name="rse_panel_title_truck" text="Rozbita ciężarówka"/>
+        <text name="rse_panel_title_tractor" text="Przewrócony ciągnik"/>
+        <text name="rse_panel_title_trailer" text="Przewrócona przyczepa"/>
+        <text name="rse_panel_title_livestock" text="Wypadek przyczepy ze zwierzętami"/>
+        <text name="rse_panel_title_powerline" text="Zerwana linia energetyczna"/>
+        <text name="rse_panel_title_storm" text="Szkody po burzy"/>
+        <text name="rse_panel_title_crossing" text="Utknął na torach"/>
+        <text name="rse_panel_title_river" text="Auto w wodzie"/>
+        <text name="rse_panel_title_tree" text="Drzewo na aucie"/>
+        <text name="rse_panel_title_flock" text="Owce na drodze"/>
+        <text name="rse_panel_title_logging" text="Wypadek ciężarówki z drewnem"/>
+        <text name="rse_panel_reach" text="Dojedź na miejsce"/>
+        <text name="rse_panel_animals" text="Usuń zwierzęta z drogi"/>
+        <text name="rse_panel_power" text="Poczekaj, aż ekipa powiatu odetnie prąd"/>
+        <text name="rse_panel_treeLog" text="Zdejmij kłodę z auta"/>
+        <text name="rse_panel_tracks" text="Ściągnij pojazd z torów"/>
+        <text name="rse_panel_driver" text="Pomóż kierowcy wyjść"/>
+        <text name="rse_panel_prepare" text="Przygotuj wrak"/>
+        <text name="rse_panel_upright" text="Postaw pojazd na koła"/>
+        <text name="rse_panel_logs" text="Usuń kłody"/>
+        <text name="rse_panel_wires" text="Zwiń przewody"/>
+        <text name="rse_panel_pole" text="Przywieź słup (opcjonalnie)"/>
+        <text name="rse_panel_bales" text="Przywieź bele"/>
+        <text name="rse_panel_survivors" text="Załaduj wolne zwierzęta"/>
+        <text name="rse_panel_flock" text="Zapędź owce do zagrody"/>
+        <text name="rse_panel_deliver" text="Holuj do punktu pomocy drogowej"/>
+        <text name="rse_panel_deliverCar" text="Auto do punktu pomocy drogowej"/>
+        <text name="rse_panel_deliverTrailer" text="Przyczepa do punktu pomocy drogowej"/>
+        <text name="rse_panel_done" text="Gotowe"/>
+        <text name="rse_panel_now" text="Teraz"/>
+        <text name="rse_panel_left" text="zostało %d"/>
+        <text name="rse_panel_clockArrive" text="Dojedź w ciągu"/>
+        <text name="rse_panel_clockTrain" text="Pociąg na przejeździe za"/>
+        <text name="rse_panel_clockPower" text="Odcięcie prądu za"/>
+        <text name="rse_panel_clockHandover" text="Reszta przechodzi dalej za"/>
+        <text name="rse_panel_clockRescue" text="Kierowca na zewnątrz dla premii w"/>
+        <text name="rse_panel_hurry" text="Szybko! %s"/>
+        <text name="rse_panel_lightsOff" text="Włącz światła ostrzegawcze: +%d%%"/>
+        <text name="rse_panel_lightsEarned" text="Premia za światła: +%d%%"/>
+        <text name="rse_panel_lightsCounting" text="Światła ostrzegawcze: +%d%% za %s"/>
+        <text name="rse_panel_extra" text="+%s"/>
+        <text name="rse_panel_optional" text="Opcjonalnie"/>
+        <text name="rse_call_lightsEarned" text="Twoje światła ostrzegawcze na miejscu dają %d%% więcej za tę pracę."/>
+        <text name="rse_panel_pay" text="około %s"/>
+        <text name="rse_set_panel" text="Panel zgłoszenia"/>
+        <text name="rse_line_stillLiveShort" text="Jeszcze nie: prąd nadal płynie."/>
+        <text name="rse_crew_arrived" text="Ekipa powiatu: jesteśmy na miejscu i odcinamy prąd. Daj nam pół minuty."/>
+        <text name="rse_crew_notYours" text="To pojazd ekipy powiatu."/>
+        <text name="rse_set_addPoint" text="Dodaj punkt odbioru tutaj"/>
+        <text name="rse_set_removePoint" text="Usuń twój najbliższy punkt odbioru"/>
+        <text name="rse_point_added" text="Dodano punkt odbioru tutaj: %s."/>
+        <text name="rse_point_removed" text="Usunięto twój punkt odbioru: %s."/>
+        <text name="rse_point_noneOwn" text="Nie masz własnego punktu odbioru."/>
+
+        <!-- scene kit -->
+        <text name="input_RSE_KIT_MENU" text="RSE: Oznakowanie, otwórz lub zamknij"/>
+        <text name="input_RSE_KIT_USE" text="RSE: Oznakowanie, postaw lub podnieś"/>
+        <text name="input_RSE_KIT_TURN" text="RSE: Oznakowanie, obróć"/>
+        <text name="input_RSE_KIT_NEXT" text="RSE: Oznakowanie, następny element"/>
+        <text name="rse_kit_next" text="Następny element"/>
+        <text name="rse_kit_cone" text="Pachołek drogowy"/>
+        <text name="rse_kit_barricade" text="Drewniana bariera"/>
+        <text name="rse_kit_coneTape" text="Pachołek z taśmą"/>
+        <text name="rse_kit_stop" text="Schowaj znaki"/>
+        <text name="rse_kit_open" text="Oznakowanie"/>
+        <text name="rse_kit_place" text="Postaw: %s"/>
+        <text name="rse_kit_pickup" text="Podnieś: %s"/>
+        <text name="rse_kit_turn" text="Obróć: %s"/>
+        <text name="rse_kit_loadFailed" text="Nie udało się wczytać tego elementu: %s."/>
+        <text name="rse_kit_limit" text="Nie możesz mieć naraz więcej niż %d postawionych elementów."/>
+        <text name="rse_kit_collect" text="Zbierz swoje pachołki i bariery (zostało: %d). Do tego czasu nie będzie nowych prac."/>
+        <text name="rse_kit_allCollected" text="Wszystkie twoje pachołki i bariery są zebrane. Znowu możesz przyjmować prace."/>
+        <text name="rse_kit_reminder" text="Dzwonił dyspozytor powiatowy: pachołki i bariery twojej firmy nadal blokują ruch (zostało: %d). Zbierz je. Do tego czasu nie będzie nowych prac."/>
+
+        <!-- Emergency Pack -->
+        <text name="rse_ep_deer_description" text="Dyspozytor powiatowy: samochód potrącił dzikie zwierzęta na drodze. Ruch staje."/>
+        <text name="rse_ep_boar_description" text="Dyspozytor powiatowy: samochód potrącił dziki na drodze. Ruch staje."/>
+        <text name="rse_ep_pig_description" text="Dyspozytor powiatowy: samochód potrącił zwierzęta gospodarskie, które wyszły na drogę. Ruch staje."/>
+        <text name="rse_ep_sheep_description" text="Dyspozytor powiatowy: samochód potrącił owce, które przeszły przez ogrodzenie na drogę. Ruch staje."/>
+        <text name="rse_ep_goat_description" text="Dyspozytor powiatowy: samochód potrącił zwierzęta gospodarskie, które wyszły na drogę. Ruch staje."/>
+        <text name="rse_ep_cow_description" text="Dyspozytor powiatowy: ciężarówka potrąciła bydło na drodze. Ruch staje."/>
+        <text name="rse_ep_horse_description" text="Dyspozytor powiatowy: samochód potrącił zwierzęta gospodarskie, które wyszły na drogę. Ruch staje."/>
+        <text name="rse_ep_buffalo_description" text="Dyspozytor powiatowy: ciężarówka potrąciła bawoły na drodze. Ruch staje."/>
+        <text name="rse_ep_hint_arrive" text="Jedź do zaznaczonego miejsca."/>
+        <text name="rse_call_vehicle" text="Dyspozytor zgłasza pojazd: %s."/>
+        <text name="rse_call_towSmall" text="Pickup albo każdy większy pojazd może go odholować."/>
+        <text name="rse_call_towBig" text="Jest duży: przyjedź większym pojazdem albo lawetą. Pickup go nie odholuje."/>
+        <text name="rse_pager_where" text="Gdzie: około %s na %s od ciebie"/>
+        <text name="rse_pager_whereNear" text="Gdzie: blisko ciebie"/>
+        <text name="rse_dir_n" text="północ"/>
+        <text name="rse_dir_ne" text="północny wschód"/>
+        <text name="rse_dir_e" text="wschód"/>
+        <text name="rse_dir_se" text="południowy wschód"/>
+        <text name="rse_dir_s" text="południe"/>
+        <text name="rse_dir_sw" text="południowy zachód"/>
+        <text name="rse_dir_w" text="zachód"/>
+        <text name="rse_dir_nw" text="północny zachód"/>
+        <text name="rse_pager_animals" text="Na drodze: %d %s"/>
+        <text name="rse_pager_vehicle" text="Pojazd: %s"/>
+        <text name="rse_pager_vehicleHeavy" text="Pojazd: %s (ciężki)"/>
+        <text name="rse_pager_load_small" text="Ładunek: małe bele, na tyle lekkie, by nosić je ręcznie"/>
+        <text name="rse_pager_load_big" text="Ładunek: duże bele"/>
+        <text name="rse_pager_takes" text="Potrzeba: %s"/>
+        <text name="rse_pager_and" text=" i "/>
+        <text name="rse_pager_need_hands" text="tylko twoich rąk; wywiezienie płaci więcej"/>
+        <text name="rse_pager_need_pull" text="pasa albo maszyny i pojazdu o masie {mass:1} lub więcej"/>
+        <text name="rse_pager_need_tow" text="pickupa albo czegoś większego, by go odholować"/>
+        <text name="rse_pager_need_heavy" text="lawety albo ciężarówki lub ciągnika o masie {mass:3} lub więcej"/>
+        <text name="rse_pager_need_livestock" text="twojej własnej przyczepy na zwierzęta"/>
+        <text name="rse_pager_need_carry" text="przyczepy albo paki pickupa na bele"/>
+        <text name="rse_pager_need_lift" text="widłów, chwytaka albo ładowacza do bel"/>
+        <text name="rse_pager_need_flock" text="niczego: zaganiasz je pieszo albo dowolnym pojazdem"/>
+        <text name="rse_pager_need_logs" text="czegoś do przenoszenia kłód: widłów do drewna, dźwigu albo pasa i pojazdu"/>
+        <text name="rse_pager_need_line" text="pasa albo liny wyciągarki"/>
+        <text name="rse_pager_youHave" text="Masz: %s"/>
+        <text name="rse_pager_time" text="Czas: dojedź w ciągu %s"/>
+        <text name="rse_pager_train" text="Czas: pociąg dojedzie do przejazdu za około %s"/>
+        <text name="rse_pager_pay" text="Zapłata: około %s"/>
+        <text name="rse_pager_payEach" text="Zapłata: około %s, plus %s za %s"/>
+        <text name="rse_pager_item_bale" text="każdą belę"/>
+        <text name="rse_pager_item_animal" text="każde załadowane zwierzę"/>
+        <text name="rse_pager_item_wire" text="każdy przewód"/>
+        <text name="rse_pager_item_log" text="każdą kłodę"/>
+        <text name="rse_pager_item_sheep" text="każdą owcę"/>
+        <text name="rse_ep_hint_clear_small" text="Udrożnij drogę: odciągnij zwierzęta albo je załaduj i zawieź do punktu odbioru za pełną zapłatę."/>
+        <text name="rse_ep_hint_clear_heavy" text="Udrożnij drogę: zaczep pas ({key:RSE_STRAP}) albo podnieś zwierzęta i zawieź je do punktu odbioru za pełną zapłatę."/>
+        <text name="rse_ep_done" text="Droga jest przejezdna. Dziękujemy!"/>
+        <text name="rse_scene_resumed" text="Masz trwające zgłoszenie alarmowe. Kieruj się znacznikiem na mapie."/>
+        <text name="rse_scene_resumeFailed" text="Zgłoszenia alarmowego nie udało się wznowić po wczytaniu, więc zostało anulowane."/>
+        <text name="rse_left_warn" text="Dyspozytor powiatowy: zostawiłeś martwe zwierzę (%s). Zabierz je w ciągu %s, inaczej powiat je zabierze i wystawi ci rachunek. Jest zaznaczone na mapie."/>
+        <text name="rse_left_warnMany" text="Dyspozytor powiatowy: zostawiłeś martwe zwierzęta (liczba: %d). Zabierz je w ciągu %s, inaczej powiat je zabierze i wystawi ci rachunek. Są zaznaczone na mapie."/>
+        <text name="rse_unit_minute" text="1 min"/>
+        <text name="rse_unit_minutes" text="%d min"/>
+        <text name="rse_caller_driver" text="Przejeżdżający kierowca"/>
+        <text name="rse_caller_bus" text="Kierowca autobusu szkolnego"/>
+        <text name="rse_caller_mail" text="Listonosz"/>
+        <text name="rse_caller_neighbor" text="Sąsiad"/>
+        <text name="rse_caller_sheriff" text="Biuro szeryfa"/>
+        <text name="rse_call_details" text="Zgłosił: %s. To %s od ciebie."/>
+        <text name="rse_call_detailsNear" text="Zgłosił: %s, przy działce %d, %s od ciebie."/>
+        <text name="rse_call_arrivedOne" text="Na drodze leży jedno zwierzę."/>
+        <text name="rse_call_arrivedMany" text="Zwierzęta na drodze: %d."/>
+        <text name="rse_call_expiring" text="Dyspozytor powiatowy: jeśli nie dotrzesz na miejsce w ciągu %s, przejmie to inny wykonawca, a ty zapłacisz niewielką opłatę."/>
+        <text name="rse_call_expired" text="Dyspozytor powiatowy: inny wykonawca przejął zgłoszenie, bo nie dotarłeś na czas. Brak zapłaty."/>
+        <text name="rse_call_expiredFee" text="Dyspozytor powiatowy: inny wykonawca przejął zgłoszenie, bo nie dotarłeś na czas. Brak zapłaty, a obciążono cię kwotą %s."/>
+        <text name="rse_call_lightsBonus" text="Twoje światła ostrzegawcze zabezpieczyły miejsce: %d%% więcej zapłaty."/>
+        <text name="rse_ep_wreck_description" text="Dyspozytor powiatowy: rozbita ciężarówka blokuje drogę. Ruch staje. Trzeba ją dostarczyć do punktu pomocy drogowej."/>
+        <text name="rse_ep_rollover_description" text="Dyspozytor powiatowy: ciągnik przewrócił się do rowu, a kierowca nadal jest w środku. Trzeba go postawić na koła i dostarczyć do punktu pomocy drogowej."/>
+        <text name="rse_ep_doneWreck" text="Praca wykonana. Dziękujemy!"/>
+        <text name="rse_wreck_hint_prepare" text="Podejdź do wraku i przygotuj go do holowania."/>
+        <text name="rse_wreck_hint_driver" text="Podejdź do ciągnika i pomóż kierowcy wyjść."/>
+        <text name="rse_wreck_hint_upright" text="Zaczep pas wysoko po górnej stronie ({key:RSE_STRAP}) i pociągnij, by postawić pojazd na koła."/>
+        <text name="rse_wreck_prepare" text="Przygotuj wrak"/>
+        <text name="rse_wreck_driver" text="Pomóż kierowcy"/>
+        <text name="rse_wreck_driverOut" text="Kierowca wyszedł cały i zdrowy."/>
+        <text name="rse_wreck_upright" text="Pojazd znowu stoi na kołach."/>
+        <text name="rse_wreck_delivered" text="Wrak jest w punkcie pomocy drogowej."/>
+        <text name="rse_wreck_locked" text="Ten wrak trzeba najpierw przygotować do holowania."/>
+        <text name="rse_wreck_noEngine" text="Silnika tego wraku nie da się uruchomić."/>
+        <text name="rse_load_delivered" text="Dostarczono belę. Zostało bel: %d."/>
+        <text name="rse_call_cancelled" text="Dyspozytor powiatowy: zgłoszenie zostało anulowane."/>
+        <text name="rse_ep_storm_description" text="Dyspozytor powiatowy: trąba powietrzna rozrzuciła bele po drodze. Ruch staje. Trzeba je dostarczyć do punktu pomocy drogowej."/>
+        <text name="rse_storm_hint" text="Dowieź bele do punktu pomocy drogowej dowolnym pojazdem."/>
+        <text name="rse_ep_livestock_description" text="Dyspozytor powiatowy: na drodze przewróciła się przyczepa ze zwierzętami. Część zwierząt nie żyje, a inne są na wolności. Zajmij się przyczepą, żywymi zwierzętami albo jednym i drugim, z premią za oba."/>
+        <text name="rse_crash_hint" text="Odzyskaj przyczepę i załaduj wolne zwierzęta do swojej przyczepy na zwierzęta."/>
+        <text name="rse_crash_arrived" text="Martwe zwierzęta: %d. Wolne zwierzęta: %d. Odchodzą, więc nie zwlekaj."/>
+        <text name="rse_crash_animalsDone" text="Zwierzęta są zabezpieczone. Przywieź też przyczepę, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie ją inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz ją oddać wcześniej."/>
+        <text name="rse_crash_trailerDone" text="Przyczepa dostarczona. Zajmij się też zwierzętami, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie je inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz je oddać wcześniej."/>
+        <text name="rse_crash_warn" text="Dyspozytor powiatowy: resztę tej pracy przejmie inny wykonawca za %s."/>
+        <text name="rse_crash_handedOver" text="Dyspozytor powiatowy: resztą zajmie się inny wykonawca. Dostajesz zapłatę za to, co zrobiłeś."/>
+        <text name="rse_crash_bonus" text="Wykonałeś obie części pracy: %d%% premii."/>
+        <text name="rse_survivor_catch" text="Złap: %s"/>
+        <text name="rse_survivor_load" text="Załaduj: %s"/>
+        <text name="rse_survivor_caught" text="Zwierzę jest na uwiązie (%s). Zaprowadź je do swojej przyczepy na zwierzęta."/>
+        <text name="rse_survivor_gotAway" text="Zwierzę ci uciekło (%s)."/>
+        <text name="rse_survivor_noRoom" text="Twoja przyczepa na zwierzęta nie zmieści tego zwierzęcia: jest pełna albo wiezie już inny gatunek."/>
+        <text name="rse_survivor_loaded" text="W twojej przyczepie: %s. Zostało wolnych zwierząt: %d."/>
+        <text name="rse_set_help" text="Góra i Dół: wybierz. Lewo i Prawo: zmień. Enter: zatwierdź. {key:RSE_SETTINGS} lub Esc: zamknij."/>
+        <text name="rse_set_defaults" text="Przywróć wszystkie ustawienia domyślne"/>
+        <text name="rse_set_defaultsDone" text="Wszystkie ustawienia wróciły do domyślnych. Twoje punkty odbioru zostały zachowane."/>
+        <text name="rse_set_none" text="Brak"/>
+        <text name="rse_set_handOver" text="Przekaż tę pracę innemu wykonawcy"/>
+        <text name="rse_set_handOverPaid" text="Zapłata za wykonane"/>
+        <text name="rse_set_handOverNone" text="Bez zapłaty"/>
+        <text name="rse_set_handOverFee" text="Bez zapłaty, opłata %s"/>
+        <text name="rse_call_handedOver" text="Dyspozytor powiatowy: pracę przejął inny wykonawca. Brak zapłaty."/>
+        <text name="rse_call_handedOverFee" text="Dyspozytor powiatowy: pracę przejął inny wykonawca. Brak zapłaty, a obciążono cię kwotą %s."/>
+        <text name="rse_call_cantHandOver" text="Nie udało się przekazać pracy."/>
+        <text name="rse_map_teleport" text="Teleportuj tutaj"/>
+        <text name="rse_map_collect" text="Niech powiat zabierze teraz (płatne)"/>
+        <text name="rse_map_removePoint" text="Usuń ten punkt odbioru"/>
+        <text name="input_RSE_STRAP_IN" text="RSE: Zwiń pas"/>
+        <text name="input_RSE_STRAP_OUT" text="RSE: Popuść pas"/>
+        <text name="rse_strap_reelIn" text="Zwiń pas"/>
+        <text name="rse_strap_reelOut" text="Popuść pas"/>
+        <text name="rse_call_lightsHint" text="Włącz światła awaryjne lub lampy ostrzegawcze podczas pracy tutaj, a dostaniesz %d%% więcej."/>
+        <text name="rse_ep_trailer_description" text="Dyspozytor powiatowy: przyczepa przewróciła się i rozsypała bele na drodze. Ruch staje. Zajmij się przyczepą, belami albo jednym i drugim, z premią za oba."/>
+        <text name="rse_ep_powerline_description" text="Dyspozytor powiatowy: samochód uderzył w słup energetyczny. Słup i przewody leżą w poprzek drogi, a kierowca nadal jest w aucie. Ekipa powiatu jedzie, by odciąć prąd."/>
+        <text name="rse_ep_crossing_description" text="Dyspozytor powiatowy: na przejeździe kolejowym utknął pojazd, a nadjeżdża pociąg. Kierowca bezpiecznie wysiadł. Ściągnij pojazd z torów, zanim przyjedzie pociąg."/>
+        <text name="rse_ep_river_description" text="Dyspozytor powiatowy: samochód zjechał z drogi i wpadł do wody, a kierowca nadal jest w środku."/>
+        <text name="rse_river_hint_driver" text="Wejdź do wody, podejdź do auta i pomóż kierowcy wyjść."/>
+        <text name="rse_river_hint_pull" text="Zaczep auto pasem z brzegu ({key:RSE_STRAP}), wyciągnij je i zawieź do punktu pomocy drogowej."/>
+        <text name="rse_ep_tree_description" text="Dyspozytor powiatowy: burza przewróciła drzewo na samochód, a kierowca jest uwięziony w środku. Z piłą łańcuchową pójdzie szybciej."/>
+        <text name="rse_tree_notYet" text="Drzwi się nie otworzą, dopóki na aucie leży kłoda."/>
+        <text name="rse_tree_hint" text="Zdejmij kłodę z auta, pomóż kierowcy wyjść, udrożnij drogę i odzyskaj auto."/>
+        <text name="rse_tree_doorFree" text="Kłody nie ma już na aucie, więc drzwi się otwierają. Pomóż kierowcy wyjść."/>
+        <text name="rse_tree_roadClearDriver" text="Droga jest przejezdna. Pomóż kierowcy wyjść i zawieź auto do punktu pomocy drogowej."/>
+        <text name="rse_tree_roadClear" text="Droga jest przejezdna. Zawieź auto do punktu pomocy drogowej."/>
+        <text name="rse_tree_carIn" text="Auto dostarczone. Teraz usuń z drogi resztę kłód."/>
+        <text name="rse_tree_crew" text="Ekipa powiatu zabierze kłody, także te, które załadowałeś."/>
+        <text name="rse_tree_handedOver" text="Od teraz zajmie się tym inny wykonawca. Dostajesz zapłatę za to, co zrobiłeś."/>
+        <text name="rse_tree_arrived" text="Kierowca trąbi. Wyciągnij go w ciągu %d min, a dostaniesz premię %s."/>
+        <text name="rse_tree_rescueBonus" text="Kierowca wyszedł na czas: premia %s."/>
+        <text name="rse_ep_flock_description" text="Dyspozytor powiatowy: stado owiec uciekło i rozeszło się po drodze. Ruch staje. Rolnik postawił w pobliżu zagrodę."/>
+        <text name="rse_flock_hint" text="Stań za owcami i zapędź je do zagrody. Zwolnij przy nich."/>
+        <text name="rse_flock_arrived" text="Owce na drodze: %d. Zagroda jest w zaznaczonym miejscu."/>
+        <text name="rse_flock_scattered" text="Wjechałeś za szybko i owce się rozbiegły. Musisz je znowu zebrać."/>
+        <text name="rse_flock_half" text="Połowa stada jest w zagrodzie."/>
+        <text name="rse_flock_oneLeft" text="Została jedna."/>
+        <text name="rse_flock_done" text="Rolnik zamknął bramę i je policzył: wszystkie są bezpieczne (%d)."/>
+        <text name="rse_flock_handedOver" text="Rolnik sam zbierze resztę."/>
+        <text name="rse_flock_pen" text="Zagroda dla owiec"/>
+        <text name="rse_flock_marker" text="Stado"/>
+        <text name="rse_crossing_hint" text="Zaczep pojazd pasem ({key:RSE_STRAP}) i ściągnij go z torów, zanim przyjedzie pociąg."/>
+        <text name="rse_crossing_call" text="Pociąg dojedzie do przejazdu za %s."/>
+        <text name="rse_crossing_clock" text="Pociąg na przejeździe za %s"/>
+        <text name="rse_crossing_clear" text="Pojazd jest poza torami. Teraz zawieź go do punktu pomocy drogowej."/>
+        <text name="rse_crossing_hit" text="Pociąg był pierwszy. Nikomu nic się nie stało, ale praca przepadła i nie ma zapłaty."/>
+        <text name="rse_crossing_hitFee" text="Pociąg był pierwszy. Nikomu nic się nie stało, ale praca przepadła. Brak zapłaty, a obciążono cię kwotą %s."/>
+        <text name="rse_ep_logging_description" text="Dyspozytor powiatowy: przewróciła się przyczepa z drewnem, a kłody leżą w poprzek drogi. Ekipa właściciela zajmie się przyczepą; kłody to twoje zadanie."/>
+        <text name="rse_logs_hint" text="Usuń wszystkie kłody z drogi: załaduj je albo odsuń daleko na bok."/>
+        <text name="rse_logs_arrived" text="Kłody w poprzek drogi: %d."/>
+        <text name="rse_logs_progress" text="Usunięte z drogi: %d z %d kawałków."/>
+        <text name="rse_logs_crew" text="Ekipa właściciela zabierze przyczepę i wszystkie kłody, także te, które załadowałeś."/>
+        <text name="rse_logs_crewLeft" text="Ekipa właściciela zabierze przyczepę i kłody, które tu zostały."/>
+        <text name="rse_logs_yours" text="Kłody na twoim pojeździe są twoje: zatrzymaj je albo sprzedaj."/>
+        <text name="rse_logs_cut" text="Kłoda jest teraz w dwóch kawałkach, więc do usunięcia jest: %d."/>
+        <text name="rse_line_hint_wait" text="Poczekaj, aż ekipa powiatu przyjedzie i odetnie prąd. W tym czasie postaw pachołki."/>
+        <text name="rse_line_hint_work" text="Odzyskaj auto i zwiń każdy przewód. Przywiezienie słupa jest opcjonalne i płatne dodatkowo."/>
+        <text name="rse_line_dangerTitle" text="Odsuń się! Przewody są pod napięciem!"/>
+        <text name="rse_line_dangerPay" text="Jeśli zostaniesz, dostaniesz mniej."/>
+        <text name="rse_line_dangerPaid" text="Zmniejszono ci zapłatę, bo stałeś za blisko. Odsuń się, aż prąd zostanie odcięty."/>
+        <text name="rse_line_dangerCut" text="Stałeś za blisko przewodów pod napięciem, więc powiat obciął ci zapłatę o %d%%."/>
+        <text name="rse_line_powerOff" text="Ekipa powiatu: prąd jest odcięty, można bezpiecznie pracować."/>
+        <text name="rse_line_rollUp" text="Zwiń przewód"/>
+        <text name="rse_line_stillLive" text="Jeszcze nie: prąd nadal płynie. Ekipa powiatu potrzebuje jeszcze około %d s."/>
+        <text name="rse_line_wireDone" text="Przewód zwinięty. Zostało przewodów: %d."/>
+        <text name="rse_line_pieceIn" text="Ten kawałek słupa dostarczony. Zostało kawałków: %d."/>
+        <text name="rse_line_poleIn" text="Słup dostarczony."/>
+        <text name="rse_crash_carDone" text="Auto dostarczone. Zwiń też przewody, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie je inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz je oddać wcześniej."/>
+        <text name="rse_crash_lineDone" text="Przewody zwinięte. Przywieź też auto, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie je inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz je oddać wcześniej."/>
+        <text name="rse_strap_log" text="kłoda"/>
+        <text name="rse_guide_title_welcome" text="Witaj"/>
+        <text name="rse_guide_welcome_1" text="Jesteś miejscowym wykonawcą, do którego dzwoni dyspozytor powiatowy, gdy na drodze coś się dzieje: potrącone zwierzęta, rozbite i przewrócone pojazdy, rozsypane bele, szkody po burzy, zerwana linia energetyczna, wypadek ciężarówki z drewnem, auto w wodzie, drzewo na aucie, pojazd na przejeździe kolejowym i owce na drodze."/>
+        <text name="rse_guide_welcome_2" text="Roadside Emergencies wymaga darmowego DLC Emergency Pack. Gdy zaczynasz zapis gry, lista modów w grze proponuje, że wybierze je za ciebie. Bez niego nie przyjdzie żadne zgłoszenie."/>
+        <text name="rse_guide_welcome_3" text="Otwórz ten poradnik w każdej chwili: naciśnij {key:RSE_SETTINGS}, idąc pieszo, i wybierz „Otwórz poradnik”. To samo menu ma wszystkie ustawienia."/>
+        <text name="rse_guide_welcome_4" text="Każda linia tego moda w pomocy F1 zaczyna się od „RSE:”, a jego teksty podają klawisze, które wybrałeś w menu sterowania gry."/>
+        <text name="rse_guide_welcome_5" text="Na razie mod jest tylko dla jednego gracza. Znalazłeś błąd? Zgłoś go na GitHubie: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_title_tools" text="Dostajesz tylko zgłoszenia, które możesz wykonać"/>
+        <text name="rse_guide_tools_1" text="To twarda zasada: jeśli twoja farma nie ma tego, czego wymaga praca, to zgłoszenie w ogóle nie przyjdzie. Przed każdym zgłoszeniem dyspozytor sprawdza każdy pojazd, który masz lub wynajmujesz, więc jeśli pager pyta, masz wszystko, czego trzeba."/>
+        <text name="rse_guide_tools_2" text="Bez niczego: sarny, dziki, owce, świnie i kozy na drodze, które ciągniesz ręcznie, oraz zaganianie stada, które da się zrobić pieszo."/>
+        <text name="rse_guide_tools_3" text="Z pickupem albo dowolnym pojazdem silnikowym o masie {mass:1} lub więcej: krowy, konie i bawoły, auta w wodzie, drzewa na autach, linie energetyczne, wypadki ciężarówek z drewnem, przejazdy kolejowe i mniejsze przewrócone przyczepy."/>
+        <text name="rse_guide_tools_4" text="Z ciągnikiem, ciężarówką albo dowolnym pojazdem silnikowym o masie {mass:3} lub więcej: także rozbite ciężarówki, przewrócone ciągniki i większe pojazdy w innych pracach."/>
+        <text name="rse_guide_tools_5" text="Niektóre zgłoszenia wymagają czegoś więcej. Duże bele wymagają widłów, chwytaka albo ładowacza do bel lub wózka widłowego. Szkody po burzy wymagają przyczepy albo paki pickupa. Wypadek przyczepy ze zwierzętami wymaga twojej własnej przyczepy na zwierzęta."/>
+        <text name="rse_guide_tools_6" text="Pager mówi, czego trzeba, zanim odpowiesz. Jeśli twój sprzęt jest na drugim końcu mapy, odmów: to nic nie kosztuje."/>
+        <text name="rse_guide_title_calls" text="Zgłoszenie krok po kroku"/>
+        <text name="rse_guide_calls_1" text="Pager pika i pyta, czy przyjmujesz zgłoszenie. Mówi, co się stało, i po linii na każdą rzecz: gdzie to jest, co tam jest (zwierzęta albo pojazd i jego ładunek), czego wymaga praca i który z twoich pojazdów sobie z nią poradzi, ile masz czasu i ile mniej więcej płaci. Odmowa nic nie kosztuje."/>
+        <text name="rse_guide_calls_2" text="Przyjmij zgłoszenie i jedź za znacznikiem na mapie. Panel zgłoszenia po prawej stronie ekranu wypisuje kroki pracy i odhacza każdy, a także pokazuje drogę, liczący się czas i mniej więcej zapłatę. Znaczniki nad miejscem pokazują każde zwierzę lub kłodę, którymi musisz się jeszcze zająć."/>
+        <text name="rse_guide_calls_3" text="Zdąż na czas: zgłoszenie, do którego nie dotrzesz w 20 minut gry, przechodzi do innego wykonawcy, z ostrzeżeniem 5 minut wcześniej (czas zmienisz w ustawieniach). Gdy już jesteś na miejscu, zgłoszenie zostaje twoje, poza przejazdem kolejowym, gdzie czas wyznacza pociąg."/>
+        <text name="rse_guide_calls_4" text="Ruch staje za tym, co blokuje drogę, więc droga jest zamknięta, dopóki jej nie udrożnisz. Gra może usunąć samochód, który długo stoi w korku."/>
+        <text name="rse_guide_calls_5" text="Naraz trwa tylko jedna praca. Nowe zgłoszenie nie przyjdzie w trakcie pracy ani dopóki twoje pachołki lub bariery stoją na drodze."/>
+        <text name="rse_guide_calls_6" text="Możesz zapisać grę w trakcie pracy, a po wczytaniu praca wróci."/>
+        <text name="rse_guide_calls_7" text="Gdy praca się kończy, wykonana czy nie, to, co zostało na miejscu, zostaje tam, aż będziesz w odległości {distance:80}, przez co najmniej minutę i najwyżej 5 minut. Potem powiat to zabiera. Twoje pachołki i bariery oraz martwe zwierzęta, które załadowałeś, nadal są twoją sprawą."/>
+        <text name="rse_guide_title_timing" text="Kiedy przychodzą zgłoszenia"/>
+        <text name="rse_guide_timing_1" text="Pierwsze zgłoszenie może przyjść około 5 minut po wczytaniu. Po każdej pracy jest spokojny czas co najmniej 30, 12 lub 6 minut gry (Rzadko, Normalnie lub Często w ustawieniach), a potem zgłoszenie może przyjść w każdej chwili."/>
+        <text name="rse_guide_timing_2" text="Każdy rodzaj zgłoszenia jest tak samo prawdopodobny. Większe prace (wszystko poza martwymi zwierzętami na drodze) nigdy nie przychodzą częściej niż co 30 minut, więc przy ustawieniu Normalnie jedna przychodzi mniej więcej co godzinę."/>
+        <text name="rse_guide_timing_3" text="Niektóre zgłoszenia wymagają odpowiedniego miejsca. Przejazd kolejowy wymaga mapy z pociągiem, który nie jest wynajęty, i przejazdu w zasięgu. Auto w wodzie wymaga płytkiej wody z łagodnym brzegiem przy drodze. Stado wymaga otwartego terenu z łąką przy drodze. Szkody po burzy przychodzą tylko po trąbie powietrznej, z drogi blisko miejsca, gdzie się skończyła, a trąby powietrzne zdarzają się tylko wiosną i latem."/>
+        <text name="rse_guide_timing_4" text="W ustawieniach możesz wyłączyć wszystkie zgłoszenia albo tylko te ze zwierzętami, albo tylko te z wrakami i rozsypanym ładunkiem."/>
+        <text name="rse_guide_title_pay" text="Jak działa zapłata"/>
+        <text name="rse_guide_pay_1" text="Każda praca płaci stałą kwotę po wykonaniu. Ustawienia podnoszą lub obniżają cały dochód od 50% do 200%, a liczy się też poziom trudności ekonomicznej gry."/>
+        <text name="rse_guide_pay_2" text="Włącz światła awaryjne lub lampy ostrzegawcze swojego pojazdu w odległości do {distance:40} od miejsca i trzymaj je włączone łącznie przez 20 sekund: praca płaci 7% więcej. Liczą się tylko światła, które pojazd naprawdę ma, i nie światła samego wraku. Przypomnienie dostaniesz po przyjeździe."/>
+        <text name="rse_guide_pay_3" text="Martwe zwierzęta tylko odsunięte na pobocze płacą bardzo mało. Zawieź je do punktu odbioru za pełną zapłatę; tam dostaniesz też zapłatę za transport i zapłacisz niewielką opłatę za utylizację."/>
+        <text name="rse_guide_pay_4" text="Wrak płaci tym więcej, im dalej od miejsca jest najbliższy punkt pomocy drogowej. Bele, kłody i wolne zwierzęta płacą za każde dostarczone."/>
+        <text name="rse_guide_pay_5" text="Niektóre prace mają dwie części: przyczepa i jej bele, wypadek przyczepy ze zwierzętami, linia energetyczna. Wykonaj obie, a dostaniesz 25% premii. Jeśli przez 10 minut w jednej części nic się nie ruszy, przejmie ją inny wykonawca."/>
+        <text name="rse_guide_pay_6" text="Jeśli przyjąłeś zgłoszenie, a praca kończy się bez zapłaty (nie dotarłeś na czas, przekazałeś ją, nic nie robiąc, albo pociąg był pierwszy), zapłacisz jedną dziesiątą jej wartości. Odmowa nic nie kosztuje."/>
+        <text name="rse_guide_pay_7" text="Pracę możesz w każdej chwili przekazać innemu wykonawcy w ustawieniach ({key:RSE_SETTINGS}). Zachowujesz zapłatę za to, co skończyłeś, na przykład za każdą dostarczoną belę, kłodę lub zwierzę. Linia mówi ci przed wyborem, czy dostaniesz pieniądze, czy zapłacisz."/>
+        <text name="rse_guide_title_animals" text="Martwe zwierzęta"/>
+        <text name="rse_guide_animals_1" text="Sarny, dziki, świnie, owce i kozy możesz ciągnąć ręcznie: podejdź do zwierzęcia i naciśnij klawisz akcji, a potem znowu, by puścić. Krowy, konie i bawoły są za ciężkie: użyj pasa albo maszyny."/>
+        <text name="rse_guide_animals_2" text="Zwierzę liczy się jako usunięte, gdy leży nieruchomo poza drogą. Za pełną zapłatę załaduj je na dowolny pojazd i zawieź do punktu odbioru."/>
+        <text name="rse_guide_animals_3" text="Ciała zwierząt działają jak bele: ładowacze czołowe, widły i chwytaki do bel, dźwigi, przyczepy, pasy mocujące i mody automatycznego załadunku radzą sobie z nimi, a wskaźnik ładunku je liczy. Krowa jest ciężka, więc mały dźwig jej nie podniesie."/>
+        <text name="rse_guide_animals_4" text="Zostawione zwierzę jest zaznaczone na mapie. Po 30 minutach gry, gdy nikt nie był bliżej niż {distance:20} (czas zmienisz w ustawieniach), służby drogowe powiatu je zabierają, wystawiają ci rachunek i odbierają to, co zgłoszenie zapłaciło ci za nie ponad stawkę za pobocze. Przypomnienie dostaniesz 15 i 5 minut wcześniej."/>
+        <text name="rse_guide_animals_5" text="Ze znacznika zwierzęcia na mapie możesz od razu zlecić powiatowi jego odbiór, za zwykły rachunek."/>
+        <text name="rse_guide_title_points" text="Punkty odbioru i pomocy drogowej"/>
+        <text name="rse_guide_points_1" text="Martwe zwierzęta trafiają do punktu odbioru; wraki, bele i kawałki słupa energetycznego do punktu pomocy drogowej. Sklep jest jednym i drugim, tak jak każdy punkt, który dodasz."/>
+        <text name="rse_guide_points_2" text="Dodaj punkt tam, gdzie stoisz, w ustawieniach ({key:RSE_SETTINGS}) albo usuń najbliższy. Twoje punkty widać na mapie, gdy masz coś do dostarczenia, a usunąć punkt możesz z jego znacznika."/>
+        <text name="rse_guide_points_3" text="Martwe zwierzę liczy się jako dostarczone, gdy przez kilka sekund leży nieruchomo w odległości do {distance:12} od punktu odbioru i nie trzyma go ładowacz, pas mocujący ani pas holowniczy: rozładuj je tam albo otwórz pasy na przyczepie. Przy wraku znacznik na mapie pokazuje drogę do punktu pomocy drogowej."/>
+        <text name="rse_guide_title_strap" text="Pas holowniczy"/>
+        <text name="rse_guide_strap_1" text="Pieszo wyceluj w martwe zwierzę albo przygotowany wrak i naciśnij {key:RSE_STRAP}, by zaczepić pas dokładnie tam. Potem wyceluj w pojazd i znowu naciśnij {key:RSE_STRAP}, by przypiąć drugi koniec. Wyceluj w pustkę, by odłożyć pas, albo w zwierzę lub wrak z pasem, by go zdjąć."/>
+        <text name="rse_guide_strap_2" text="Przy pasie przytrzymaj {key:RSE_STRAP_IN}, by go zwinąć, i {key:RSE_STRAP_OUT}, by go popuścić. Sięga na {distance:20}. Samo zaczepienie niczego nie ciągnie: zwijasz albo ruszasz."/>
+        <text name="rse_guide_strap_3" text="Aby postawić wrak leżący na boku, zaczep go wysoko po górnej stronie, przypnij pas do pojazdu i pociągnij. Wrak leży, dopóki pas się nie napnie."/>
+        <text name="rse_guide_strap_4" text="Holowanie: ruszaj z napiętym pasem, a skróci się do krótkiego zaczepu za twoim pojazdem. Wrak jedzie za tobą jak przyczepa, od dowolnego końca, i sam hamuje, gdy stajesz. Cofnij, a pas się luzuje, dopóki znowu nie ruszysz."/>
+        <text name="rse_guide_title_wrecks" text="Wraki"/>
+        <text name="rse_guide_wrecks_1" text="Rozbity pojazd blokuje drogę. Podejdź i przygotuj go do holowania, a najpierw pomóż wyjść kierowcy, jeśli jest w środku. Nie da się nim jechać, uruchomić go ani zresetować: holujesz go albo ładujesz. Wrak na boku trzeba najpierw postawić."/>
+        <text name="rse_guide_wrecks_2" text="Gdy zwijasz pas albo holujesz, koła na ciągniętym końcu skręcają w stronę pasa, więc ten koniec jedzie prosto do ciebie. Przyczepa nie ma skrętu, więc jej koła ustawiają się wzdłuż pasa, gdy zwijasz."/>
+        <text name="rse_guide_wrecks_3" text="Na lawecie: zaczep pas o wrak, przypnij go z przodu platformy i przytrzymaj {key:RSE_STRAP_IN}. Popuść, by wrak zjechał w dół. Przed jazdą przypnij go pasami."/>
+        <text name="rse_guide_wrecks_4" text="Zawieź wrak do punktu pomocy drogowej, by dostać zapłatę; znacznik pokazuje drogę. Pojazdy zmieniają się od zgłoszenia do zgłoszenia, a większe trafiają się rzadziej."/>
+        <text name="rse_guide_title_loads" text="Rozsypane bele"/>
+        <text name="rse_guide_loads_1" text="Zgłoszenie mówi, jaki jest ładunek. Małe bele można nosić ręcznie, więc wystarczy pickup. Duże bele płacą więcej za sztukę, ale wymagają ładowacza czołowego albo ładowarki teleskopowej."/>
+        <text name="rse_guide_loads_2" text="Przy pracy z przyczepą nie trzeba drugiego kursu. Postaw przyczepę na koła, włóż do niej bele i odholuj wszystko do punktu pomocy drogowej. Praca po burzy nie ma przyczepy, więc przyjedź ze swoją i zrób tyle kursów, ile trzeba."/>
+        <text name="rse_guide_loads_3" text="Każda bela dowieziona do punktu pomocy drogowej płaci, nawet jeśli resztę pracy przekażesz w ustawieniach ({key:RSE_SETTINGS}). Bela płaci więcej, gdy dowozisz tylko bele."/>
+        <text name="rse_guide_title_loose" text="Wypadek przyczepy ze zwierzętami"/>
+        <text name="rse_guide_loose_0" text="Przewróciła się przyczepa ze zwierzętami. Dwie części, w dowolnej kolejności: przyczepa do punktu pomocy drogowej i żywe zwierzęta do twojej własnej przyczepy na zwierzęta. Martwe usuń jak inne martwe zwierzęta."/>
+        <text name="rse_guide_loose_1" text="Przy wypadku przyczepy ze zwierzętami żywe zwierzęta się oddalają. Zatrzymują się, by się paść, i odskakują, gdy idziesz prosto na nie."/>
+        <text name="rse_guide_loose_2" text="Podejdź do zwierzęcia i użyj klawisza akcji, by je złapać. Idzie za tobą na uwiązie. Doprowadź je do swojej przyczepy na zwierzęta i znowu użyj klawisza, by je załadować."/>
+        <text name="rse_guide_loose_3" text="Prowadzisz jedno naraz. Ucieknie, jeśli za bardzo się oddalisz, i zostanie, jeśli wsiądziesz do pojazdu. Po załadowaniu zwierzęta są twoje i możesz je sprzedać u handlarza zwierząt."/>
+        <text name="rse_guide_title_line" text="Zerwane linie energetyczne"/>
+        <text name="rse_guide_line_1" text="Samochód uderzył w słup energetyczny. Trzymaj się z daleka: przewody mogą być pod napięciem, a stanie za blisko kosztuje cię część zapłaty. Ekipa powiatu przyjeżdża i odcina prąd; w tym czasie postaw pachołki i włącz światła."/>
+        <text name="rse_guide_line_2" text="Gdy prąd jest odcięty, pomóż kierowcy wyjść i zawieź auto do punktu pomocy drogowej. Znacznik pokazuje każdy przewód: podejdź do niego, w dowolnym miejscu, i przytrzymaj klawisz, by go zwinąć."/>
+        <text name="rse_guide_line_3" text="Przywiezienie słupa jest opcjonalne i płatne dodatkowo, jeśli każdy kawałek dotrze do punktu pomocy drogowej, zanim skończy się reszta pracy. To prawdziwa kłoda: jeśli musi się gdzieś zmieścić, przetnij ją piłą łańcuchową (wyjmiesz ją klawiszem narzędzia ręcznego w grze), stojąc obok i celując w poprzek. Wykonaj obie części, auto i przewody, a dostaniesz premię."/>
+        <text name="rse_guide_title_logs" text="Wypadek ciężarówki z drewnem"/>
+        <text name="rse_guide_logs_1" text="Ciężarówka z drewnem zgubiła ładunek. Ekipa właściciela zajmuje się przyczepą; twoja praca to kłody."/>
+        <text name="rse_guide_logs_2" text="Kłoda się liczy, gdy jest na ciężarówce lub przyczepie albo leży daleko poza drogą, z oboma końcami z dala od pasów ruchu. Widły do drewna, dźwigi, pas i piła łańcuchowa działają; kłoda przecięta na dwie to dwa kawałki do usunięcia."/>
+        <text name="rse_guide_logs_3" text="Gdy praca się kończy, ekipa zabiera wszystkie kłody, także te, które załadowałeś. Jeśli przekażesz ją wcześniej, kłody na twoim pojeździe są twoje."/>
+        <text name="rse_guide_title_crossing" text="Przejazd kolejowy"/>
+        <text name="rse_guide_crossing_1" text="Na przejeździe kolejowym utknął pojazd, a pociąg z mapy jest w drodze: zegar pokazuje, ile masz czasu. Zgłoszenie przychodzi z przejazdu w zasięgu, z czasem dopasowanym do odległości."/>
+        <text name="rse_guide_crossing_2" text="Ruszy go tylko pas albo lina wyciągarki; taranowanie nic nie da. Ściągnij go na czas, a potem zawieź do punktu pomocy drogowej. Jeśli pociąg będzie pierwszy, praca przepada i zapłacisz opłatę."/>
+        <text name="rse_guide_title_river" text="Auta w wodzie"/>
+        <text name="rse_guide_river_1" text="Samochód zjechał z drogi do płytkiej wody, a kierowca jest w środku. Wejdź do wody i najpierw pomóż kierowcy wyjść."/>
+        <text name="rse_guide_river_2" text="Potem zaczep auto pasem albo liną wyciągarki z brzegu i je wyciągnij. Zawsze jest łagodne wyjście. Zawieź je do punktu pomocy drogowej jak każdy inny wrak."/>
+        <text name="rse_guide_river_3" text="Te zgłoszenia przychodzą tylko na mapach z płytką wodą i łagodnym brzegiem przy drodze."/>
+        <text name="rse_guide_title_tree" text="Drzewa na autach"/>
+        <text name="rse_guide_tree_1" text="Burza przewróciła drzewo na samochód, a kierowca jest uwięziony w środku. Zdejmij kłodę z auta piłą łańcuchową albo pasem, a drzwi się otworzą, żebyś mógł pomóc kierowcy wyjść."/>
+        <text name="rse_guide_tree_2" text="Usuń z drogi każdy kawałek i zawieź auto do punktu pomocy drogowej, w dowolnej kolejności. Wyciągnij kierowcę w ciągu 6 minut od przyjazdu, a dostaniesz premię. Kłody znikają razem z pracą, chyba że przekażesz ją wcześniej."/>
+        <text name="rse_guide_title_flock" text="Zaganianie stada"/>
+        <text name="rse_guide_flock_1" text="Owce stoją w grupkach wzdłuż drogi, a rolnik postawił zagrodę na pobliskiej łące. Pojazdem albo pieszo: owce oddalają się od ciebie w linii prostej, a te obok idą z nimi. Zbierz grupki razem, a potem zapędź stado do bramy."/>
+        <text name="rse_guide_flock_2" text="Naciskaj od strony przeciwnej do tej, w którą mają iść, i obchodź je, by je skręcić: stado oddala się od miejsca, w którym jesteś. Podejdź bliżej, a pójdą szybciej, ale naciskaj za mocno, a któraś może uciec, a jedź szybko obok nich, a się rozbiegną. Klakson co kilka sekund trochę ściąga każdą grupkę i co jakiś czas popycha je dalej; trąb bez przerwy, a się rozbiegną. Owce w zagrodzie w niej zostają, a rolnik zamyka bramę za ostatnią."/>
+        <text name="rse_guide_flock_3" text="Nie potrzebujesz żadnego sprzętu. Praca się kończy, gdy ostatnia owca jest w zagrodzie; przekaż ją wcześniej, a dostaniesz zapłatę za każdą, która już jest w środku."/>
+        <text name="rse_guide_title_kit" text="Pachołki i bariery"/>
+        <text name="rse_guide_kit_1" text="Podczas zgłoszenia naciśnij pieszo {key:RSE_KIT_MENU}, by otworzyć oznakowanie. {key:RSE_KIT_NEXT} wybiera następny element, {key:RSE_KIT_USE} stawia go albo podnosi ten, w który celujesz, a przytrzymanie {key:RSE_KIT_TURN} go obraca. Są darmowe i zatrzymują ruch."/>
+        <text name="rse_guide_kit_2" text="Co postawisz, to zbierasz. Dopóki tego nie zrobisz, powiat wciąż dzwoni i nie przychodzi żadne nowe zgłoszenie."/>
+        <text name="rse_guide_kit_3" text="Elementy możesz stawiać tylko podczas zgłoszenia, w odległości do {distance:60} od miejsca: pachołki drogowe, drewniane bariery i pachołki z taśmą. Pasek na dole ekranu pokazuje ten w ręce, a {key:RSE_KIT_MENU} chowa oznakowanie."/>
+        <text name="rse_guide_title_markers" text="Znaczniki na mapie"/>
+        <text name="rse_guide_markers_1" text="Zielone kółko ze zwierzęciem to wolne zwierzę, czerwony ! to pozostawione martwe zwierzę, pomarańczowy pachołek to jeden z twoich pachołków lub barier, a zielony pierścień to zagroda rolnika. Niebieski numer to twój własny punkt odbioru, widoczny, gdy masz coś do dostarczenia."/>
+        <text name="rse_guide_markers_2" text="Kliknij znacznik na mapie, by zobaczyć, co to jest, i się tam teleportować. Możesz też zlecić powiatowi odbiór martwego zwierzęcia, za zwykły rachunek, albo usunąć punkt odbioru."/>
+        <text name="rse_guide_markers_3" text="Swoje punkty odbioru dodasz w ustawieniach ({key:RSE_SETTINGS})."/>
+        <text name="rse_guide_markers_4" text="Znaczniki na mapie możesz wyłączyć w ustawieniach."/>
+        <text name="rse_guide_title_settings" text="Ustawienia"/>
+        <text name="rse_guide_settings_1" text="Pieszo {key:RSE_SETTINGS} otwiera ustawienia. Góra i Dół wybierają linię, Lewo i Prawo ją zmieniają, Enter zatwierdza, a {key:RSE_SETTINGS} lub Esc zamyka."/>
+        <text name="rse_guide_settings_2" text="Linie: czy dyspozytor dzwoni sam; jak często są zgłoszenia; dźwięk pagera; zgłoszenia ze zwierzętami; zgłoszenia z wrakami i rozsypanym ładunkiem; wielkość pracy (ile zwierząt lub bel: mały, normalny, duży lub losowy); dochód (od 50% do 200%); opłaty za utylizację i rachunki powiatu (od 0% do 200%); kiedy powiat zabiera to, co zostawisz; kiedy inny wykonawca przejmuje zgłoszenie, do którego nie dotarłeś; znaczniki na mapie; oraz panel zgłoszenia."/>
+        <text name="rse_guide_settings_3" text="Twoje ustawienia są zapisywane razem z grą, a nowa gra zaczyna się z tymi, których używałeś ostatnio. „Przywróć wszystkie ustawienia domyślne” zachowuje twoje punkty odbioru."/>
+        <text name="rse_guide_title_mods" text="Dobrze działa z"/>
+        <text name="rse_guide_mods_1" text="Nie potrzebujesz żadnego z tych modów, ale pasują do tej pracy. Te wymienione tutaj zostały przetestowane z Roadside Emergencies."/>
+        <text name="rse_guide_mods_2" text="T880 Rollback od Roughneck Modding Crew: wciągnij wrak na platformę pasem ({key:RSE_STRAP}) i klawiszami zwijania ({key:RSE_STRAP_IN} i {key:RSE_STRAP_OUT}), przypnij go i zawieź. Ich International CV Rollback też działa, potwierdzone."/>
+        <text name="rse_guide_mods_3" text="Better Winch od ThundR: jego wyciągarka zaczepia martwe zwierzęta i wraki. UniversalAutoload od loki_79: ładuje je na obsługiwane przyczepy."/>
+        <text name="rse_guide_mods_4" text="Ładowacze czołowe, chwytaki do bel i przyczepy z dźwigiem radzą sobie z martwymi zwierzętami, ale mały dźwig nie podniesie krowy."/>
+        <text name="rse_crash_hint_load" text="Odzyskaj przyczepę i dowieź bele do punktu pomocy drogowej."/>
+        <text name="rse_crash_arrivedLoad" text="Bele na drodze: %d."/>
+        <text name="rse_load_call_small" text="Ładunek to małe bele, więc wystarczy pickup i twoje ręce."/>
+        <text name="rse_load_call_big" text="Ładunek to duże bele, więc przyjedź z ładowaczem czołowym albo ładowarką teleskopową i czymś do ich przewozu."/>
+        <text name="rse_load_arrived_small" text="Noś małe bele ręcznie na pakę pickupa albo do przyczepy, gdy znowu stoi na kołach. Każda dowieziona do punktu pomocy drogowej płaci."/>
+        <text name="rse_load_arrived_big" text="Duże bele wymagają ładowacza czołowego albo ładowarki teleskopowej. Każda dowieziona do punktu pomocy drogowej płaci."/>
+        <text name="rse_crash_trailerDoneBales" text="Przyczepa dostarczona. Przywieź też bele, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie je inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz je oddać wcześniej."/>
+        <text name="rse_crash_balesDone" text="Bele dostarczone. Przywieź też przyczepę, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie ją inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz ją oddać wcześniej."/>
+        <text name="rse_wreck_hint_deliver" text="Odholuj go na pasie ({key:RSE_STRAP}) albo załaduj i zawieź do punktu pomocy drogowej."/>
+        <text name="rse_set_open" text="Ustawienia"/>
+        <text name="rse_set_guide" text="Otwórz poradnik"/>
+        <text name="rse_guide_title" text="Poradnik Roadside Emergencies"/>
+        <text name="rse_guide_help" text="Lewo i Prawo: strona. Enter: następna strona. {key:RSE_SETTINGS} lub Esc: zamknij."/>
+        <text name="rse_guide_page" text="Strona %d z %d"/>
+        <text name="rse_guide_part" text="%s (%d z %d)"/>
+        <text name="rse_flock_hornScared" text="Od tego trąbienia owce się rozbiegły. Musisz je znowu zebrać."/>
+
+        <text name="rse_scene_deliver" text="Zawieź usunięte zwierzęta do punktu utylizacji, a dostaniesz więcej."/>
+        <text name="rse_ep_missing" text="Roadside Emergencies wymaga darmowego DLC Emergency Pack, a nie jest ono aktywne w tym zapisie gry, więc nie przyjdzie żadne zgłoszenie. Zainstaluj pakiet za darmo ze swojego sklepu, a potem wybierz go razem z tym modem, gdy uruchamiasz ten zapis."/>
+    </texts>
+</l10n>

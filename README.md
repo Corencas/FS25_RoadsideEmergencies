@@ -11,7 +11,7 @@ Adds 19 new callouts to the free [Emergency Pack](https://store.steampowered.com
 
 [All releases](https://github.com/Corencas/FS25_RoadsideEmergencies/releases) · [Report a bug](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new/choose)
 
-Free · Public beta · FS25 on PC (tested on Windows) · Single player only for now · **Requires the free Emergency Pack DLC** · English and German
+Free · Public beta · FS25 on PC (tested on Windows) · Single player only for now · **Requires the free Emergency Pack DLC** · English, German, French, Spanish, Italian, Brazilian Portuguese, Polish, Czech, Russian and Ukrainian
 
 | | |
 |:---:|:---:|
@@ -241,7 +241,7 @@ Your own drop-off points only show while you are with something to bring to one.
 
 **Why did a stuck car disappear?** Traffic is run by the game. It stops for what is on the road, but the game can remove a vehicle that has been stuck for a long time.
 
-**Other languages?** French, Spanish, Italian, Russian, Brazilian Portuguese, Polish, Czech and Ukrainian are planned for 1.0. The German texts are machine-drafted, and corrections from native speakers are welcome.
+**Other languages?** The mod speaks English, German, French, Spanish, Italian, Brazilian Portuguese, Polish, Czech, Russian and Ukrainian. Every language but English is machine-drafted, so corrections from native speakers are welcome: open an issue with the text, where you saw it, and your fix.
 
 ## Console commands
 

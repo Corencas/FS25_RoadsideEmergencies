@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <texts>
+        <!-- which form a counted word takes (scripts/core/Plural.lua): default, eastSlavic, polish or czech -->
+        <text name="rse_plural_rule" text="default"/>
+
+        <!-- keys -->
+        <text name="input_RSE_STRAP" text="RSE: Sangle de dépannage"/>
+
+        <!-- animals -->
+        <text name="rse_animal_deer" text="chevreuil"/>
+        <text name="rse_animal_boar" text="sanglier"/>
+        <text name="rse_animal_pig" text="cochon"/>
+        <text name="rse_animal_sheep" text="mouton"/>
+        <text name="rse_animal_goat" text="chèvre"/>
+        <text name="rse_animal_cow" text="vache"/>
+        <text name="rse_animal_buffalo" text="buffle"/>
+        <text name="rse_animal_horse" text="cheval"/>
+
+        <!-- carcasses -->
+        <text name="rse_fillType_deer" text="Chevreuil mort"/>
+        <text name="rse_fillType_boar" text="Sanglier mort"/>
+        <text name="rse_fillType_pig" text="Cochon mort"/>
+        <text name="rse_fillType_sheep" text="Mouton mort"/>
+        <text name="rse_fillType_goat" text="Chèvre morte"/>
+        <text name="rse_fillType_cow" text="Vache morte"/>
+        <text name="rse_fillType_buffalo" text="Buffle mort"/>
+        <text name="rse_fillType_horse" text="Cheval mort"/>
+        <text name="rse_animalName_deer" text="Chevreuil"/>
+        <text name="rse_unit_deer_one" text="Chevreuil"/>
+        <text name="rse_unit_deer_many" text="Chevreuils"/>
+        <text name="rse_animalName_boar" text="Sanglier"/>
+        <text name="rse_unit_boar_one" text="Sanglier"/>
+        <text name="rse_unit_boar_many" text="Sangliers"/>
+        <text name="rse_animalName_pig" text="Cochon"/>
+        <text name="rse_unit_pig_one" text="Cochon"/>
+        <text name="rse_unit_pig_many" text="Cochons"/>
+        <text name="rse_animalName_sheep" text="Mouton"/>
+        <text name="rse_unit_sheep_one" text="Mouton"/>
+        <text name="rse_unit_sheep_many" text="Moutons"/>
+        <text name="rse_animalName_goat" text="Chèvre"/>
+        <text name="rse_unit_goat_one" text="Chèvre"/>
+        <text name="rse_unit_goat_many" text="Chèvres"/>
+        <text name="rse_animalName_cow" text="Vache"/>
+        <text name="rse_unit_cow_one" text="Vache"/>
+        <text name="rse_unit_cow_many" text="Vaches"/>
+        <text name="rse_animalName_buffalo" text="Buffle"/>
+        <text name="rse_unit_buffalo_one" text="Buffle"/>
+        <text name="rse_unit_buffalo_many" text="Buffles"/>
+        <text name="rse_animalName_horse" text="Cheval"/>
+        <text name="rse_unit_horse_one" text="Cheval"/>
+        <text name="rse_unit_horse_many" text="Chevaux"/>
+        <text name="rse_info_deadAnimal" text="Animal mort"/>
+        <text name="rse_info_mass" text="Masse"/>
+        <text name="rse_welcome_title" text="Roadside Emergencies"/>
+        <text name="rse_warning" text="ATTENTION —"/>
+        <text name="rse_welcome_subtitle" text="Le central du comté vous appelle quand quelque chose tourne mal sur la route."/>
+        <text name="rse_welcome_body" text="Les appels arrivent d'eux-mêmes pendant que vous cultivez. Acceptez, rendez-vous sur place et dégagez la route : animaux, épaves, chargements renversés, une ligne électrique tombée, un troupeau à parquer.&#10;&#10;Un appel n'arrive que si votre ferme a ce qu'il faut pour le travail. Un pick-up suffit pour les petits travaux ; les épaves lourdes demandent une dépanneuse plateau ou un gros camion.&#10;&#10;Le guide explique tout, et vous pouvez l'ouvrir à tout moment avec {key:RSE_SETTINGS} à pied."/>
+        <text name="rse_welcome_pack" text="Il nécessite le DLC gratuit Emergency Pack, qui est installé."/>
+        <text name="rse_welcome_beta" text="Ceci est une bêta. Un bug ? Signalez-le sur GitHub : github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_start" text="Commencer"/>
+        <text name="rse_welcome_guide" text="Guide"/>
+        <text name="rse_action_tooHeavyShort" text="Trop lourd"/>
+        <text name="rse_kitShort_cone" text="le cône"/>
+        <text name="rse_kitShort_barricade" text="la barrière"/>
+        <text name="rse_kitShort_coneTape" text="le ruban"/>
+        <text name="rse_animalShort_deer" text="chevreuil"/>
+        <text name="rse_animalShort_boar" text="sanglier"/>
+        <text name="rse_animalShort_pig" text="cochon"/>
+        <text name="rse_animalShort_sheep" text="mouton"/>
+        <text name="rse_animalShort_goat" text="chèvre"/>
+        <text name="rse_animalShort_cow" text="vache"/>
+        <text name="rse_animalShort_buffalo" text="buffle"/>
+        <text name="rse_animalShort_horse" text="cheval"/>
+        <text name="rse_action_drag" text="Traîner : %s"/>
+        <text name="rse_action_letGo" text="Lâcher : %s"/>
+        <text name="rse_action_tooHeavy" text="Trop lourd pour être traîné à la main (%s). Utilisez une sangle ou une machine."/>
+
+        <!-- recovery strap -->
+        <text name="rse_strap_hook" text="Accrocher la sangle"/>
+        <text name="rse_strap_attach" text="Fixer la sangle"/>
+        <text name="rse_strap_drop" text="Ranger la sangle"/>
+        <text name="rse_strap_remove" text="Retirer la sangle"/>
+        <text name="rse_strap_hooked" text="Sangle accrochée : %s. Accrochez maintenant l'autre bout à un véhicule."/>
+        <text name="rse_strap_attached" text="Sangle fixée entre %s et %s."/>
+        <text name="rse_strap_tooFar" text="Trop éloignés : %s. La sangle mesure %s."/>
+        <text name="rse_strap_removed" text="Sangle retirée."/>
+
+        <!-- disposal points -->
+        <text name="rse_point_shop" text="Magasin"/>
+        <text name="rse_point_player" text="Mon point %d"/>
+        <text name="rse_point_hotspot" text="Point de dépôt %d : %s"/>
+        <text name="rse_marker_loose" text="En liberté : %s"/>
+        <text name="rse_marker_left" text="Animal mort laissé : %s"/>
+        <text name="rse_delivered" text="Animal livré : %s (%s). Rémunération du transport : %s. Frais d'élimination : %s."/>
+        <text name="rse_finance_haulPay" text="Transport de carcasses"/>
+        <text name="rse_collectedUnearned" text="Central du comté : les agents de la voirie ont ramassé un animal mort que vous n'avez jamais livré (%s). Facture : %s, dont les %s qui vous avaient été payés pour le transport."/>
+        <text name="rse_collected" text="Central du comté : les agents de la voirie ont ramassé un animal mort que vous aviez laissé (%s). Facture : %s."/>
+        <text name="rse_finance_collection" text="Factures de ramassage de carcasses"/>
+        <text name="rse_finance_penalty" text="Frais d'interventions d'urgence"/>
+        <text name="rse_finance_disposalFee" text="Frais d'élimination de carcasses"/>
+
+        <!-- settings panel -->
+        <text name="input_RSE_SETTINGS" text="RSE: Réglages et guide"/>
+        <text name="rse_set_title" text="Réglages de Roadside Emergencies"/>
+        <text name="rse_set_on" text="Activé"/>
+        <text name="rse_set_off" text="Désactivé"/>
+        <text name="rse_set_size_small" text="Petite"/>
+        <text name="rse_set_size_normal" text="Normale"/>
+        <text name="rse_set_size_large" text="Grande"/>
+        <text name="rse_set_size_random" text="Aléatoire"/>
+        <text name="rse_set_calls" text="Le central du comté appelle de lui-même"/>
+        <text name="rse_set_frequency" text="Fréquence des appels"/>
+        <text name="rse_set_pagerSound" text="Son du bipeur"/>
+        <text name="rse_set_frequency_rare" text="Rarement"/>
+        <text name="rse_set_frequency_normal" text="Normal"/>
+        <text name="rse_set_frequency_often" text="Souvent"/>
+        <text name="rse_set_animalCalls" text="Appels pour animaux"/>
+        <text name="rse_set_wreckCalls" text="Appels pour épaves et chargements renversés"/>
+        <text name="rse_set_jobSize" text="Taille des interventions (animaux ou balles)"/>
+        <text name="rse_set_pay" text="Revenus des appels et du transport"/>
+        <text name="rse_set_fees" text="Frais d'élimination et factures du comté"/>
+        <text name="rse_set_left" text="Le comté ramasse ce que vous laissez après"/>
+        <text name="rse_set_expire" text="Un autre prestataire reprend après"/>
+        <text name="rse_set_markers" text="Marqueurs sur la carte"/>
+        <text name="rse_panel_title_animals" text="%s sur la route"/>
+        <text name="rse_panel_title_call" text="Appel sur route"/>
+        <text name="rse_panel_title_truck" text="Camion accidenté"/>
+        <text name="rse_panel_title_tractor" text="Tracteur renversé"/>
+        <text name="rse_panel_title_trailer" text="Remorque renversée"/>
+        <text name="rse_panel_title_livestock" text="Accident de bétaillère"/>
+        <text name="rse_panel_title_powerline" text="Ligne électrique tombée"/>
+        <text name="rse_panel_title_storm" text="Dégâts de tempête"/>
+        <text name="rse_panel_title_crossing" text="Bloqué sur la voie ferrée"/>
+        <text name="rse_panel_title_river" text="Voiture dans l'eau"/>
+        <text name="rse_panel_title_tree" text="Arbre sur une voiture"/>
+        <text name="rse_panel_title_flock" text="Moutons sur la route"/>
+        <text name="rse_panel_title_logging" text="Accident de grumier"/>
+        <text name="rse_panel_reach" text="Se rendre sur place"/>
+        <text name="rse_panel_animals" text="Dégager les animaux de la route"/>
+        <text name="rse_panel_power" text="Attendre que l'équipe du comté coupe le courant"/>
+        <text name="rse_panel_treeLog" text="Retirer le tronc de la voiture"/>
+        <text name="rse_panel_tracks" text="Dégager les voies"/>
+        <text name="rse_panel_driver" text="Aider le conducteur à sortir"/>
+        <text name="rse_panel_prepare" text="Préparer l'épave"/>
+        <text name="rse_panel_upright" text="Remettre sur ses roues"/>
+        <text name="rse_panel_logs" text="Dégager les grumes"/>
+        <text name="rse_panel_wires" text="Enrouler les câbles"/>
+        <text name="rse_panel_pole" text="Rapporter le poteau (facultatif)"/>
+        <text name="rse_panel_bales" text="Rapporter les balles"/>
+        <text name="rse_panel_survivors" text="Charger les animaux en liberté"/>
+        <text name="rse_panel_flock" text="Parquer les moutons"/>
+        <text name="rse_panel_deliver" text="Remorquer à un point de dépannage"/>
+        <text name="rse_panel_deliverCar" text="Voiture au point de dépannage"/>
+        <text name="rse_panel_deliverTrailer" text="Remorque au point de dépannage"/>
+        <text name="rse_panel_done" text="Fait"/>
+        <text name="rse_panel_now" text="En cours"/>
+        <text name="rse_panel_left" text="encore %d"/>
+        <text name="rse_panel_clockArrive" text="Arriver dans les"/>
+        <text name="rse_panel_clockTrain" text="Train au passage à niveau dans"/>
+        <text name="rse_panel_clockPower" text="Courant coupé dans"/>
+        <text name="rse_panel_clockHandover" text="Le reste est transmis dans"/>
+        <text name="rse_panel_clockRescue" text="Conducteur dehors pour le bonus dans"/>
+        <text name="rse_panel_hurry" text="Vite ! %s"/>
+        <text name="rse_panel_lightsOff" text="Allumez les feux d'alerte : +%d%%"/>
+        <text name="rse_panel_lightsEarned" text="Bonus feux d'alerte : +%d%%"/>
+        <text name="rse_panel_lightsCounting" text="Feux d'alerte : +%d%% dans %s"/>
+        <text name="rse_panel_extra" text="+%s"/>
+        <text name="rse_panel_optional" text="Facultatif"/>
+        <text name="rse_call_lightsEarned" text="Vos feux d'alerte sur place rapportent %d%% de plus sur cette intervention."/>
+        <text name="rse_panel_pay" text="environ %s"/>
+        <text name="rse_set_panel" text="Panneau d'intervention"/>
+        <text name="rse_line_stillLiveShort" text="Pas encore : le courant passe toujours."/>
+        <text name="rse_crew_arrived" text="Équipe du comté : nous sommes là et nous coupons le courant. Laissez-nous une demi-minute."/>
+        <text name="rse_crew_notYours" text="C'est le véhicule de l'équipe du comté."/>
+        <text name="rse_set_addPoint" text="Ajouter un point de dépôt ici"/>
+        <text name="rse_set_removePoint" text="Supprimer votre point de dépôt le plus proche"/>
+        <text name="rse_point_added" text="Point de dépôt ajouté ici : %s."/>
+        <text name="rse_point_removed" text="Votre point de dépôt a été supprimé : %s."/>
+        <text name="rse_point_noneOwn" text="Vous n'avez aucun point de dépôt à vous."/>
+
+        <!-- scene kit -->
+        <text name="input_RSE_KIT_MENU" text="RSE: Balisage, ouvrir ou fermer"/>
+        <text name="input_RSE_KIT_USE" text="RSE: Balisage, poser ou ramasser"/>
+        <text name="input_RSE_KIT_TURN" text="RSE: Balisage, tourner"/>
+        <text name="input_RSE_KIT_NEXT" text="RSE: Balisage, élément suivant"/>
+        <text name="rse_kit_next" text="Élément suivant"/>
+        <text name="rse_kit_cone" text="Cône de signalisation"/>
+        <text name="rse_kit_barricade" text="Barrière en bois"/>
+        <text name="rse_kit_coneTape" text="Cône avec rubalise"/>
+        <text name="rse_kit_stop" text="Fermer le balisage"/>
+        <text name="rse_kit_open" text="Balisage"/>
+        <text name="rse_kit_place" text="Poser %s"/>
+        <text name="rse_kit_pickup" text="Prendre %s"/>
+        <text name="rse_kit_turn" text="Tourner %s"/>
+        <text name="rse_kit_loadFailed" text="Cet élément n'a pas pu être chargé : %s."/>
+        <text name="rse_kit_limit" text="Vous ne pouvez pas poser plus de %d éléments à la fois."/>
+        <text name="rse_kit_collect" text="Ramassez vos cônes et barrières (encore %d). Aucune nouvelle intervention tant que ce n'est pas fait."/>
+        <text name="rse_kit_allCollected" text="Tous vos cônes et barrières sont ramassés. Vous pouvez reprendre des interventions."/>
+        <text name="rse_kit_reminder" text="Le central du comté a appelé : les cônes et barrières de votre entreprise gênent toujours la circulation (encore %d). Ramassez-les. Aucune nouvelle intervention tant que ce n'est pas fait."/>
+
+        <!-- Emergency Pack -->
+        <text name="rse_ep_deer_description" text="Central du comté : une voiture a heurté du gibier sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_boar_description" text="Central du comté : une voiture a heurté des sangliers sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_pig_description" text="Central du comté : une voiture a heurté du bétail échappé sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_sheep_description" text="Central du comté : une voiture a heurté des moutons passés à travers une clôture. La circulation s'arrête."/>
+        <text name="rse_ep_goat_description" text="Central du comté : une voiture a heurté du bétail échappé sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_cow_description" text="Central du comté : un camion a heurté du bétail sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_horse_description" text="Central du comté : une voiture a heurté du bétail échappé sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_buffalo_description" text="Central du comté : un camion a heurté des buffles sur la route. La circulation s'arrête."/>
+        <text name="rse_ep_hint_arrive" text="Rendez-vous à l'endroit indiqué."/>
+        <text name="rse_call_vehicle" text="Le central signale le véhicule : %s."/>
+        <text name="rse_call_towSmall" text="Un pick-up ou tout véhicule plus gros peut le remorquer."/>
+        <text name="rse_call_towBig" text="Il est gros : venez avec un véhicule plus gros ou une dépanneuse plateau. Un pick-up ne peut pas le remorquer."/>
+        <text name="rse_pager_where" text="Où : à environ %s %s de vous"/>
+        <text name="rse_pager_whereNear" text="Où : près de vous"/>
+        <text name="rse_dir_n" text="au nord"/>
+        <text name="rse_dir_ne" text="au nord-est"/>
+        <text name="rse_dir_e" text="à l'est"/>
+        <text name="rse_dir_se" text="au sud-est"/>
+        <text name="rse_dir_s" text="au sud"/>
+        <text name="rse_dir_sw" text="au sud-ouest"/>
+        <text name="rse_dir_w" text="à l'ouest"/>
+        <text name="rse_dir_nw" text="au nord-ouest"/>
+        <text name="rse_pager_animals" text="Sur la route : %d %s"/>
+        <text name="rse_pager_vehicle" text="Véhicule : %s"/>
+        <text name="rse_pager_vehicleHeavy" text="Véhicule : %s (lourd)"/>
+        <text name="rse_pager_load_small" text="Chargement : petites balles, assez légères pour être portées à la main"/>
+        <text name="rse_pager_load_big" text="Chargement : grosses balles"/>
+        <text name="rse_pager_takes" text="Il faut : %s"/>
+        <text name="rse_pager_and" text=", et "/>
+        <text name="rse_pager_need_hands" text="rien que vos mains ; les emporter rapporte plus"/>
+        <text name="rse_pager_need_pull" text="une sangle ou une machine, et un véhicule de {mass:1} ou plus"/>
+        <text name="rse_pager_need_tow" text="un pick-up ou plus gros pour le remorquer"/>
+        <text name="rse_pager_need_heavy" text="une dépanneuse plateau, ou un camion ou un tracteur de {mass:3} ou plus"/>
+        <text name="rse_pager_need_livestock" text="votre propre bétaillère"/>
+        <text name="rse_pager_need_carry" text="une remorque ou la benne d'un pick-up pour les balles"/>
+        <text name="rse_pager_need_lift" text="une fourche, une pince ou un chargeur à balles"/>
+        <text name="rse_pager_need_flock" text="rien : vous les menez à pied ou avec n'importe quel véhicule"/>
+        <text name="rse_pager_need_logs" text="de quoi déplacer des grumes : une fourche à grumes, une grue, ou une sangle et un véhicule"/>
+        <text name="rse_pager_need_line" text="une sangle ou un câble de treuil"/>
+        <text name="rse_pager_youHave" text="Vous avez : %s"/>
+        <text name="rse_pager_time" text="Délai : être sur place dans les %s"/>
+        <text name="rse_pager_train" text="Délai : le train arrive au passage à niveau dans environ %s"/>
+        <text name="rse_pager_pay" text="Paie : environ %s"/>
+        <text name="rse_pager_payEach" text="Paie : environ %s, plus %s pour %s"/>
+        <text name="rse_pager_item_bale" text="chaque balle"/>
+        <text name="rse_pager_item_animal" text="chaque animal chargé"/>
+        <text name="rse_pager_item_wire" text="chaque câble"/>
+        <text name="rse_pager_item_log" text="chaque grume"/>
+        <text name="rse_pager_item_sheep" text="chaque mouton"/>
+        <text name="rse_ep_hint_clear_small" text="Dégagez la route : traînez les animaux sur le côté, ou chargez-les et portez-les à un point de dépôt pour la paie complète."/>
+        <text name="rse_ep_hint_clear_heavy" text="Dégagez la route : sanglez ({key:RSE_STRAP}) ou soulevez les animaux, et portez-les à un point de dépôt pour la paie complète."/>
+        <text name="rse_ep_done" text="La route est dégagée. Merci !"/>
+        <text name="rse_scene_resumed" text="Vous avez un appel d'urgence en cours. Suivez le marqueur sur la carte."/>
+        <text name="rse_scene_resumeFailed" text="L'appel d'urgence n'a pas pu reprendre après le chargement, il a donc été annulé."/>
+        <text name="rse_left_warn" text="Central du comté : vous avez laissé un animal mort (%s). Ramassez-le d'ici %s, sinon le comté le ramassera et vous le facturera. Il est indiqué sur votre carte."/>
+        <text name="rse_left_warnMany" text="Central du comté : vous avez laissé %d animaux morts. Ramassez-les d'ici %s, sinon le comté les ramassera et vous les facturera. Ils sont indiqués sur votre carte."/>
+        <text name="rse_unit_minute" text="1 minute"/>
+        <text name="rse_unit_minutes" text="%d minutes"/>
+        <text name="rse_caller_driver" text="Un automobiliste de passage"/>
+        <text name="rse_caller_bus" text="Un chauffeur de bus scolaire"/>
+        <text name="rse_caller_mail" text="Un facteur"/>
+        <text name="rse_caller_neighbor" text="Un voisin"/>
+        <text name="rse_caller_sheriff" text="Le bureau du shérif"/>
+        <text name="rse_call_details" text="%s a donné l'alerte. C'est à %s de vous."/>
+        <text name="rse_call_detailsNear" text="%s a donné l'alerte près de la parcelle %d, à %s de vous."/>
+        <text name="rse_call_arrivedOne" text="Un animal est sur la route."/>
+        <text name="rse_call_arrivedMany" text="%d animaux sont sur la route."/>
+        <text name="rse_call_expiring" text="Central du comté : si vous n'êtes pas sur place d'ici %s, un autre prestataire prendra le relais, et de petits frais vous seront facturés."/>
+        <text name="rse_call_expired" text="Central du comté : un autre prestataire a repris l'appel, car vous n'êtes pas arrivé à temps. Pas de paie."/>
+        <text name="rse_call_expiredFee" text="Central du comté : un autre prestataire a repris l'appel, car vous n'êtes pas arrivé à temps. Pas de paie, et %s vous ont été facturés."/>
+        <text name="rse_call_lightsBonus" text="Vos feux d'alerte ont sécurisé les lieux : %d%% de paie en plus."/>
+        <text name="rse_ep_wreck_description" text="Central du comté : un camion accidenté bloque la route. La circulation s'arrête. Il doit aller à un point de dépannage."/>
+        <text name="rse_ep_rollover_description" text="Central du comté : un tracteur s'est renversé dans un fossé, et le conducteur est toujours à l'intérieur. Il faut le remettre sur ses roues et l'amener à un point de dépannage."/>
+        <text name="rse_ep_doneWreck" text="L'intervention est terminée. Merci !"/>
+        <text name="rse_wreck_hint_prepare" text="Approchez-vous de l'épave et préparez-la pour le dépannage."/>
+        <text name="rse_wreck_hint_driver" text="Approchez-vous du tracteur et aidez le conducteur à sortir."/>
+        <text name="rse_wreck_hint_upright" text="Accrochez une sangle en haut de son côté supérieur ({key:RSE_STRAP}) et tirez pour le remettre sur ses roues."/>
+        <text name="rse_wreck_prepare" text="Préparer l'épave"/>
+        <text name="rse_wreck_driver" text="Aider le conducteur"/>
+        <text name="rse_wreck_driverOut" text="Le conducteur est sorti, indemne."/>
+        <text name="rse_wreck_upright" text="Il est de nouveau sur ses roues."/>
+        <text name="rse_wreck_delivered" text="L'épave est au point de dépannage."/>
+        <text name="rse_wreck_locked" text="Cette épave doit d'abord être préparée pour le dépannage."/>
+        <text name="rse_wreck_noEngine" text="Le moteur de cette épave ne peut pas démarrer."/>
+        <text name="rse_load_delivered" text="Une balle a été livrée. Balles restantes : %d."/>
+        <text name="rse_call_cancelled" text="Central du comté : l'appel a été annulé."/>
+        <text name="rse_ep_storm_description" text="Central du comté : une tornade a projeté des balles sur la route. La circulation s'arrête. Elles doivent aller à un point de dépannage."/>
+        <text name="rse_storm_hint" text="Rapportez les balles à un point de dépannage, avec n'importe quel véhicule."/>
+        <text name="rse_ep_livestock_description" text="Central du comté : une bétaillère s'est renversée sur la route. Certains animaux sont morts, d'autres en liberté. Prenez la remorque, les animaux vivants ou les deux, avec un bonus pour les deux."/>
+        <text name="rse_crash_hint" text="Récupérez la remorque, et chargez les animaux en liberté dans votre propre bétaillère."/>
+        <text name="rse_crash_arrived" text="Animaux morts : %d. Animaux en liberté : %d. Ils s'éloignent, ne tardez pas trop."/>
+        <text name="rse_crash_animalsDone" text="Les animaux sont pris en charge. Rapportez aussi la remorque pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent la confier plus tôt."/>
+        <text name="rse_crash_trailerDone" text="La remorque est rapportée. Occupez-vous aussi des animaux pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent les confier plus tôt."/>
+        <text name="rse_crash_warn" text="Central du comté : un autre prestataire reprend le reste de cette intervention dans %s."/>
+        <text name="rse_crash_handedOver" text="Central du comté : un autre prestataire s'occupe du reste. Vous êtes payé pour ce que vous avez fait."/>
+        <text name="rse_crash_bonus" text="Vous avez fait les deux parties de l'intervention : bonus de %d%%."/>
+        <text name="rse_survivor_catch" text="Attraper : %s"/>
+        <text name="rse_survivor_load" text="Charger : %s"/>
+        <text name="rse_survivor_caught" text="L'animal est à la longe (%s). Menez-le jusqu'à votre propre bétaillère."/>
+        <text name="rse_survivor_gotAway" text="L'animal vous a échappé (%s)."/>
+        <text name="rse_survivor_noRoom" text="Votre bétaillère ne peut pas prendre cet animal : elle est pleine, ou elle transporte déjà une autre espèce."/>
+        <text name="rse_survivor_loaded" text="Chargé dans votre bétaillère : %s. Animaux en liberté restants : %d."/>
+        <text name="rse_set_help" text="Haut et Bas : choisir. Gauche et Droite : changer. Entrée : valider. {key:RSE_SETTINGS} ou Échap : fermer."/>
+        <text name="rse_set_defaults" text="Rétablir tous les réglages par défaut"/>
+        <text name="rse_set_defaultsDone" text="Tous les réglages sont revenus par défaut. Vos points de dépôt ont été conservés."/>
+        <text name="rse_set_none" text="Aucun"/>
+        <text name="rse_set_handOver" text="Confier cette intervention à un autre prestataire"/>
+        <text name="rse_set_handOverPaid" text="Payé pour ce qui est fait"/>
+        <text name="rse_set_handOverNone" text="Pas de paie"/>
+        <text name="rse_set_handOverFee" text="Pas de paie, %s de frais"/>
+        <text name="rse_call_handedOver" text="Central du comté : un autre prestataire a repris l'intervention. Pas de paie."/>
+        <text name="rse_call_handedOverFee" text="Central du comté : un autre prestataire a repris l'intervention. Pas de paie, et %s vous ont été facturés."/>
+        <text name="rse_call_cantHandOver" text="L'intervention n'a pas pu être confiée."/>
+        <text name="rse_map_teleport" text="Se téléporter ici"/>
+        <text name="rse_map_collect" text="Faire ramasser par le comté (facturé)"/>
+        <text name="rse_map_removePoint" text="Supprimer ce point de dépôt"/>
+        <text name="input_RSE_STRAP_IN" text="RSE: Enrouler la sangle"/>
+        <text name="input_RSE_STRAP_OUT" text="RSE: Dérouler la sangle"/>
+        <text name="rse_strap_reelIn" text="Enrouler la sangle"/>
+        <text name="rse_strap_reelOut" text="Dérouler la sangle"/>
+        <text name="rse_call_lightsHint" text="Allumez vos feux de détresse ou gyrophares pendant que vous travaillez ici : %d%% de paie en plus."/>
+        <text name="rse_ep_trailer_description" text="Central du comté : une remorque s'est renversée et a perdu ses balles sur la route. La circulation s'arrête. Prenez la remorque, les balles ou les deux, avec un bonus pour les deux."/>
+        <text name="rse_ep_powerline_description" text="Central du comté : une voiture a percuté un poteau électrique. Le poteau et les câbles sont tombés en travers de la route, et le conducteur est toujours dans la voiture. Une équipe du comté est en route pour couper le courant."/>
+        <text name="rse_ep_crossing_description" text="Central du comté : un véhicule est en panne sur un passage à niveau, et un train arrive. Le conducteur est sorti sain et sauf. Tirez le véhicule hors des voies avant l'arrivée du train."/>
+        <text name="rse_ep_river_description" text="Central du comté : une voiture a quitté la route et fini dans l'eau, avec le conducteur encore à l'intérieur."/>
+        <text name="rse_river_hint_driver" text="Avancez dans l'eau jusqu'à la voiture et aidez le conducteur à sortir."/>
+        <text name="rse_river_hint_pull" text="Sanglez la voiture depuis la berge ({key:RSE_STRAP}), sortez-la, et amenez-la à un point de dépannage."/>
+        <text name="rse_ep_tree_description" text="Central du comté : une tempête a fait tomber un arbre sur une voiture, et le conducteur est coincé à l'intérieur. Une tronçonneuse va plus vite."/>
+        <text name="rse_tree_notYet" text="La portière ne s'ouvre pas tant qu'un tronc est sur la voiture."/>
+        <text name="rse_tree_hint" text="Retirez le tronc de la voiture, aidez le conducteur à sortir, dégagez la route et récupérez la voiture."/>
+        <text name="rse_tree_doorFree" text="Le tronc n'est plus sur la voiture, la portière s'ouvre. Aidez le conducteur à sortir."/>
+        <text name="rse_tree_roadClearDriver" text="La route est dégagée. Aidez le conducteur à sortir, et amenez la voiture au point de dépannage."/>
+        <text name="rse_tree_roadClear" text="La route est dégagée. Amenez la voiture au point de dépannage."/>
+        <text name="rse_tree_carIn" text="La voiture est rapportée. Dégagez maintenant le reste des grumes de la route."/>
+        <text name="rse_tree_crew" text="L'équipe du comté ramassera les grumes, y compris celles que vous avez chargées."/>
+        <text name="rse_tree_handedOver" text="Un autre prestataire prend le relais. Vous êtes payé pour ce que vous avez fait."/>
+        <text name="rse_tree_arrived" text="Le conducteur klaxonne. Sortez-le d'ici %d minutes pour un bonus de %s."/>
+        <text name="rse_tree_rescueBonus" text="Le conducteur est sorti à temps : bonus de %s."/>
+        <text name="rse_ep_flock_description" text="Central du comté : un troupeau de moutons s'est échappé et envahit la route. La circulation s'arrête. Le fermier a monté un enclos tout près."/>
+        <text name="rse_flock_hint" text="Placez-vous derrière les moutons et guidez-les dans l'enclos. Ralentissez près d'eux."/>
+        <text name="rse_flock_arrived" text="%d moutons envahissent la route. L'enclos est à l'endroit indiqué."/>
+        <text name="rse_flock_scattered" text="Vous êtes arrivé trop vite, et les moutons se sont dispersés. Il faudra les rassembler à nouveau."/>
+        <text name="rse_flock_half" text="La moitié du troupeau est dans l'enclos."/>
+        <text name="rse_flock_oneLeft" text="Plus qu'un."/>
+        <text name="rse_flock_done" text="Le fermier a fermé la barrière et les a comptés : les %d sont en sécurité."/>
+        <text name="rse_flock_handedOver" text="Le fermier rassemblera le reste."/>
+        <text name="rse_flock_pen" text="Enclos à moutons"/>
+        <text name="rse_flock_marker" text="Le troupeau"/>
+        <text name="rse_crossing_hint" text="Sanglez le véhicule ({key:RSE_STRAP}) et tirez-le hors des voies avant le passage du train."/>
+        <text name="rse_crossing_call" text="Le train arrive au passage à niveau dans %s."/>
+        <text name="rse_crossing_clock" text="Train au passage à niveau dans %s"/>
+        <text name="rse_crossing_clear" text="Le véhicule est hors des voies. Amenez-le maintenant au point de dépannage."/>
+        <text name="rse_crossing_hit" text="Le train est arrivé le premier. Personne n'est blessé, mais l'intervention est perdue, et il n'y a pas de paie."/>
+        <text name="rse_crossing_hitFee" text="Le train est arrivé le premier. Personne n'est blessé, mais l'intervention est perdue. Pas de paie, et %s vous ont été facturés."/>
+        <text name="rse_ep_logging_description" text="Central du comté : une remorque à grumes s'est renversée, et ses grumes barrent la route. L'équipe du propriétaire s'occupe de la remorque ; les grumes sont pour vous."/>
+        <text name="rse_logs_hint" text="Dégagez chaque grume de la route : chargez-les, ou déplacez-les bien sur le côté."/>
+        <text name="rse_logs_arrived" text="%d grumes barrent la route."/>
+        <text name="rse_logs_progress" text="%d morceaux sur %d sont dégagés de la route."/>
+        <text name="rse_logs_crew" text="L'équipe du propriétaire ramassera la remorque et toutes les grumes, y compris celles que vous avez chargées."/>
+        <text name="rse_logs_crewLeft" text="L'équipe du propriétaire ramassera la remorque et les grumes restées ici."/>
+        <text name="rse_logs_yours" text="Les grumes sur votre véhicule sont à vous : gardez-les ou vendez-les."/>
+        <text name="rse_logs_cut" text="La grume est maintenant en deux morceaux, ce qui en fait %d à dégager."/>
+        <text name="rse_line_hint_wait" text="Attendez que l'équipe du comté arrive et coupe le courant. Posez des cônes en attendant."/>
+        <text name="rse_line_hint_work" text="Récupérez la voiture et enroulez chaque câble. Rapporter le poteau est facultatif et paie en plus."/>
+        <text name="rse_line_dangerTitle" text="Reculez ! Les câbles sont sous tension !"/>
+        <text name="rse_line_dangerPay" text="Votre paie sera réduite si vous restez."/>
+        <text name="rse_line_dangerPaid" text="Votre paie a été réduite car vous êtes resté trop près. Reculez jusqu'à la coupure."/>
+        <text name="rse_line_dangerCut" text="Vous êtes resté trop près de câbles sous tension : le comté a réduit votre paie de %d%%."/>
+        <text name="rse_line_powerOff" text="Équipe du comté : le courant est coupé, vous pouvez travailler en sécurité."/>
+        <text name="rse_line_rollUp" text="Enrouler le câble"/>
+        <text name="rse_line_stillLive" text="Pas encore : le courant passe toujours. L'équipe du comté a besoin d'environ %d secondes de plus."/>
+        <text name="rse_line_wireDone" text="Le câble est enroulé. Câbles restants : %d."/>
+        <text name="rse_line_pieceIn" text="Ce morceau du poteau est rapporté. Morceaux restants : %d."/>
+        <text name="rse_line_poleIn" text="Le poteau est rapporté."/>
+        <text name="rse_crash_carDone" text="La voiture est rapportée. Enroulez aussi les câbles pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent les confier plus tôt."/>
+        <text name="rse_crash_lineDone" text="Les câbles sont enroulés. Rapportez aussi la voiture pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent la confier plus tôt."/>
+        <text name="rse_strap_log" text="grume"/>
+        <text name="rse_guide_title_welcome" text="Bienvenue"/>
+        <text name="rse_guide_welcome_1" text="Vous êtes le prestataire local que le central du comté appelle quand quelque chose tourne mal sur la route : animaux percutés, véhicules accidentés ou renversés, balles perdues, dégâts de tempête, ligne électrique tombée, accident de grumier, voiture dans l'eau, arbre sur une voiture, véhicule en panne sur un passage à niveau et moutons en liberté sur la route."/>
+        <text name="rse_guide_welcome_2" text="Roadside Emergencies nécessite le DLC gratuit Emergency Pack. Quand vous lancez une partie, la liste des mods du jeu propose de le sélectionner pour vous. Sans lui, aucun appel n'arrive."/>
+        <text name="rse_guide_welcome_3" text="Ouvrez ce guide à tout moment : appuyez sur {key:RSE_SETTINGS} à pied et choisissez « Ouvrir le guide ». Le même menu contient tous les réglages."/>
+        <text name="rse_guide_welcome_4" text="Chaque ligne de ce mod dans l'aide F1 commence par « RSE: », et ses textes nomment les touches que vous avez choisies dans le menu des commandes du jeu."/>
+        <text name="rse_guide_welcome_5" text="Le mod est pour l'instant en solo uniquement. Un bug ? Signalez-le sur GitHub : github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_title_tools" text="Seulement des appels que vous pouvez terminer"/>
+        <text name="rse_guide_tools_1" text="C'est une règle stricte : si votre ferme n'a pas ce qu'il faut pour une intervention, cet appel n'arrive pas du tout. Le central vérifie chaque véhicule que vous possédez ou louez avant chaque appel : si le bipeur sonne, vous avez ce qu'il faut."/>
+        <text name="rse_guide_tools_2" text="Sans rien du tout : chevreuils, sangliers, moutons, cochons et chèvres sur la route, que vous traînez à la main, et la conduite d'un troupeau, possible à pied."/>
+        <text name="rse_guide_tools_3" text="Avec un pick-up, ou tout véhicule motorisé de {mass:1} ou plus : vaches, chevaux et buffles, voitures dans l'eau, arbres sur des voitures, lignes électriques, accidents de grumier, passages à niveau et petites remorques renversées."/>
+        <text name="rse_guide_tools_4" text="Avec un tracteur, un camion, ou tout véhicule motorisé de {mass:3} ou plus : aussi les camions accidentés, les tracteurs renversés, et les plus gros véhicules des autres interventions."/>
+        <text name="rse_guide_tools_5" text="Certains appels demandent un élément de plus. Les grosses balles demandent une fourche, une pince, un chargeur à balles ou un chariot élévateur. Les dégâts de tempête demandent une remorque ou une benne de pick-up. Un accident de bétaillère demande votre propre bétaillère."/>
+        <text name="rse_guide_tools_6" text="Le bipeur indique ce qu'il faut avant que vous répondiez. Si votre matériel est à l'autre bout de la carte, refusez : cela ne coûte rien."/>
+        <text name="rse_guide_title_calls" text="Un appel, étape par étape"/>
+        <text name="rse_guide_calls_1" text="Un bipeur sonne et vous demande si vous acceptez l'appel. Il dit ce qui s'est passé et, une ligne chacun : où c'est, ce qu'il y a (les animaux, ou le véhicule et son chargement), ce qu'il faut et lequel de vos véhicules peut le faire, de combien de temps vous disposez, et environ combien cela paie. Refuser ne coûte rien."/>
+        <text name="rse_guide_calls_2" text="Acceptez et suivez le marqueur sur la carte. Le panneau d'intervention à droite de l'écran liste les étapes et coche chacune, et montre la direction, le temps qui compte et environ combien l'intervention paie. Des repères au-dessus des lieux montrent chaque animal ou grume dont vous devez encore vous occuper."/>
+        <text name="rse_guide_calls_3" text="Arrivez à temps : un appel que vous n'avez pas atteint après 20 minutes de jeu passe à un autre prestataire, avec un avertissement 5 minutes avant (vous pouvez changer ce délai dans les réglages). Une fois sur place, l'appel reste le vôtre, sauf à un passage à niveau, où le train fixe le temps."/>
+        <text name="rse_guide_calls_4" text="La circulation s'arrête derrière ce qui bloque la route, donc la route reste fermée jusqu'à ce que vous la dégagiez. Le jeu peut retirer une voiture bloquée depuis longtemps."/>
+        <text name="rse_guide_calls_5" text="Une seule intervention à la fois. Aucun nouvel appel n'arrive pendant une intervention, ni tant que vos cônes ou barrières sont encore en place."/>
+        <text name="rse_guide_calls_6" text="Vous pouvez sauvegarder pendant une intervention : elle reprend au chargement."/>
+        <text name="rse_guide_calls_7" text="Quand une intervention se termine, réussie ou non, ce qui reste sur place y demeure jusqu'à ce que vous soyez à {distance:80}, au moins une minute et au plus 5 minutes. Ensuite le comté le ramasse. Vos cônes et barrières, et les animaux morts que vous avez chargés, restent à votre charge."/>
+        <text name="rse_guide_title_timing" text="Quand les appels arrivent"/>
+        <text name="rse_guide_timing_1" text="Le premier appel peut arriver environ 5 minutes après le chargement. Après chaque intervention, il y a un temps calme d'au moins 30, 12 ou 6 minutes de jeu (Rarement, Normal ou Souvent dans les réglages), puis un appel peut arriver à tout moment."/>
+        <text name="rse_guide_timing_2" text="Chaque type d'appel est aussi probable que les autres. Les grosses interventions (tout sauf les animaux morts sur la route) n'arrivent jamais à moins de 30 minutes d'intervalle, donc en Normal il y en a environ une par heure."/>
+        <text name="rse_guide_timing_3" text="Certains appels demandent le bon endroit. Un passage à niveau demande une carte avec un train non loué et un passage à niveau à portée. Une voiture dans l'eau demande une eau peu profonde avec une berge en pente douce au bord d'une route. Un troupeau demande la campagne ouverte avec un pré au bord de la route. Les dégâts de tempête n'arrivent qu'après une tornade, depuis une route proche de l'endroit où elle a fini, et les tornades n'arrivent qu'au printemps et en été."/>
+        <text name="rse_guide_timing_4" text="Dans les réglages, vous pouvez désactiver tous les appels, ou seulement les appels pour animaux, ou seulement ceux pour épaves et chargements renversés."/>
+        <text name="rse_guide_title_pay" text="Comment fonctionne la paie"/>
+        <text name="rse_guide_pay_1" text="Chaque intervention paie un montant fixe une fois terminée. Les réglages augmentent ou baissent tous les revenus de 50 % à 200 %, et la difficulté économique du jeu compte aussi."/>
+        <text name="rse_guide_pay_2" text="Allumez les feux de détresse ou gyrophares d'un de vos véhicules à moins de {distance:40} des lieux et laissez-les allumés 20 secondes au total : l'intervention paie 7 % de plus. Seuls les feux que le véhicule possède vraiment comptent, et pas ceux d'une épave. Un rappel s'affiche à votre arrivée."/>
+        <text name="rse_guide_pay_3" text="Les animaux morts simplement déplacés au bord de la route paient très peu. Portez-les à un point de dépôt pour la paie complète ; là, vous êtes aussi payé pour le transport et facturé de petits frais d'élimination."/>
+        <text name="rse_guide_pay_4" text="Une épave paie d'autant plus que le point de dépannage le plus proche est loin des lieux. Les balles, grumes et animaux en liberté paient chacun à l'unité rapportée."/>
+        <text name="rse_guide_pay_5" text="Certaines interventions ont deux parties : une remorque et ses balles, un accident de bétaillère, une ligne électrique. Faites les deux pour un bonus de 25 %. Si une partie n'avance pas pendant 10 minutes, un autre prestataire la reprend."/>
+        <text name="rse_guide_pay_6" text="Si vous avez accepté et que l'intervention se termine sans paie (vous n'êtes pas arrivé à temps, vous l'avez confiée sans rien faire, ou le train est arrivé le premier), un dixième de sa paie vous est facturé. Refuser ne coûte rien."/>
+        <text name="rse_guide_pay_7" text="Vous pouvez confier une intervention à un autre prestataire à tout moment depuis les réglages ({key:RSE_SETTINGS}). Vous gardez la paie de ce que vous avez terminé, comme chaque balle, grume ou animal rapporté. La ligne indique avant votre choix si vous êtes payé ou facturé."/>
+        <text name="rse_guide_title_animals" text="Animaux morts"/>
+        <text name="rse_guide_animals_1" text="Chevreuils, sangliers, cochons, moutons et chèvres se traînent à la main : approchez-vous de l'un d'eux et appuyez sur la touche d'action, puis de nouveau pour lâcher. Vaches, chevaux et buffles sont trop lourds : utilisez la sangle ou une machine."/>
+        <text name="rse_guide_animals_2" text="Un animal compte comme dégagé une fois immobile hors de la route. Pour la paie complète, chargez-le sur n'importe quel véhicule et portez-le à un point de dépôt."/>
+        <text name="rse_guide_animals_3" text="Les corps d'animaux fonctionnent comme des balles : chargeurs frontaux, fourches et pinces à balles, grues, remorques, sangles d'arrimage et mods de chargement automatique les prennent tous, et l'affichage de remplissage les compte. Une vache est lourde : une petite grue ne peut pas la soulever."/>
+        <text name="rse_guide_animals_4" text="Un animal laissé sur place est indiqué sur la carte. Après 30 minutes de jeu sans personne à moins de {distance:20} (délai modifiable dans les réglages), les agents de la voirie du comté le ramassent, vous le facturent, et reprennent ce que l'appel vous avait payé en plus du bord de route. Un rappel s'affiche 15 et 5 minutes avant."/>
+        <text name="rse_guide_animals_5" text="Depuis le marqueur d'un animal sur la carte, vous pouvez le faire ramasser tout de suite par le comté, pour la facture habituelle."/>
+        <text name="rse_guide_title_points" text="Points de dépôt et de dépannage"/>
+        <text name="rse_guide_points_1" text="Les animaux morts vont à un point de dépôt ; épaves, balles et morceaux de poteau vont à un point de dépannage. Le magasin est les deux, comme chaque point que vous ajoutez."/>
+        <text name="rse_guide_points_2" text="Ajoutez un point là où vous êtes depuis les réglages ({key:RSE_SETTINGS}), ou supprimez le plus proche. Vos points apparaissent sur la carte quand vous avez quelque chose à rapporter, et vous pouvez en supprimer un depuis son marqueur."/>
+        <text name="rse_guide_points_3" text="Un animal mort compte comme livré une fois resté immobile quelques secondes à moins de {distance:12} d'un point de dépôt, sans chargeur, sangle d'arrimage ou sangle de dépannage qui le tienne : déchargez-le là, ou ouvrez les sangles de la remorque. Pour une épave, le marqueur sur la carte montre le chemin vers le point de dépannage."/>
+        <text name="rse_guide_title_strap" text="La sangle de dépannage"/>
+        <text name="rse_guide_strap_1" text="À pied, visez un animal mort ou une épave préparée et appuyez sur {key:RSE_STRAP} pour accrocher la sangle exactement là. Puis visez un véhicule et appuyez de nouveau sur {key:RSE_STRAP} pour fixer l'autre bout. Visez le vide pour ranger la sangle, ou un animal ou une épave sanglés pour retirer la sangle."/>
+        <text name="rse_guide_strap_2" text="Près d'une sangle, maintenez {key:RSE_STRAP_IN} pour l'enrouler et {key:RSE_STRAP_OUT} pour la dérouler. Elle mesure {distance:20}. Accrocher ne tire rien : vous enroulez, ou vous démarrez."/>
+        <text name="rse_guide_strap_3" text="Pour redresser une épave couchée sur le flanc, accrochez-la en haut de son côté supérieur, fixez la sangle à un véhicule, et tirez. Elle reste où elle est jusqu'à ce que la sangle se tende."/>
+        <text name="rse_guide_strap_4" text="Remorquage : démarrez sangle tendue et elle se raccourcit en un attelage court derrière votre véhicule. L'épave suit comme une remorque, par l'un ou l'autre bout, et freine seule quand vous vous arrêtez. Reculez et elle se relâche jusqu'à ce que vous repartiez."/>
+        <text name="rse_guide_title_wrecks" text="Épaves"/>
+        <text name="rse_guide_wrecks_1" text="Un véhicule accidenté bloque la route. Approchez-vous et préparez-le pour le dépannage, ou aidez d'abord le conducteur à sortir s'il y en a un. Il ne peut être ni conduit, ni démarré, ni réinitialisé : vous le remorquez ou le chargez. Une épave sur le flanc doit d'abord être redressée."/>
+        <text name="rse_guide_wrecks_2" text="Quand vous enroulez ou remorquez, les roues du côté tiré tournent vers la sangle, donc ce bout vient droit vers vous. Une remorque n'a pas de direction : ses roues s'alignent sur la sangle pendant que vous enroulez."/>
+        <text name="rse_guide_wrecks_3" text="Sur une dépanneuse plateau : accrochez la sangle à l'épave, fixez-la à l'avant du plateau, et maintenez {key:RSE_STRAP_IN}. Déroulez pour la faire redescendre. Arrimez-la avant de rouler."/>
+        <text name="rse_guide_wrecks_4" text="Amenez l'épave à un point de dépannage pour être payé ; le marqueur montre le chemin. Les véhicules changent d'un appel à l'autre, et les plus gros sont plus rares."/>
+        <text name="rse_guide_title_loads" text="Balles perdues"/>
+        <text name="rse_guide_loads_1" text="L'appel indique le chargement. Les petites balles se portent à la main, donc un pick-up suffit. Les grosses balles paient plus à l'unité, mais demandent un chargeur frontal ou un télescopique."/>
+        <text name="rse_guide_loads_2" text="Pas besoin d'un second trajet pour une remorque. Remettez-la sur ses roues, mettez les balles dedans, et remorquez le tout jusqu'au point de dépannage. Une intervention de tempête n'a pas de remorque : venez avec la vôtre et faites autant de trajets que nécessaire."/>
+        <text name="rse_guide_loads_3" text="Chaque balle qui atteint un point de dépannage paie, même si vous confiez le reste de l'intervention dans les réglages ({key:RSE_SETTINGS}). Une balle paie plus quand les balles sont tout ce que vous rapportez."/>
+        <text name="rse_guide_title_loose" text="Accident de bétaillère"/>
+        <text name="rse_guide_loose_0" text="Une bétaillère s'est renversée. Deux parties, dans l'ordre que vous voulez : la remorque à un point de dépannage, et les animaux vivants dans votre propre bétaillère. Dégagez les animaux morts comme les autres."/>
+        <text name="rse_guide_loose_1" text="Lors d'un accident de bétaillère, les animaux vivants s'éloignent. Ils s'arrêtent pour brouter, et s'écartent quand vous foncez sur eux."/>
+        <text name="rse_guide_loose_2" text="Approchez-vous de l'un d'eux et utilisez la touche d'action pour l'attraper. Il vous suit à la longe. Amenez-le à côté de votre propre bétaillère et utilisez de nouveau la touche pour le charger."/>
+        <text name="rse_guide_loose_3" text="Vous en menez un à la fois. Il s'échappe si vous allez trop loin devant, et il reste en arrière si vous montez dans un véhicule. Une fois chargés, les animaux sont à vous : vendez-les chez le marchand de bétail."/>
+        <text name="rse_guide_title_line" text="Lignes électriques tombées"/>
+        <text name="rse_guide_line_1" text="Une voiture a percuté un poteau électrique. Restez à distance : les câbles peuvent être sous tension, et rester trop près vous coûte de la paie. Une équipe du comté arrive et coupe le courant ; posez vos cônes et allumez vos feux en attendant."/>
+        <text name="rse_guide_line_2" text="Une fois le courant coupé, aidez le conducteur à sortir et amenez la voiture à un point de dépannage. Un repère montre chaque câble : approchez-vous, n'importe où le long, et maintenez la touche pour l'enrouler."/>
+        <text name="rse_guide_line_3" text="Rapporter le poteau est facultatif et paie en plus, si chaque morceau atteint un point de dépannage avant la fin du reste de l'intervention. C'est une vraie grume : s'il doit tenir sur quelque chose, coupez-le à la tronçonneuse (sortez-la avec la touche d'outil à main du jeu), debout à côté et en visant en travers. Faites les deux parties, la voiture et les câbles, pour un bonus."/>
+        <text name="rse_guide_title_logs" text="Accident de grumier"/>
+        <text name="rse_guide_logs_1" text="Un grumier a perdu son chargement. L'équipe du propriétaire s'occupe de la remorque ; votre travail, ce sont les grumes."/>
+        <text name="rse_guide_logs_2" text="Une grume compte une fois sur un camion ou une remorque, ou couchée bien hors de la route avec les deux bouts hors des voies. Fourches à grumes, grues, sangle et tronçonneuse fonctionnent toutes ; une grume coupée en deux fait deux morceaux à dégager."/>
+        <text name="rse_guide_logs_3" text="Quand l'intervention est terminée, l'équipe prend toutes les grumes, y compris celles que vous avez chargées. Confiez-la tôt, et les grumes sur votre véhicule sont à vous."/>
+        <text name="rse_guide_title_crossing" text="Un passage à niveau"/>
+        <text name="rse_guide_crossing_1" text="Un véhicule est en panne sur un passage à niveau, et le train de la carte arrive : un compte à rebours montre le temps qu'il vous reste. L'appel vient d'un passage à niveau à portée, avec un délai adapté à la distance."/>
+        <text name="rse_guide_crossing_2" text="Seule une sangle ou un câble de treuil le déplace ; le pousser ne sert à rien. Dégagez-le à temps, puis amenez-le à un point de dépannage. Si le train arrive le premier, l'intervention est perdue et des frais vous sont facturés."/>
+        <text name="rse_guide_title_river" text="Voitures dans l'eau"/>
+        <text name="rse_guide_river_1" text="Une voiture a quitté la route et fini dans une eau peu profonde, avec le conducteur à l'intérieur. Avancez dans l'eau et aidez d'abord le conducteur à sortir."/>
+        <text name="rse_guide_river_2" text="Puis accrochez une sangle ou un câble de treuil à la voiture depuis la berge et sortez-la. Il y a toujours une pente douce pour remonter. Amenez-la à un point de dépannage comme toute autre épave."/>
+        <text name="rse_guide_river_3" text="Ces appels n'arrivent que sur les cartes qui ont une eau peu profonde avec une berge en pente douce au bord d'une route."/>
+        <text name="rse_guide_title_tree" text="Arbres sur des voitures"/>
+        <text name="rse_guide_tree_1" text="Une tempête a fait tomber un arbre sur une voiture, avec le conducteur coincé à l'intérieur. Retirez le tronc de la voiture avec une tronçonneuse ou une sangle, et la portière s'ouvrira pour que vous puissiez aider le conducteur à sortir."/>
+        <text name="rse_guide_tree_2" text="Dégagez chaque morceau de la route et amenez la voiture à un point de dépannage, dans l'ordre qui vous convient. Sortez le conducteur dans les 6 minutes suivant votre arrivée pour un bonus. Les grumes partent avec l'intervention, sauf si vous la confiez tôt."/>
+        <text name="rse_guide_title_flock" text="Conduire un troupeau"/>
+        <text name="rse_guide_flock_1" text="Les moutons sont en groupes le long de la route, et le fermier a monté un enclos dans un pré tout près. En véhicule ou à pied, ils s'éloignent droit devant vous, et ceux à côté suivent. Rassemblez les groupes, puis guidez le troupeau jusqu'à la barrière."/>
+        <text name="rse_guide_flock_2" text="Poussez depuis le côté opposé à la direction voulue, et faites le tour pour les faire tourner : le troupeau s'éloigne de l'endroit où vous êtes. Approchez-vous et ils vont plus vite, mais pressez-les trop et l'un peut s'échapper, et roulez vite près d'eux et ils se dispersent. Un coup de klaxon toutes les quelques secondes resserre un peu chaque groupe, et les pousse de temps en temps ; klaxonnez sans arrêt et ils se dispersent. Ceux dans l'enclos y restent, et le fermier ferme la barrière derrière le dernier."/>
+        <text name="rse_guide_flock_3" text="Aucun matériel n'est nécessaire. L'intervention est terminée quand le dernier est dans l'enclos ; confiez-la tôt et vous êtes payé pour chacun déjà dedans."/>
+        <text name="rse_guide_title_kit" text="Cônes et barrières"/>
+        <text name="rse_guide_kit_1" text="Lors d'un appel, appuyez sur {key:RSE_KIT_MENU} à pied pour ouvrir le balisage. {key:RSE_KIT_NEXT} choisit l'élément suivant, {key:RSE_KIT_USE} le pose ou ramasse celui que vous visez, et maintenir {key:RSE_KIT_TURN} le tourne. Ils sont gratuits, et ils arrêtent la circulation."/>
+        <text name="rse_guide_kit_2" text="Tout ce que vous posez, vous le ramassez. D'ici là, le comté continue d'appeler et aucun nouvel appel n'arrive."/>
+        <text name="rse_guide_kit_3" text="Vous ne pouvez poser des éléments que pendant un appel, à moins de {distance:60} des lieux : cônes de signalisation, barrières en bois et cônes avec rubalise. La bande en bas de l'écran montre celui en main, et {key:RSE_KIT_MENU} range le balisage."/>
+        <text name="rse_guide_title_markers" text="Marqueurs sur la carte"/>
+        <text name="rse_guide_markers_1" text="Un cercle vert avec un animal est un animal en liberté, un ! rouge un animal mort laissé sur place, un cône orange un de vos cônes ou barrières, et un anneau vert l'enclos d'un fermier. Un numéro bleu est votre propre point de dépôt, affiché quand vous avez quelque chose à rapporter."/>
+        <text name="rse_guide_markers_2" text="Cliquez sur un marqueur de la carte pour voir ce que c'est et vous y téléporter. Vous pouvez aussi faire ramasser un animal mort par le comté, pour la facture habituelle, ou supprimer un point de dépôt."/>
+        <text name="rse_guide_markers_3" text="Ajoutez vos propres points de dépôt dans les réglages ({key:RSE_SETTINGS})."/>
+        <text name="rse_guide_markers_4" text="Vous pouvez désactiver les marqueurs dans les réglages."/>
+        <text name="rse_guide_title_settings" text="Réglages"/>
+        <text name="rse_guide_settings_1" text="À pied, {key:RSE_SETTINGS} ouvre les réglages. Haut et Bas choisissent une ligne, Gauche et Droite la changent, Entrée valide, et {key:RSE_SETTINGS} ou Échap ferme."/>
+        <text name="rse_guide_settings_2" text="Les lignes : si le central appelle de lui-même ; la fréquence des appels ; le son du bipeur ; les appels pour animaux ; les appels pour épaves et chargements renversés ; la taille des interventions (nombre d'animaux ou de balles : petite, normale, grande ou aléatoire) ; les revenus (50 % à 200 %) ; les frais d'élimination et factures du comté (0 % à 200 %) ; quand le comté ramasse ce que vous laissez ; quand un autre prestataire reprend un appel que vous n'avez pas atteint ; les marqueurs sur la carte ; et le panneau d'intervention."/>
+        <text name="rse_guide_settings_3" text="Vos réglages sont conservés avec la partie, et une nouvelle partie commence avec ceux utilisés en dernier. « Rétablir tous les réglages par défaut » conserve vos points de dépôt."/>
+        <text name="rse_guide_title_mods" text="Fonctionne bien avec"/>
+        <text name="rse_guide_mods_1" text="Vous n'avez besoin d'aucun de ces mods, mais ils conviennent au travail. Ceux cités ici ont été testés avec Roadside Emergencies."/>
+        <text name="rse_guide_mods_2" text="T880 Rollback de Roughneck Modding Crew : tirez une épave sur le plateau avec la sangle ({key:RSE_STRAP}) et les touches d'enroulement ({key:RSE_STRAP_IN} et {key:RSE_STRAP_OUT}), arrimez-la, et rapportez-la. Leur International CV Rollback fonctionne aussi, c'est confirmé."/>
+        <text name="rse_guide_mods_3" text="Better Winch de ThundR : son treuil accroche les animaux morts et les épaves. UniversalAutoload de loki_79 : il les charge sur les remorques qu'il prend en charge."/>
+        <text name="rse_guide_mods_4" text="Chargeurs frontaux, pinces à balles et remorques à grue prennent tous les animaux morts, mais une petite grue ne peut pas soulever une vache."/>
+        <text name="rse_crash_hint_load" text="Récupérez la remorque, et rapportez les balles à un point de dépannage."/>
+        <text name="rse_crash_arrivedLoad" text="Balles sur la route : %d."/>
+        <text name="rse_load_call_small" text="Le chargement est en petites balles : un pick-up et vos mains suffisent."/>
+        <text name="rse_load_call_big" text="Le chargement est en grosses balles : venez avec un chargeur frontal ou un télescopique et de quoi les transporter."/>
+        <text name="rse_load_arrived_small" text="Portez les petites balles à la main dans une benne de pick-up, ou dans la remorque une fois remise sur ses roues. Chacune qui atteint un point de dépannage paie."/>
+        <text name="rse_load_arrived_big" text="Les grosses balles demandent un chargeur frontal ou un télescopique. Chacune qui atteint un point de dépannage paie."/>
+        <text name="rse_crash_trailerDoneBales" text="La remorque est rapportée. Rapportez aussi les balles pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent les confier plus tôt."/>
+        <text name="rse_crash_balesDone" text="Les balles sont rapportées. Rapportez aussi la remorque pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent la confier plus tôt."/>
+        <text name="rse_wreck_hint_deliver" text="Remorquez-la avec une sangle ({key:RSE_STRAP}) ou chargez-la, et amenez-la à un point de dépannage."/>
+        <text name="rse_set_open" text="Réglages, guide"/>
+        <text name="rse_set_guide" text="Ouvrir le guide"/>
+        <text name="rse_guide_title" text="Guide de Roadside Emergencies"/>
+        <text name="rse_guide_help" text="Gauche et Droite : page. Entrée : page suivante. {key:RSE_SETTINGS} ou Échap : fermer."/>
+        <text name="rse_guide_page" text="Page %d sur %d"/>
+        <text name="rse_guide_part" text="%s (%d sur %d)"/>
+        <text name="rse_flock_hornScared" text="Tous ces coups de klaxon ont dispersé les moutons. Il faudra les rassembler à nouveau."/>
+
+        <text name="rse_scene_deliver" text="Portez les animaux retirés à un point d'élimination pour une paie en plus."/>
+        <text name="rse_ep_missing" text="Roadside Emergencies nécessite le DLC gratuit Emergency Pack, et il n'est pas actif dans cette partie, donc aucun appel n'arrivera. Installez gratuitement le pack depuis votre boutique, puis sélectionnez-le avec ce mod au lancement de cette partie."/>
+    </texts>
+</l10n>

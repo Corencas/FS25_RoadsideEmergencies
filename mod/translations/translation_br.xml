@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <texts>
+        <!-- which form a counted word takes (scripts/core/Plural.lua): default, eastSlavic, polish or czech -->
+        <text name="rse_plural_rule" text="default"/>
+
+        <!-- keys -->
+        <text name="input_RSE_STRAP" text="RSE: Cinta de reboque"/>
+
+        <!-- animals -->
+        <text name="rse_animal_deer" text="cervo"/>
+        <text name="rse_animal_boar" text="javali"/>
+        <text name="rse_animal_pig" text="porco"/>
+        <text name="rse_animal_sheep" text="ovelha"/>
+        <text name="rse_animal_goat" text="cabra"/>
+        <text name="rse_animal_cow" text="vaca"/>
+        <text name="rse_animal_buffalo" text="búfalo"/>
+        <text name="rse_animal_horse" text="cavalo"/>
+
+        <!-- carcasses -->
+        <text name="rse_fillType_deer" text="Cervo morto"/>
+        <text name="rse_fillType_boar" text="Javali morto"/>
+        <text name="rse_fillType_pig" text="Porco morto"/>
+        <text name="rse_fillType_sheep" text="Ovelha morta"/>
+        <text name="rse_fillType_goat" text="Cabra morta"/>
+        <text name="rse_fillType_cow" text="Vaca morta"/>
+        <text name="rse_fillType_buffalo" text="Búfalo morto"/>
+        <text name="rse_fillType_horse" text="Cavalo morto"/>
+        <text name="rse_animalName_deer" text="Cervo"/>
+        <text name="rse_unit_deer_one" text="Cervo"/>
+        <text name="rse_unit_deer_many" text="Cervos"/>
+        <text name="rse_animalName_boar" text="Javali"/>
+        <text name="rse_unit_boar_one" text="Javali"/>
+        <text name="rse_unit_boar_many" text="Javalis"/>
+        <text name="rse_animalName_pig" text="Porco"/>
+        <text name="rse_unit_pig_one" text="Porco"/>
+        <text name="rse_unit_pig_many" text="Porcos"/>
+        <text name="rse_animalName_sheep" text="Ovelha"/>
+        <text name="rse_unit_sheep_one" text="Ovelha"/>
+        <text name="rse_unit_sheep_many" text="Ovelhas"/>
+        <text name="rse_animalName_goat" text="Cabra"/>
+        <text name="rse_unit_goat_one" text="Cabra"/>
+        <text name="rse_unit_goat_many" text="Cabras"/>
+        <text name="rse_animalName_cow" text="Vaca"/>
+        <text name="rse_unit_cow_one" text="Vaca"/>
+        <text name="rse_unit_cow_many" text="Vacas"/>
+        <text name="rse_animalName_buffalo" text="Búfalo"/>
+        <text name="rse_unit_buffalo_one" text="Búfalo"/>
+        <text name="rse_unit_buffalo_many" text="Búfalos"/>
+        <text name="rse_animalName_horse" text="Cavalo"/>
+        <text name="rse_unit_horse_one" text="Cavalo"/>
+        <text name="rse_unit_horse_many" text="Cavalos"/>
+        <text name="rse_info_deadAnimal" text="Animal morto"/>
+        <text name="rse_info_mass" text="Massa"/>
+        <text name="rse_welcome_title" text="Roadside Emergencies"/>
+        <text name="rse_warning" text="ATENÇÃO —"/>
+        <text name="rse_welcome_subtitle" text="A central do condado chama você quando algo dá errado na estrada."/>
+        <text name="rse_welcome_body" text="Os chamados chegam sozinhos enquanto você trabalha na fazenda. Aceite, vá até o local e libere a estrada: animais, veículos acidentados, cargas derramadas, uma linha de energia caída, um rebanho para cercar.&#10;&#10;Um chamado só chega se a sua fazenda tiver o que o trabalho exige. Uma picape basta para os trabalhos pequenos; veículos pesados precisam de um guincho plataforma ou de um caminhão grande.&#10;&#10;O guia explica tudo, e você pode abri-lo a qualquer momento com {key:RSE_SETTINGS} a pé."/>
+        <text name="rse_welcome_pack" text="Ele precisa da DLC gratuita Emergency Pack, que está instalada."/>
+        <text name="rse_welcome_beta" text="Isto é um beta. Achou um bug? Relate no GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_start" text="Começar"/>
+        <text name="rse_welcome_guide" text="Guia"/>
+        <text name="rse_action_tooHeavyShort" text="Pesado demais"/>
+        <text name="rse_kitShort_cone" text="o cone"/>
+        <text name="rse_kitShort_barricade" text="o cavalete"/>
+        <text name="rse_kitShort_coneTape" text="a fita"/>
+        <text name="rse_animalShort_deer" text="cervo"/>
+        <text name="rse_animalShort_boar" text="javali"/>
+        <text name="rse_animalShort_pig" text="porco"/>
+        <text name="rse_animalShort_sheep" text="ovelha"/>
+        <text name="rse_animalShort_goat" text="cabra"/>
+        <text name="rse_animalShort_cow" text="vaca"/>
+        <text name="rse_animalShort_buffalo" text="búfalo"/>
+        <text name="rse_animalShort_horse" text="cavalo"/>
+        <text name="rse_action_drag" text="Arrastar: %s"/>
+        <text name="rse_action_letGo" text="Soltar: %s"/>
+        <text name="rse_action_tooHeavy" text="Pesado demais para arrastar com as mãos (%s). Use uma cinta ou uma máquina."/>
+
+        <!-- recovery strap -->
+        <text name="rse_strap_hook" text="Prender cinta"/>
+        <text name="rse_strap_attach" text="Fixar cinta"/>
+        <text name="rse_strap_drop" text="Guardar cinta"/>
+        <text name="rse_strap_remove" text="Tirar cinta"/>
+        <text name="rse_strap_hooked" text="Cinta presa: %s. Agora prenda a outra ponta em um veículo."/>
+        <text name="rse_strap_attached" text="Cinta fixada entre %s e %s."/>
+        <text name="rse_strap_tooFar" text="Longe demais: %s. A cinta alcança %s."/>
+        <text name="rse_strap_removed" text="Cinta retirada."/>
+
+        <!-- disposal points -->
+        <text name="rse_point_shop" text="Loja"/>
+        <text name="rse_point_player" text="Meu ponto %d"/>
+        <text name="rse_point_hotspot" text="Ponto de entrega %d: %s"/>
+        <text name="rse_marker_loose" text="Solto: %s"/>
+        <text name="rse_marker_left" text="Animal morto deixado: %s"/>
+        <text name="rse_delivered" text="Animal entregue: %s (%s). Pagamento pelo transporte: %s. Taxa de descarte: %s."/>
+        <text name="rse_finance_haulPay" text="Transporte de carcaças"/>
+        <text name="rse_collectedUnearned" text="Central do condado: a equipe rodoviária recolheu um animal morto que você nunca entregou (%s). Você foi cobrado em %s, incluindo os %s pagos a você pelo transporte."/>
+        <text name="rse_collected" text="Central do condado: a equipe rodoviária recolheu um animal morto que você deixou para trás (%s). Você foi cobrado em %s."/>
+        <text name="rse_finance_collection" text="Cobranças de recolhimento de carcaças"/>
+        <text name="rse_finance_penalty" text="Cobranças de atendimentos de emergência"/>
+        <text name="rse_finance_disposalFee" text="Taxas de descarte de carcaças"/>
+
+        <!-- settings panel -->
+        <text name="input_RSE_SETTINGS" text="RSE: Configurações e guia"/>
+        <text name="rse_set_title" text="Configurações do Roadside Emergencies"/>
+        <text name="rse_set_on" text="Ligado"/>
+        <text name="rse_set_off" text="Desligado"/>
+        <text name="rse_set_size_small" text="Pequeno"/>
+        <text name="rse_set_size_normal" text="Normal"/>
+        <text name="rse_set_size_large" text="Grande"/>
+        <text name="rse_set_size_random" text="Aleatório"/>
+        <text name="rse_set_calls" text="A central do condado chama sozinha"/>
+        <text name="rse_set_frequency" text="Frequência dos chamados"/>
+        <text name="rse_set_pagerSound" text="Som do pager"/>
+        <text name="rse_set_frequency_rare" text="Raramente"/>
+        <text name="rse_set_frequency_normal" text="Normal"/>
+        <text name="rse_set_frequency_often" text="Com frequência"/>
+        <text name="rse_set_animalCalls" text="Chamados com animais"/>
+        <text name="rse_set_wreckCalls" text="Chamados com acidentes e cargas derramadas"/>
+        <text name="rse_set_jobSize" text="Tamanho do trabalho (animais ou fardos)"/>
+        <text name="rse_set_pay" text="Renda de chamados e transporte"/>
+        <text name="rse_set_fees" text="Taxas de descarte e cobranças do condado"/>
+        <text name="rse_set_left" text="O condado recolhe o que você deixa após"/>
+        <text name="rse_set_expire" text="Outro prestador assume após"/>
+        <text name="rse_set_markers" text="Marcadores no mapa"/>
+        <text name="rse_panel_title_animals" text="%s na estrada"/>
+        <text name="rse_panel_title_call" text="Chamado na estrada"/>
+        <text name="rse_panel_title_truck" text="Caminhão acidentado"/>
+        <text name="rse_panel_title_tractor" text="Trator capotado"/>
+        <text name="rse_panel_title_trailer" text="Reboque tombado"/>
+        <text name="rse_panel_title_livestock" text="Acidente com gado"/>
+        <text name="rse_panel_title_powerline" text="Linha de energia caída"/>
+        <text name="rse_panel_title_storm" text="Estragos da tempestade"/>
+        <text name="rse_panel_title_crossing" text="Parado nos trilhos"/>
+        <text name="rse_panel_title_river" text="Carro na água"/>
+        <text name="rse_panel_title_tree" text="Árvore sobre um carro"/>
+        <text name="rse_panel_title_flock" text="Ovelhas na estrada"/>
+        <text name="rse_panel_title_logging" text="Acidente com caminhão de toras"/>
+        <text name="rse_panel_reach" text="Chegar ao local"/>
+        <text name="rse_panel_animals" text="Tirar os animais da estrada"/>
+        <text name="rse_panel_power" text="Esperar a equipe do condado cortar a energia"/>
+        <text name="rse_panel_treeLog" text="Tirar a tora de cima do carro"/>
+        <text name="rse_panel_tracks" text="Tirá-lo dos trilhos"/>
+        <text name="rse_panel_driver" text="Tirar o motorista"/>
+        <text name="rse_panel_prepare" text="Preparar o veículo"/>
+        <text name="rse_panel_upright" text="Colocá-lo de volta nas rodas"/>
+        <text name="rse_panel_logs" text="Tirar as toras"/>
+        <text name="rse_panel_wires" text="Enrolar os fios"/>
+        <text name="rse_panel_pole" text="Trazer o poste (opcional)"/>
+        <text name="rse_panel_bales" text="Trazer os fardos"/>
+        <text name="rse_panel_survivors" text="Carregar os animais soltos"/>
+        <text name="rse_panel_flock" text="Cercar as ovelhas"/>
+        <text name="rse_panel_deliver" text="Rebocar até um ponto de recuperação"/>
+        <text name="rse_panel_deliverCar" text="Carro até o ponto de recuperação"/>
+        <text name="rse_panel_deliverTrailer" text="Reboque até o ponto de recuperação"/>
+        <text name="rse_panel_done" text="Feito"/>
+        <text name="rse_panel_now" text="Agora"/>
+        <text name="rse_panel_left" text="faltam %d"/>
+        <text name="rse_panel_clockArrive" text="Chegue em até"/>
+        <text name="rse_panel_clockTrain" text="Trem na passagem de nível em"/>
+        <text name="rse_panel_clockPower" text="Energia cortada em"/>
+        <text name="rse_panel_clockHandover" text="O resto é repassado em"/>
+        <text name="rse_panel_clockRescue" text="Motorista fora para o bônus em até"/>
+        <text name="rse_panel_hurry" text="Rápido! %s"/>
+        <text name="rse_panel_lightsOff" text="Ligue as luzes de alerta: +%d%%"/>
+        <text name="rse_panel_lightsEarned" text="Bônus de luzes de alerta: +%d%%"/>
+        <text name="rse_panel_lightsCounting" text="Luzes de alerta: +%d%% em %s"/>
+        <text name="rse_panel_extra" text="+%s"/>
+        <text name="rse_panel_optional" text="Opcional"/>
+        <text name="rse_call_lightsEarned" text="Suas luzes de alerta no local rendem %d%% a mais neste trabalho."/>
+        <text name="rse_panel_pay" text="cerca de %s"/>
+        <text name="rse_set_panel" text="Painel do chamado"/>
+        <text name="rse_line_stillLiveShort" text="Ainda não: ainda há energia."/>
+        <text name="rse_crew_arrived" text="Equipe do condado: chegamos e estamos cortando a energia. Dê-nos meio minuto."/>
+        <text name="rse_crew_notYours" text="Este é o veículo da equipe do condado."/>
+        <text name="rse_set_addPoint" text="Adicionar um ponto de entrega aqui"/>
+        <text name="rse_set_removePoint" text="Remover seu ponto de entrega mais próximo"/>
+        <text name="rse_point_added" text="Ponto de entrega adicionado aqui: %s."/>
+        <text name="rse_point_removed" text="Seu ponto de entrega foi removido: %s."/>
+        <text name="rse_point_noneOwn" text="Você não tem nenhum ponto de entrega próprio."/>
+
+        <!-- scene kit -->
+        <text name="input_RSE_KIT_MENU" text="RSE: Sinalização, abrir ou fechar"/>
+        <text name="input_RSE_KIT_USE" text="RSE: Sinalização, colocar ou recolher"/>
+        <text name="input_RSE_KIT_TURN" text="RSE: Sinalização, girar"/>
+        <text name="input_RSE_KIT_NEXT" text="RSE: Sinalização, próximo item"/>
+        <text name="rse_kit_next" text="Próximo item"/>
+        <text name="rse_kit_cone" text="Cone de trânsito"/>
+        <text name="rse_kit_barricade" text="Cavalete de madeira"/>
+        <text name="rse_kit_coneTape" text="Cone com fita zebrada"/>
+        <text name="rse_kit_stop" text="Fechar sinalização"/>
+        <text name="rse_kit_open" text="Sinalização"/>
+        <text name="rse_kit_place" text="Colocar %s"/>
+        <text name="rse_kit_pickup" text="Pegar %s"/>
+        <text name="rse_kit_turn" text="Girar %s"/>
+        <text name="rse_kit_loadFailed" text="Não foi possível carregar este item: %s."/>
+        <text name="rse_kit_limit" text="Você não pode ter mais de %d itens colocados ao mesmo tempo."/>
+        <text name="rse_kit_collect" text="Recolha seus cones e cavaletes (faltam %d). Não haverá novos trabalhos até você fazer isso."/>
+        <text name="rse_kit_allCollected" text="Todos os seus cones e cavaletes foram recolhidos. Você pode aceitar novos trabalhos de novo."/>
+        <text name="rse_kit_reminder" text="A central do condado ligou: os cones e cavaletes da sua empresa ainda estão bloqueando o trânsito (faltam %d). Recolha-os. Não haverá novos trabalhos até você fazer isso."/>
+
+        <!-- Emergency Pack -->
+        <text name="rse_ep_deer_description" text="Central do condado: um carro atropelou animais silvestres na estrada. O trânsito está parando."/>
+        <text name="rse_ep_boar_description" text="Central do condado: um carro atropelou javalis na estrada. O trânsito está parando."/>
+        <text name="rse_ep_pig_description" text="Central do condado: um carro atropelou animais que fugiram para a estrada. O trânsito está parando."/>
+        <text name="rse_ep_sheep_description" text="Central do condado: um carro atropelou ovelhas que passaram por uma cerca até a estrada. O trânsito está parando."/>
+        <text name="rse_ep_goat_description" text="Central do condado: um carro atropelou animais que fugiram para a estrada. O trânsito está parando."/>
+        <text name="rse_ep_cow_description" text="Central do condado: um caminhão atropelou gado na estrada. O trânsito está parando."/>
+        <text name="rse_ep_horse_description" text="Central do condado: um carro atropelou animais que fugiram para a estrada. O trânsito está parando."/>
+        <text name="rse_ep_buffalo_description" text="Central do condado: um caminhão atropelou búfalos na estrada. O trânsito está parando."/>
+        <text name="rse_ep_hint_arrive" text="Vá até o local marcado."/>
+        <text name="rse_call_vehicle" text="A central informa que o veículo é: %s."/>
+        <text name="rse_call_towSmall" text="Uma picape ou qualquer veículo maior consegue rebocá-lo."/>
+        <text name="rse_call_towBig" text="Ele é grande: traga um veículo maior ou um guincho plataforma. Uma picape não consegue rebocá-lo."/>
+        <text name="rse_pager_where" text="Onde: a cerca de %s %s de você"/>
+        <text name="rse_pager_whereNear" text="Onde: perto de você"/>
+        <text name="rse_dir_n" text="ao norte"/>
+        <text name="rse_dir_ne" text="ao nordeste"/>
+        <text name="rse_dir_e" text="ao leste"/>
+        <text name="rse_dir_se" text="ao sudeste"/>
+        <text name="rse_dir_s" text="ao sul"/>
+        <text name="rse_dir_sw" text="ao sudoeste"/>
+        <text name="rse_dir_w" text="ao oeste"/>
+        <text name="rse_dir_nw" text="ao noroeste"/>
+        <text name="rse_pager_animals" text="Na estrada: %d %s"/>
+        <text name="rse_pager_vehicle" text="Veículo: %s"/>
+        <text name="rse_pager_vehicleHeavy" text="Veículo: %s (pesado)"/>
+        <text name="rse_pager_load_small" text="Carga: fardos pequenos, leves o bastante para carregar com as mãos"/>
+        <text name="rse_pager_load_big" text="Carga: fardos grandes"/>
+        <text name="rse_pager_takes" text="Precisa de: %s"/>
+        <text name="rse_pager_and" text=", e "/>
+        <text name="rse_pager_need_hands" text="só suas mãos; levá-los embora paga mais"/>
+        <text name="rse_pager_need_pull" text="uma cinta ou uma máquina, e um veículo de {mass:1} ou mais"/>
+        <text name="rse_pager_need_tow" text="uma picape ou algo maior para rebocá-lo"/>
+        <text name="rse_pager_need_heavy" text="um guincho plataforma, ou um caminhão ou trator de {mass:3} ou mais"/>
+        <text name="rse_pager_need_livestock" text="seu próprio reboque de gado"/>
+        <text name="rse_pager_need_carry" text="um reboque ou a caçamba de uma picape para os fardos"/>
+        <text name="rse_pager_need_lift" text="um garfo, garra ou carregador de fardos"/>
+        <text name="rse_pager_need_flock" text="nada: você as conduz a pé ou com qualquer veículo"/>
+        <text name="rse_pager_need_logs" text="algo para mover toras: um garfo para toras, um guindaste, ou uma cinta e um veículo"/>
+        <text name="rse_pager_need_line" text="uma cinta ou um cabo de guincho"/>
+        <text name="rse_pager_youHave" text="Você tem: %s"/>
+        <text name="rse_pager_time" text="Tempo: chegue em até %s"/>
+        <text name="rse_pager_train" text="Tempo: o trem chega à passagem de nível em cerca de %s"/>
+        <text name="rse_pager_pay" text="Pagamento: cerca de %s"/>
+        <text name="rse_pager_payEach" text="Pagamento: cerca de %s, mais %s por %s"/>
+        <text name="rse_pager_item_bale" text="cada fardo"/>
+        <text name="rse_pager_item_animal" text="cada animal que você carregar"/>
+        <text name="rse_pager_item_wire" text="cada fio"/>
+        <text name="rse_pager_item_log" text="cada tora"/>
+        <text name="rse_pager_item_sheep" text="cada ovelha"/>
+        <text name="rse_ep_hint_clear_small" text="Libere a estrada: arraste os animais para fora, ou carregue-os e leve-os a um ponto de entrega para o pagamento completo."/>
+        <text name="rse_ep_hint_clear_heavy" text="Libere a estrada: prenda a cinta ({key:RSE_STRAP}) ou levante os animais, e leve-os a um ponto de entrega para o pagamento completo."/>
+        <text name="rse_ep_done" text="A estrada está liberada. Obrigado!"/>
+        <text name="rse_scene_resumed" text="Você tem um chamado de emergência em andamento. Siga o marcador no mapa."/>
+        <text name="rse_scene_resumeFailed" text="O chamado de emergência não pôde continuar depois do carregamento, então foi cancelado."/>
+        <text name="rse_left_warn" text="Central do condado: você deixou um animal morto para trás (%s). Recolha-o em até %s, ou o condado vai recolhê-lo e cobrar de você. Ele está marcado no seu mapa."/>
+        <text name="rse_left_warnMany" text="Central do condado: você deixou %d animais mortos para trás. Recolha-os em até %s, ou o condado vai recolhê-los e cobrar de você. Eles estão marcados no seu mapa."/>
+        <text name="rse_unit_minute" text="1 minuto"/>
+        <text name="rse_unit_minutes" text="%d minutos"/>
+        <text name="rse_caller_driver" text="Um motorista que passava"/>
+        <text name="rse_caller_bus" text="Um motorista de ônibus escolar"/>
+        <text name="rse_caller_mail" text="Um carteiro"/>
+        <text name="rse_caller_neighbor" text="Um vizinho"/>
+        <text name="rse_caller_sheriff" text="O escritório do xerife"/>
+        <text name="rse_call_details" text="%s ligou para avisar. Fica a %s de você."/>
+        <text name="rse_call_detailsNear" text="%s ligou para avisar, perto do terreno %d, a %s de você."/>
+        <text name="rse_call_arrivedOne" text="Há um animal na estrada."/>
+        <text name="rse_call_arrivedMany" text="Há %d animais na estrada."/>
+        <text name="rse_call_expiring" text="Central do condado: se você não estiver no local em %s, outro prestador vai assumir, e você pagará uma pequena taxa."/>
+        <text name="rse_call_expired" text="Central do condado: outro prestador assumiu o chamado porque você não chegou a tempo. Não há pagamento."/>
+        <text name="rse_call_expiredFee" text="Central do condado: outro prestador assumiu o chamado porque você não chegou a tempo. Não há pagamento, e você foi cobrado em %s."/>
+        <text name="rse_call_lightsBonus" text="Suas luzes de alerta deixaram o local seguro: %d%% de pagamento extra."/>
+        <text name="rse_ep_wreck_description" text="Central do condado: um caminhão bateu e está bloqueando a estrada. O trânsito está parando. Ele precisa ir para um ponto de recuperação."/>
+        <text name="rse_ep_rollover_description" text="Central do condado: um trator capotou em uma vala, e o motorista ainda está dentro. Ele precisa ser desvirado e levado a um ponto de recuperação."/>
+        <text name="rse_ep_doneWreck" text="O trabalho está feito. Obrigado!"/>
+        <text name="rse_wreck_hint_prepare" text="Vá até o veículo acidentado e prepare-o para o resgate."/>
+        <text name="rse_wreck_hint_driver" text="Vá até o trator e ajude o motorista a sair."/>
+        <text name="rse_wreck_hint_upright" text="Prenda uma cinta no alto do lado de cima ({key:RSE_STRAP}) e puxe para colocá-lo de volta nas rodas."/>
+        <text name="rse_wreck_prepare" text="Preparar veículo"/>
+        <text name="rse_wreck_driver" text="Tirar motorista"/>
+        <text name="rse_wreck_driverOut" text="O motorista saiu sem ferimentos."/>
+        <text name="rse_wreck_upright" text="Ele está de volta nas rodas."/>
+        <text name="rse_wreck_delivered" text="O veículo acidentado está no ponto de recuperação."/>
+        <text name="rse_wreck_locked" text="Este veículo acidentado precisa ser preparado para o resgate primeiro."/>
+        <text name="rse_wreck_noEngine" text="O motor deste veículo acidentado não liga."/>
+        <text name="rse_load_delivered" text="Um fardo foi entregue. Fardos restantes: %d."/>
+        <text name="rse_call_cancelled" text="Central do condado: o chamado foi cancelado."/>
+        <text name="rse_ep_storm_description" text="Central do condado: um tornado espalhou fardos pela estrada. O trânsito está parando. Eles precisam ir para um ponto de recuperação."/>
+        <text name="rse_storm_hint" text="Leve os fardos a um ponto de recuperação, com qualquer veículo."/>
+        <text name="rse_ep_livestock_description" text="Central do condado: um reboque de gado tombou na estrada. Alguns animais morreram, e outros estão soltos. Fique com o reboque, com os animais vivos ou com os dois, com bônus pelos dois."/>
+        <text name="rse_crash_hint" text="Recupere o reboque, e carregue os animais soltos no seu próprio reboque de gado."/>
+        <text name="rse_crash_arrived" text="Animais mortos: %d. Animais soltos: %d. Eles estão se afastando, então não demore muito."/>
+        <text name="rse_crash_animalsDone" text="Os animais foram resolvidos. Traga também o reboque para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-lo antes."/>
+        <text name="rse_crash_trailerDone" text="O reboque chegou. Cuide também dos animais para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-los antes."/>
+        <text name="rse_crash_warn" text="Central do condado: outro prestador assume o resto deste trabalho em %s."/>
+        <text name="rse_crash_handedOver" text="Central do condado: outro prestador está cuidando do resto. Você recebe pelo que fez."/>
+        <text name="rse_crash_bonus" text="Você fez as duas partes do trabalho: bônus de %d%%."/>
+        <text name="rse_survivor_catch" text="Pegar: %s"/>
+        <text name="rse_survivor_load" text="Carregar: %s"/>
+        <text name="rse_survivor_caught" text="O animal está no cabresto (%s). Leve-o até o seu próprio reboque de gado."/>
+        <text name="rse_survivor_gotAway" text="O animal escapou de você (%s)."/>
+        <text name="rse_survivor_noRoom" text="Seu reboque de gado não pode levar este animal: está cheio, ou já leva outra espécie."/>
+        <text name="rse_survivor_loaded" text="No seu reboque: %s. Animais soltos restantes: %d."/>
+        <text name="rse_set_help" text="Cima e Baixo: escolher. Esquerda e Direita: mudar. Enter: confirmar. {key:RSE_SETTINGS} ou Esc: fechar."/>
+        <text name="rse_set_defaults" text="Restaurar todas as configurações"/>
+        <text name="rse_set_defaultsDone" text="Todas as configurações voltaram ao padrão. Seus pontos de entrega foram mantidos."/>
+        <text name="rse_set_none" text="Nenhum"/>
+        <text name="rse_set_handOver" text="Passar este trabalho a outro prestador"/>
+        <text name="rse_set_handOverPaid" text="Pago pelo que foi feito"/>
+        <text name="rse_set_handOverNone" text="Sem pagamento"/>
+        <text name="rse_set_handOverFee" text="Sem pagamento, taxa de %s"/>
+        <text name="rse_call_handedOver" text="Central do condado: outro prestador assumiu o trabalho. Não há pagamento."/>
+        <text name="rse_call_handedOverFee" text="Central do condado: outro prestador assumiu o trabalho. Não há pagamento, e você foi cobrado em %s."/>
+        <text name="rse_call_cantHandOver" text="Não foi possível repassar o trabalho."/>
+        <text name="rse_map_teleport" text="Teletransportar para cá"/>
+        <text name="rse_map_collect" text="Pedir ao condado que recolha agora (cobrado)"/>
+        <text name="rse_map_removePoint" text="Remover este ponto de entrega"/>
+        <text name="input_RSE_STRAP_IN" text="RSE: Recolher a cinta"/>
+        <text name="input_RSE_STRAP_OUT" text="RSE: Soltar a cinta"/>
+        <text name="rse_strap_reelIn" text="Recolher cinta"/>
+        <text name="rse_strap_reelOut" text="Soltar cinta"/>
+        <text name="rse_call_lightsHint" text="Ligue o pisca-alerta ou o giroflex enquanto trabalha aqui para ganhar %d%% a mais."/>
+        <text name="rse_ep_trailer_description" text="Central do condado: um reboque tombou e derrubou seus fardos na estrada. O trânsito está parando. Fique com o reboque, com os fardos ou com os dois, com bônus pelos dois."/>
+        <text name="rse_ep_powerline_description" text="Central do condado: um carro bateu em um poste de energia. O poste e os fios caíram sobre a estrada, e o motorista ainda está no carro. Uma equipe do condado está a caminho para cortar a energia."/>
+        <text name="rse_ep_crossing_description" text="Central do condado: um veículo parou em uma passagem de nível, e um trem está vindo. O motorista saiu em segurança. Tire o veículo dos trilhos antes que o trem chegue."/>
+        <text name="rse_ep_river_description" text="Central do condado: um carro saiu da estrada e foi parar na água, com o motorista ainda dentro."/>
+        <text name="rse_river_hint_driver" text="Entre na água até o carro e ajude o motorista a sair."/>
+        <text name="rse_river_hint_pull" text="Prenda a cinta no carro a partir da margem ({key:RSE_STRAP}), puxe-o para fora e leve-o a um ponto de recuperação."/>
+        <text name="rse_ep_tree_description" text="Central do condado: uma tempestade derrubou uma árvore sobre um carro, e o motorista está preso dentro. Com uma motosserra é mais rápido."/>
+        <text name="rse_tree_notYet" text="A porta não abre com uma tora sobre o carro."/>
+        <text name="rse_tree_hint" text="Tire a tora de cima do carro, ajude o motorista a sair, libere a estrada e recupere o carro."/>
+        <text name="rse_tree_doorFree" text="A tora saiu de cima do carro, então a porta abre. Ajude o motorista a sair."/>
+        <text name="rse_tree_roadClearDriver" text="A estrada está liberada. Ajude o motorista a sair, e leve o carro ao ponto de recuperação."/>
+        <text name="rse_tree_roadClear" text="A estrada está liberada. Leve o carro ao ponto de recuperação."/>
+        <text name="rse_tree_carIn" text="O carro chegou. Agora tire o resto das toras da estrada."/>
+        <text name="rse_tree_crew" text="A equipe do condado vai recolher as toras, incluindo as que você carregou."/>
+        <text name="rse_tree_handedOver" text="Outro prestador assume a partir daqui. Você recebe pelo que fez."/>
+        <text name="rse_tree_arrived" text="O motorista está buzinando. Tire-o em até %d minutos para um bônus de %s."/>
+        <text name="rse_tree_rescueBonus" text="O motorista saiu a tempo: um bônus de %s."/>
+        <text name="rse_ep_flock_description" text="Central do condado: um rebanho de ovelhas fugiu e está espalhado pela estrada. O trânsito está parando. O fazendeiro montou um cercado ali perto."/>
+        <text name="rse_flock_hint" text="Fique atrás das ovelhas e conduza-as para o cercado. Vá devagar perto delas."/>
+        <text name="rse_flock_arrived" text="%d ovelhas estão espalhadas pela estrada. O cercado fica no local marcado."/>
+        <text name="rse_flock_scattered" text="Você chegou rápido demais, e as ovelhas se espalharam. Você vai ter que juntá-las de novo."/>
+        <text name="rse_flock_half" text="Metade do rebanho está no cercado."/>
+        <text name="rse_flock_oneLeft" text="Falta só uma."/>
+        <text name="rse_flock_done" text="O fazendeiro fechou a porteira e contou: todas as %d estão a salvo."/>
+        <text name="rse_flock_handedOver" text="O fazendeiro vai juntar o resto."/>
+        <text name="rse_flock_pen" text="Cercado das ovelhas"/>
+        <text name="rse_flock_marker" text="O rebanho"/>
+        <text name="rse_crossing_hint" text="Prenda a cinta no veículo ({key:RSE_STRAP}) e tire-o dos trilhos antes que o trem chegue."/>
+        <text name="rse_crossing_call" text="O trem chega à passagem de nível em %s."/>
+        <text name="rse_crossing_clock" text="Trem na passagem de nível em %s"/>
+        <text name="rse_crossing_clear" text="O veículo saiu dos trilhos. Agora leve-o ao ponto de recuperação."/>
+        <text name="rse_crossing_hit" text="O trem chegou primeiro. Ninguém se feriu, mas o trabalho foi perdido, e não há pagamento."/>
+        <text name="rse_crossing_hitFee" text="O trem chegou primeiro. Ninguém se feriu, mas o trabalho foi perdido. Não há pagamento, e você foi cobrado em %s."/>
+        <text name="rse_ep_logging_description" text="Central do condado: um reboque de toras tombou, e as toras estão atravessadas na estrada. A equipe do dono cuida do reboque; as toras são com você."/>
+        <text name="rse_logs_hint" text="Tire todas as toras da estrada: carregue-as, ou leve-as bem para o lado."/>
+        <text name="rse_logs_arrived" text="%d toras estão atravessadas na estrada."/>
+        <text name="rse_logs_progress" text="%d de %d pedaços estão fora da estrada."/>
+        <text name="rse_logs_crew" text="A equipe do dono vai recolher o reboque e todas as toras, incluindo as que você carregou."/>
+        <text name="rse_logs_crewLeft" text="A equipe do dono vai recolher o reboque e as toras que ficaram aqui."/>
+        <text name="rse_logs_yours" text="As toras no seu veículo são suas para ficar ou vender."/>
+        <text name="rse_logs_cut" text="A tora agora está em dois pedaços, o que dá %d para tirar."/>
+        <text name="rse_line_hint_wait" text="Espere a equipe do condado chegar e cortar a energia. Enquanto isso, coloque cones."/>
+        <text name="rse_line_hint_work" text="Recupere o carro e enrole cada fio. Trazer o poste é opcional e paga a mais."/>
+        <text name="rse_line_dangerTitle" text="Afaste-se! Os fios estão energizados!"/>
+        <text name="rse_line_dangerPay" text="Seu pagamento vai diminuir se você ficar."/>
+        <text name="rse_line_dangerPaid" text="Seu pagamento foi reduzido por ficar perto demais. Afaste-se até a energia ser cortada."/>
+        <text name="rse_line_dangerCut" text="Você ficou perto demais de fios energizados, então o condado reduziu seu pagamento em %d%%."/>
+        <text name="rse_line_powerOff" text="Equipe do condado: a energia foi cortada, e já é seguro trabalhar."/>
+        <text name="rse_line_rollUp" text="Enrolar fio"/>
+        <text name="rse_line_stillLive" text="Ainda não: ainda há energia. A equipe do condado precisa de cerca de %d segundos a mais."/>
+        <text name="rse_line_wireDone" text="O fio está enrolado. Fios restantes: %d."/>
+        <text name="rse_line_pieceIn" text="Esse pedaço do poste chegou. Pedaços restantes: %d."/>
+        <text name="rse_line_poleIn" text="O poste chegou."/>
+        <text name="rse_crash_carDone" text="O carro chegou. Enrole também os fios para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-los antes."/>
+        <text name="rse_crash_lineDone" text="Os fios estão enrolados. Traga também o carro para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-lo antes."/>
+        <text name="rse_strap_log" text="tora"/>
+        <text name="rse_guide_title_welcome" text="Boas-vindas"/>
+        <text name="rse_guide_welcome_1" text="Você é o prestador local que a central do condado chama quando algo dá errado na estrada: animais atropelados, veículos acidentados e capotados, fardos derramados, estragos de tempestade, uma linha de energia caída, um acidente com caminhão de toras, um carro na água, uma árvore sobre um carro, um veículo parado em uma passagem de nível e ovelhas soltas na estrada."/>
+        <text name="rse_guide_welcome_2" text="Roadside Emergencies precisa da DLC gratuita Emergency Pack. Quando você inicia um jogo salvo, a lista de mods do jogo oferece selecioná-la para você. Sem ela, nenhum chamado chega."/>
+        <text name="rse_guide_welcome_3" text="Abra este guia a qualquer momento: aperte {key:RSE_SETTINGS} a pé e escolha &quot;Abrir o guia&quot;. O mesmo menu tem todas as configurações."/>
+        <text name="rse_guide_welcome_4" text="Cada linha deste mod na ajuda F1 começa com &quot;RSE:&quot;, e seus textos mostram as teclas que você escolheu no menu de controles do jogo."/>
+        <text name="rse_guide_welcome_5" text="Por enquanto o mod é só para um jogador. Achou um bug? Relate no GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_title_tools" text="Você só recebe chamados que consegue terminar"/>
+        <text name="rse_guide_tools_1" text="É uma regra firme: se a sua fazenda não tem o que um trabalho exige, esse chamado nem chega. Antes de cada chamado, a central confere cada veículo que você tem ou aluga, então se o pager toca, você tem o necessário."/>
+        <text name="rse_guide_tools_2" text="Sem nada: cervos, javalis, ovelhas, porcos e cabras na estrada, que você arrasta com as mãos, e conduzir um rebanho, o que dá para fazer a pé."/>
+        <text name="rse_guide_tools_3" text="Com uma picape, ou qualquer veículo motorizado de {mass:1} ou mais: vacas, cavalos e búfalos, carros na água, árvores sobre carros, linhas de energia, acidentes com caminhão de toras, passagens de nível e reboques tombados menores."/>
+        <text name="rse_guide_tools_4" text="Com um trator, um caminhão ou qualquer veículo motorizado de {mass:3} ou mais: também caminhões acidentados, tratores capotados e os veículos maiores dos outros trabalhos."/>
+        <text name="rse_guide_tools_5" text="Alguns chamados pedem algo a mais. Fardos grandes precisam de um garfo, garra ou carregador de fardos, ou de uma empilhadeira. Estragos de tempestade precisam de um reboque ou da caçamba de uma picape. Um acidente com reboque de gado precisa do seu próprio reboque de gado."/>
+        <text name="rse_guide_tools_6" text="O pager diz o que é preciso antes de você responder. Se o seu equipamento estiver do outro lado do mapa, recuse: não custa nada."/>
+        <text name="rse_guide_title_calls" text="Um chamado, passo a passo"/>
+        <text name="rse_guide_calls_1" text="Um pager apita e pergunta se você aceita o chamado. Ele diz o que aconteceu e, uma linha para cada: onde é, o que há lá (os animais, ou o veículo e sua carga), o que o trabalho exige e qual dos seus veículos consegue fazê-lo, quanto tempo você tem e quanto paga, mais ou menos. Recusar não custa nada."/>
+        <text name="rse_guide_calls_2" text="Aceite e siga o marcador no mapa. O painel do chamado, à direita da tela, lista os passos do trabalho e marca cada um, e mostra o caminho, o tempo que conta e quanto o trabalho paga, mais ou menos. Marcadores sobre o local mostram cada animal ou tora que você ainda precisa resolver."/>
+        <text name="rse_guide_calls_3" text="Chegue a tempo: um chamado que você não alcançou após 20 minutos de jogo passa para outro prestador, com um aviso 5 minutos antes (você pode mudar o tempo nas configurações). Depois que você chega ao local, o chamado continua seu, exceto em uma passagem de nível, onde o trem define o tempo."/>
+        <text name="rse_guide_calls_4" text="O trânsito para atrás do que bloqueia a estrada, então a estrada continua fechada até você liberá-la. O jogo pode tirar um carro que está parado há muito tempo."/>
+        <text name="rse_guide_calls_5" text="Só um trabalho por vez. Nenhum chamado novo chega enquanto um trabalho está em andamento, nem enquanto ainda houver cones ou cavaletes seus colocados."/>
+        <text name="rse_guide_calls_6" text="Você pode salvar durante um trabalho, e ele continua quando você carregar."/>
+        <text name="rse_guide_calls_7" text="Quando um trabalho termina, feito ou não, o que sobra no local fica lá até você estar a {distance:80}, por pelo menos um minuto e no máximo 5 minutos. Depois o condado leva tudo. Seus cones e cavaletes, e os animais mortos que você carregou, continuam por sua conta."/>
+        <text name="rse_guide_title_timing" text="Quando os chamados chegam"/>
+        <text name="rse_guide_timing_1" text="O primeiro chamado pode chegar cerca de 5 minutos depois de carregar. Após cada trabalho há um tempo tranquilo de pelo menos 30, 12 ou 6 minutos de jogo (Raramente, Normal ou Com frequência nas configurações), e então um chamado pode chegar a qualquer momento."/>
+        <text name="rse_guide_timing_2" text="Todo tipo de chamado é tão provável quanto qualquer outro. Os trabalhos maiores (tudo menos animais mortos na estrada) nunca chegam com menos de 30 minutos entre si, então no Normal chega um mais ou menos por hora."/>
+        <text name="rse_guide_timing_3" text="Alguns chamados precisam do lugar certo. Uma passagem de nível precisa de um mapa com um trem que não esteja alugado e de uma passagem de nível ao alcance. Um carro na água precisa de água rasa com uma margem suave ao lado de uma estrada. Um rebanho precisa de campo aberto com um pasto ao lado da estrada. Estragos de tempestade só chegam depois de um tornado, de uma estrada perto de onde ele terminou, e tornados só acontecem na primavera e no verão."/>
+        <text name="rse_guide_timing_4" text="Nas configurações você pode desligar todos os chamados, ou só os chamados com animais, ou só os de acidentes e cargas derramadas."/>
+        <text name="rse_guide_title_pay" text="Como funciona o pagamento"/>
+        <text name="rse_guide_pay_1" text="Cada trabalho paga um valor fixo quando terminado. As configurações aumentam ou diminuem toda a renda de 50% a 200%, e a dificuldade econômica do jogo também conta."/>
+        <text name="rse_guide_pay_2" text="Ligue o pisca-alerta ou o giroflex de um veículo seu a até {distance:40} do local e mantenha-os ligados por 20 segundos no total: o trabalho paga 7% a mais. Só contam as luzes que o veículo realmente tem, e não as do próprio veículo acidentado. Você recebe um lembrete ao chegar."/>
+        <text name="rse_guide_pay_3" text="Animais mortos só levados para o acostamento pagam muito pouco. Leve-os a um ponto de entrega para o pagamento completo; lá você também recebe pelo transporte e paga uma pequena taxa de descarte."/>
+        <text name="rse_guide_pay_4" text="Um veículo acidentado paga mais quanto mais longe do local estiver o ponto de recuperação mais próximo. Fardos, toras e animais soltos pagam por cada um que você trouxer."/>
+        <text name="rse_guide_pay_5" text="Alguns trabalhos têm duas partes: um reboque e seus fardos, um acidente com gado, uma linha de energia. Faça as duas para um bônus de 25%. Se uma parte ficar 10 minutos sem progresso, outro prestador a assume."/>
+        <text name="rse_guide_pay_6" text="Se você aceitou e o trabalho termina sem pagamento (você não chegou a tempo, repassou sem ter feito nada, ou o trem chegou primeiro), você é cobrado em um décimo do pagamento. Recusar não custa nada."/>
+        <text name="rse_guide_pay_7" text="Você pode passar um trabalho a outro prestador a qualquer momento nas configurações ({key:RSE_SETTINGS}). Você fica com o pagamento do que terminou, como cada fardo, tora ou animal entregue. A linha mostra antes de você escolher se vai receber ou pagar."/>
+        <text name="rse_guide_title_animals" text="Animais mortos"/>
+        <text name="rse_guide_animals_1" text="Cervos, javalis, porcos, ovelhas e cabras podem ser arrastados com as mãos: chegue perto de um e aperte a tecla de ação, e de novo para soltar. Vacas, cavalos e búfalos são pesados demais: use a cinta ou uma máquina."/>
+        <text name="rse_guide_animals_2" text="Um animal conta como retirado quando fica parado fora da estrada. Para o pagamento completo, carregue-o em qualquer veículo e leve-o a um ponto de entrega."/>
+        <text name="rse_guide_animals_3" text="Os corpos dos animais funcionam como fardos: carregadeiras frontais, garfos e garras de fardos, guindastes, reboques, cintas de amarração e mods de carregamento automático lidam com todos eles, e o indicador de carga os conta. Uma vaca é pesada, então um guindaste pequeno não consegue levantá-la."/>
+        <text name="rse_guide_animals_4" text="Um animal deixado no local fica marcado no mapa. Depois de 30 minutos de jogo sem ninguém a até {distance:20} (você pode mudar o tempo nas configurações), a equipe rodoviária do condado o recolhe, cobra de você e desconta o que o chamado pagou por ele além do pagamento de acostamento. Você recebe um lembrete 15 e 5 minutos antes."/>
+        <text name="rse_guide_animals_5" text="Pelo marcador de um animal no mapa, você pode pedir ao condado que o recolha na hora, com a cobrança de sempre."/>
+        <text name="rse_guide_title_points" text="Pontos de entrega e de recuperação"/>
+        <text name="rse_guide_points_1" text="Animais mortos vão para um ponto de entrega; veículos acidentados, fardos e pedaços de um poste de energia vão para um ponto de recuperação. A loja é as duas coisas, assim como cada ponto que você adicionar."/>
+        <text name="rse_guide_points_2" text="Adicione um ponto onde você está nas configurações ({key:RSE_SETTINGS}), ou remova o mais próximo. Seus pontos aparecem no mapa enquanto você tem algo para entregar, e você pode remover um pelo marcador dele."/>
+        <text name="rse_guide_points_3" text="Um animal morto conta como entregue quando fica parado por alguns segundos a até {distance:12} de um ponto de entrega, sem carregadeira, cinta de amarração ou cinta de reboque segurando: descarregue-o ali, ou abra as cintas do reboque. Para um veículo acidentado, o marcador no mapa mostra o caminho até o ponto de recuperação."/>
+        <text name="rse_guide_title_strap" text="A cinta de reboque"/>
+        <text name="rse_guide_strap_1" text="A pé, mire em um animal morto ou em um veículo acidentado preparado e aperte {key:RSE_STRAP} para prender a cinta exatamente ali. Depois mire em um veículo e aperte {key:RSE_STRAP} de novo para fixar a outra ponta. Mire em nada para guardar a cinta, ou em um animal ou veículo com a cinta para tirá-la."/>
+        <text name="rse_guide_strap_2" text="Perto de uma cinta, segure {key:RSE_STRAP_IN} para recolhê-la e {key:RSE_STRAP_OUT} para soltá-la. Ela alcança {distance:20}. Prender não puxa nada: você recolhe, ou arranca."/>
+        <text name="rse_guide_strap_3" text="Para desvirar um veículo deitado de lado, prenda-o no alto do lado de cima, fixe a cinta em um veículo e puxe. Ele fica onde está até a cinta esticar."/>
+        <text name="rse_guide_strap_4" text="Reboque: arranque com a cinta esticada e ela encurta até um engate curto atrás do seu veículo. O veículo acidentado segue como um reboque, por qualquer uma das pontas, e freia sozinho quando você para. Se você der ré, ele solta até você puxar de novo."/>
+        <text name="rse_guide_title_wrecks" text="Veículos acidentados"/>
+        <text name="rse_guide_wrecks_1" text="Um veículo acidentado bloqueia a estrada. Vá até ele e prepare-o para o resgate, ou primeiro ajude o motorista a sair, se houver um. Ele não pode ser dirigido, ligado nem reiniciado: você o reboca ou o carrega. Um veículo de lado precisa ser desvirado primeiro."/>
+        <text name="rse_guide_wrecks_2" text="Enquanto você recolhe ou reboca, as rodas da ponta que você puxa viram para a cinta, então essa ponta vem reta até você. Um reboque não tem direção, então suas rodas se alinham com a cinta enquanto você recolhe."/>
+        <text name="rse_guide_wrecks_3" text="Em um guincho plataforma: prenda a cinta no veículo, fixe-a na frente da plataforma e segure {key:RSE_STRAP_IN}. Solte para ele descer rolando. Amarre-o antes de dirigir."/>
+        <text name="rse_guide_wrecks_4" text="Leve o veículo a um ponto de recuperação para receber; o marcador mostra o caminho. Os veículos mudam de um chamado para outro, e os maiores aparecem com menos frequência."/>
+        <text name="rse_guide_title_loads" text="Fardos derramados"/>
+        <text name="rse_guide_loads_1" text="O chamado diz qual é a carga. Fardos pequenos podem ser carregados com as mãos, então uma picape basta. Fardos grandes pagam mais por fardo, mas precisam de uma carregadeira frontal ou de uma manipuladora telescópica."/>
+        <text name="rse_guide_loads_2" text="Você não precisa de uma segunda viagem em um trabalho com reboque. Coloque o reboque de volta nas rodas, ponha os fardos nele e reboque tudo até o ponto de recuperação. Um trabalho de tempestade não tem reboque, então traga o seu e faça quantas viagens precisar."/>
+        <text name="rse_guide_loads_3" text="Cada fardo que chega a um ponto de recuperação paga, mesmo que você passe o resto do trabalho nas configurações ({key:RSE_SETTINGS}). Um fardo paga mais quando os fardos são tudo o que você traz."/>
+        <text name="rse_guide_title_loose" text="Acidente com reboque de gado"/>
+        <text name="rse_guide_loose_0" text="Um reboque de gado tombou. Duas partes, na ordem que quiser: o reboque até um ponto de recuperação, e os animais vivos no seu próprio reboque de gado. Retire os mortos como qualquer outro animal morto."/>
+        <text name="rse_guide_loose_1" text="Em um acidente com reboque de gado, os animais vivos se afastam. Eles param para pastar, e se esquivam quando você vai na direção deles."/>
+        <text name="rse_guide_loose_2" text="Chegue perto de um e use a tecla de ação para pegá-lo. Ele segue você no cabresto. Leve-o até o lado do seu próprio reboque de gado e use a tecla de novo para carregá-lo."/>
+        <text name="rse_guide_loose_3" text="Você conduz um por vez. Ele escapa se você se adiantar demais, e fica para trás se você entrar em um veículo. Depois de carregados, os animais são seus para vender no comerciante de animais."/>
+        <text name="rse_guide_title_line" text="Linhas de energia caídas"/>
+        <text name="rse_guide_line_1" text="Um carro bateu em um poste de energia. Fique longe: os fios podem estar energizados, e ficar perto demais custa pagamento. Uma equipe do condado chega e corta a energia; coloque seus cones e luzes enquanto espera."/>
+        <text name="rse_guide_line_2" text="Depois que a energia for cortada, ajude o motorista a sair e leve o carro a um ponto de recuperação. Um marcador mostra cada fio: chegue perto dele, em qualquer ponto ao longo dele, e segure a tecla para enrolá-lo."/>
+        <text name="rse_guide_line_3" text="Trazer o poste é opcional e paga a mais, se cada pedaço chegar a um ponto de recuperação antes de o resto do trabalho terminar. É uma tora de verdade: se precisar caber em algo, corte-a com uma motosserra (pegue-a com a tecla de ferramenta de mão do jogo), de pé ao lado dela e mirando de través. Faça as duas partes, o carro e os fios, para um bônus."/>
+        <text name="rse_guide_title_logs" text="Um acidente com caminhão de toras"/>
+        <text name="rse_guide_logs_1" text="Um caminhão de toras perdeu a carga. A equipe do dono cuida do reboque; o seu trabalho são as toras."/>
+        <text name="rse_guide_logs_2" text="Uma tora conta quando está em um caminhão ou reboque, ou deitada bem fora da estrada com as duas pontas longe das faixas. Garfos para toras, guindastes, a cinta e a motosserra funcionam; uma tora cortada em duas vira dois pedaços para tirar."/>
+        <text name="rse_guide_logs_3" text="Quando o trabalho termina, a equipe leva todas as toras, também as que você carregou. Se você repassar antes, as toras no seu veículo são suas."/>
+        <text name="rse_guide_title_crossing" text="Uma passagem de nível"/>
+        <text name="rse_guide_crossing_1" text="Um veículo parou em uma passagem de nível, e o trem do mapa está a caminho: um relógio mostra quanto tempo você tem. O chamado vem de uma passagem de nível ao alcance, com tempo de acordo com a distância."/>
+        <text name="rse_guide_crossing_2" text="Só uma cinta ou um cabo de guincho o move; empurrá-lo não adianta nada. Tire-o a tempo e depois leve-o a um ponto de recuperação. Se o trem chegar primeiro, o trabalho é perdido e você é cobrado."/>
+        <text name="rse_guide_title_river" text="Carros na água"/>
+        <text name="rse_guide_river_1" text="Um carro saiu da estrada e foi parar em água rasa, com o motorista dentro. Entre na água e ajude o motorista a sair primeiro."/>
+        <text name="rse_guide_river_2" text="Depois prenda uma cinta ou um cabo de guincho no carro a partir da margem e puxe-o para fora. Sempre há uma subida suave. Leve-o a um ponto de recuperação como qualquer outro veículo acidentado."/>
+        <text name="rse_guide_river_3" text="Esses chamados só chegam em mapas com água rasa e uma margem suave ao lado de uma estrada."/>
+        <text name="rse_guide_title_tree" text="Árvores sobre carros"/>
+        <text name="rse_guide_tree_1" text="Uma tempestade derrubou uma árvore sobre um carro, com o motorista preso dentro. Tire a tora de cima do carro com uma motosserra ou uma cinta, e a porta vai abrir para você ajudar o motorista a sair."/>
+        <text name="rse_guide_tree_2" text="Tire cada pedaço da estrada e leve o carro a um ponto de recuperação, na ordem que preferir. Tire o motorista em até 6 minutos depois de chegar para ganhar um bônus. As toras vão embora com o trabalho, a menos que você o repasse antes."/>
+        <text name="rse_guide_title_flock" text="Conduzir um rebanho"/>
+        <text name="rse_guide_flock_1" text="As ovelhas estão em grupos ao longo da estrada, e o fazendeiro montou um cercado em um pasto ali perto. De veículo ou a pé, elas se afastam de você em linha reta, e as que estão ao lado vão junto. Junte os grupos e depois conduza o rebanho até a porteira."/>
+        <text name="rse_guide_flock_2" text="Empurre pelo lado oposto ao que você quer que elas vão, e dê a volta para fazê-las virar: o rebanho se afasta de onde você estiver. Chegue mais perto e elas vão mais rápido, mas pressione demais e uma pode escapar, e dirija rápido perto delas e elas se espalham. Uma buzinada a cada poucos segundos junta um pouco cada grupo, e de vez em quando as empurra; buzine sem parar e elas se espalham. As que estão no cercado ficam lá, e o fazendeiro fecha a porteira atrás da última."/>
+        <text name="rse_guide_flock_3" text="Você não precisa de nenhum equipamento. O trabalho termina quando a última está no cercado; se repassar antes, você recebe por cada uma que já estiver dentro."/>
+        <text name="rse_guide_title_kit" text="Cones e cavaletes"/>
+        <text name="rse_guide_kit_1" text="Em um chamado, aperte {key:RSE_KIT_MENU} a pé para abrir a sinalização. {key:RSE_KIT_NEXT} escolhe o próximo item, {key:RSE_KIT_USE} coloca ou recolhe o que você mira, e segurar {key:RSE_KIT_TURN} o gira. Eles são de graça e param o trânsito."/>
+        <text name="rse_guide_kit_2" text="O que você coloca, você recolhe. Até fazer isso, o condado continua ligando e nenhum chamado novo chega."/>
+        <text name="rse_guide_kit_3" text="Você só pode colocar itens durante um chamado, a até {distance:60} do local: cones de trânsito, cavaletes de madeira e cones com fita zebrada. A faixa na parte de baixo da tela mostra o que está na mão, e {key:RSE_KIT_MENU} guarda a sinalização."/>
+        <text name="rse_guide_title_markers" text="Marcadores no mapa"/>
+        <text name="rse_guide_markers_1" text="Um círculo verde com um animal é um animal solto, um ! vermelho é um animal morto deixado para trás, um cone laranja é um dos seus cones ou cavaletes, e um anel verde é o cercado de um fazendeiro. Um número azul é o seu próprio ponto de entrega, mostrado enquanto você tem algo para trazer."/>
+        <text name="rse_guide_markers_2" text="Clique em um marcador no mapa para ver o que é e se teletransportar até lá. Você também pode pedir ao condado que recolha um animal morto, com a cobrança de sempre, ou remover um ponto de entrega."/>
+        <text name="rse_guide_markers_3" text="Adicione seus próprios pontos de entrega nas configurações ({key:RSE_SETTINGS})."/>
+        <text name="rse_guide_markers_4" text="Você pode desligar os marcadores no mapa nas configurações."/>
+        <text name="rse_guide_title_settings" text="Configurações"/>
+        <text name="rse_guide_settings_1" text="A pé, {key:RSE_SETTINGS} abre as configurações. Cima e Baixo escolhem uma linha, Esquerda e Direita a mudam, Enter confirma, e {key:RSE_SETTINGS} ou Esc fecha."/>
+        <text name="rse_guide_settings_2" text="As linhas: se a central chama sozinha; com que frequência os chamados chegam; o apito do pager; chamados com animais; chamados com acidentes e cargas derramadas; tamanho do trabalho (quantos animais ou fardos: pequeno, normal, grande ou aleatório); renda (de 50% a 200%); taxas de descarte e cobranças do condado (de 0% a 200%); quando o condado recolhe o que você deixa; quando outro prestador assume um chamado que você não alcançou; marcadores no mapa; e o painel do chamado."/>
+        <text name="rse_guide_settings_3" text="Suas configurações ficam salvas com o jogo, e um jogo novo começa com as que você usou por último. &quot;Restaurar todas as configurações&quot; mantém seus pontos de entrega."/>
+        <text name="rse_guide_title_mods" text="Funciona bem com"/>
+        <text name="rse_guide_mods_1" text="Você não precisa de nenhum destes mods, mas eles combinam com o trabalho. Os citados aqui foram testados com Roadside Emergencies."/>
+        <text name="rse_guide_mods_2" text="T880 Rollback da Roughneck Modding Crew: puxe um veículo acidentado para a plataforma com a cinta ({key:RSE_STRAP}) e as teclas de recolher e soltar ({key:RSE_STRAP_IN} e {key:RSE_STRAP_OUT}), amarre-o e leve-o. O International CV Rollback deles também funciona, confirmado."/>
+        <text name="rse_guide_mods_3" text="Better Winch de ThundR: o guincho dele prende animais mortos e veículos acidentados. UniversalAutoload de loki_79: ele os carrega nos reboques que suporta."/>
+        <text name="rse_guide_mods_4" text="Carregadeiras frontais, garras de fardos e reboques com guindaste lidam com animais mortos, mas um guindaste pequeno não consegue levantar uma vaca."/>
+        <text name="rse_crash_hint_load" text="Recupere o reboque, e leve os fardos a um ponto de recuperação."/>
+        <text name="rse_crash_arrivedLoad" text="Fardos na estrada: %d."/>
+        <text name="rse_load_call_small" text="A carga é de fardos pequenos, então uma picape e suas mãos dão conta."/>
+        <text name="rse_load_call_big" text="A carga é de fardos grandes, então traga uma carregadeira frontal ou uma manipuladora telescópica e algo para levá-los."/>
+        <text name="rse_load_arrived_small" text="Carregue os fardos pequenos com as mãos até a caçamba de uma picape, ou até o reboque quando ele estiver de volta nas rodas. Cada um que chega a um ponto de recuperação paga."/>
+        <text name="rse_load_arrived_big" text="Os fardos grandes precisam de uma carregadeira frontal ou de uma manipuladora telescópica. Cada um que chega a um ponto de recuperação paga."/>
+        <text name="rse_crash_trailerDoneBales" text="O reboque chegou. Traga também os fardos para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-los antes."/>
+        <text name="rse_crash_balesDone" text="Os fardos chegaram. Traga também o reboque para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-lo antes."/>
+        <text name="rse_wreck_hint_deliver" text="Reboque-o com uma cinta ({key:RSE_STRAP}) ou carregue-o, e leve-o a um ponto de recuperação."/>
+        <text name="rse_set_open" text="Configurações, guia"/>
+        <text name="rse_set_guide" text="Abrir o guia"/>
+        <text name="rse_guide_title" text="Guia do Roadside Emergencies"/>
+        <text name="rse_guide_help" text="Esquerda e Direita: página. Enter: próxima página. {key:RSE_SETTINGS} ou Esc: fechar."/>
+        <text name="rse_guide_page" text="Página %d de %d"/>
+        <text name="rse_guide_part" text="%s (%d de %d)"/>
+        <text name="rse_flock_hornScared" text="Tanta buzina espalhou as ovelhas. Você vai ter que juntá-las de novo."/>
+
+        <text name="rse_scene_deliver" text="Leve os animais que você retirou a um ponto de descarte para receber a mais."/>
+        <text name="rse_ep_missing" text="Roadside Emergencies precisa da DLC gratuita Emergency Pack, e ela não está ativa neste jogo salvo, então nenhum chamado vai chegar. Instale o pacote de graça pela sua loja e selecione-o junto com este mod ao iniciar este jogo salvo."/>
+    </texts>
+</l10n>

@@ -64,7 +64,7 @@ files["mod"] = {
         "RseStore", "RseText", "RseCarcass", "RseCarcasses", "RseCarcassDrag", "RseStrap", "RsePoints", "RseSaveLoad",
         "RseEpBridge", "RseConsole", "RseRoadClearRule", "RseSceneSpec", "RseCallPlanner", "RseRoads", "RseScenes",
         "RseEpSteps", "RseCalls", "RseKit", "RseKitRules", "RseMarkers", "RseSpotRules", "RseLeftBehindRule", "RseJobRules", "RseGuide", "RseCrossingRules", "RseLevelCrossing", "RseStepCrossing", "RseLogRules", "RseWaterRules", "RseRiver", "RseFlock", "RseFlockRules", "RseSound", "RseStepTree", "RseStepFlock", "RseLogSpill", "RseCleanup", "RseSavedLogs", "RseStepLogs", "RseProgressRules", "RseHerdRules", "RseGaitRules", "RseWreckRules", "RseTwisterRules", "RseTwisterTravel", "RseLineRules", "RsePowerLine", "RseStepPower", "RseToolRules", "RseToolSwitch", "RseWrecks", "RseSpillBale", "RseSettings", "RseSettingsPanel", "RseSurvivors", "RseMapClicks",
-        "RseGroundRules", "RseFlockPlaces", "RseTheme", "RsePlayerFile", "RseWelcome", "RseWelcomeDialog", "RseDraw", "RsePanelRules", "RseCallPanel", "RseCrewRules", "RseUtilityCrew", "RsePagerRules", "RseCallPlan",
+        "RseGroundRules", "RseFlockPlaces", "RseTheme", "RsePlayerFile", "RseWelcome", "RseWelcomeDialog", "RseDraw", "RsePanelRules", "RseCallPanel", "RseCrewRules", "RseUtilityCrew", "RsePagerRules", "RsePlural", "RseCallPlan",
         -- step classes the Emergency Pack looks up by name ("FS25_RoadsideEmergencies.RseStepArrive")
         "RseStepArrive", "RseStepClearRoad", "RseStepPrepare", "RseStepUpright", "RseStepDeliver", "RseStepCrash",
         -- hooked game classes: wreck gates (Wrecks.lua; wrap the stored original, act only on a wreck)
@@ -85,7 +85,7 @@ files["mod"] = {
 files["tests"] = {
     globals = { "describe", "it", "expectEqual", "expectNear", "expectTrue", "expectNil",
         "RseConfig", "RseLog", "RseAnimalCatalog", "RsePayRules", "RsePointRegistry", "RseSaveCodec", "RseStore",
-        "RseRoadClearRule", "RseSceneSpec", "RseCallPlanner", "RseKitRules", "RseSpotRules", "RseLeftBehindRule", "RseJobRules", "RseGuide", "RseCrossingRules", "RseLevelCrossing", "RseStepCrossing", "RseLogRules", "RseWaterRules", "RseFlockRules", "RseLogSpill", "RseStepLogs", "RseProgressRules", "RseHerdRules", "RseGaitRules", "RseWreckRules", "RseTwisterRules", "RseTwisterTravel", "RseLineRules", "RsePowerLine", "RseStepPower", "RseToolRules", "RseToolSwitch", "RseSettings", "RseGroundRules", "RseTheme", "RsePanelRules", "RseCrewRules", "RsePagerRules" },
+        "RseRoadClearRule", "RseSceneSpec", "RseCallPlanner", "RseKitRules", "RseSpotRules", "RseLeftBehindRule", "RseJobRules", "RseGuide", "RseCrossingRules", "RseLevelCrossing", "RseStepCrossing", "RseLogRules", "RseWaterRules", "RseFlockRules", "RseLogSpill", "RseStepLogs", "RseProgressRules", "RseHerdRules", "RseGaitRules", "RseWreckRules", "RseTwisterRules", "RseTwisterTravel", "RseLineRules", "RsePowerLine", "RseStepPower", "RseToolRules", "RseToolSwitch", "RseSettings", "RseGroundRules", "RseTheme", "RsePanelRules", "RseCrewRules", "RsePagerRules", "RsePlural" },
     read_globals = { "os" }
 }
 

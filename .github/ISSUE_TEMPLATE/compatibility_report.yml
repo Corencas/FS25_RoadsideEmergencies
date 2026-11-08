@@ -30,7 +30,7 @@ body:
     id: mod_version
     attributes:
       label: Roadside Emergencies version
-      description: Shown in the game's mod list, for example 0.9.9.4.
+      description: Shown in the game's mod list, for example 0.9.9.5.
     validations:
       required: true
   - type: textarea

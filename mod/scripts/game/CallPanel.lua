@@ -166,7 +166,7 @@ local function title(scene)
     end
     local kinds = scene.kinds or {}
     if #kinds > 0 then
-        return RseText.get("rse_panel_title_animals", RseText.animalUnit(kinds[1], #kinds))
+        return RseText.get("rse_panel_title_animals", RseText.animalTitle(kinds[1], #kinds))
     end
     return RseText.get("rse_panel_title_call")
 end

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <modDesc descVersion="106">
     <author>Corencas</author>
-    <version>0.9.9.4</version>
+    <version>0.9.9.5</version>
     <title>
         <en>Roadside Emergencies</en>
         <de>Roadside Emergencies</de>
+        <uk>Roadside Emergencies</uk>
+        <ru>Roadside Emergencies</ru>
+        <cz>Roadside Emergencies</cz>
+        <pl>Roadside Emergencies</pl>
+        <br>Roadside Emergencies</br>
+        <it>Roadside Emergencies</it>
+        <es>Roadside Emergencies</es>
+        <fr>Roadside Emergencies</fr>
     </title>
     <description>
         <en><![CDATA[REQUIRES the free Emergency Pack DLC: without it, no calls come.
@@ -65,6 +73,238 @@ Benötigt das Emergency-Pack-DLC. Vorerst nur für Einzelspieler.
 Dies ist eine öffentliche Beta. Offizieller Download und Fehlermeldungen: https://github.com/Corencas/FS25_RoadsideEmergencies
 
 Mod für den Landwirtschafts-Simulator.]]></de>
+        <uk><![CDATA[ПОТРІБНЕ безкоштовне DLC Emergency Pack: без нього виклики не надходитимуть.
+
+Додає 19 нових викликів на дорозі й біля дороги в безкоштовне DLC Emergency Pack. Ви — місцевий підрядник, якого викликає диспетчер округу, коли на дорозі щось трапляється, і ви даєте цьому раду тією технікою й обладнанням, що маєте.
+
+Виклики:
+- Збиті на дорозі тварини: козулі, кабани, свині, вівці, кози, корови, коні й буйволи
+- Розбита вантажівка поперек смуги
+- Перекинутий трактор
+- Перекинутий причіп із тюками на дорозі
+- Аварія скотовоза, з тваринами на волі, яких треба спіймати
+- Наслідки бурі після смерчу
+- Обірвана лінія електропередачі
+- Аварія лісовоза, з колодами поперек дороги
+- Машина, що заглухла на залізничному переїзді, коли до нього йде потяг
+- Машина у воді, водій досі всередині
+- Дерево на машині, водій замкнений усередині
+- Отара овець на дорозі, яку треба загнати в загін
+
+Виклики надходять із будь-якої дороги мапи, і рух за ними зупиняється, поки дорога не звільниться. Ще до вашої відповіді пейджер каже, де виклик, що там, що потрібно й котра з ваших машин із цим упорається, скільки у вас часу й скільки приблизно платять. Ви отримуєте лише виклики, з якими ваша ферма впорається. Під час роботи панель збоку екрана перелічує її кроки й позначає виконані.
+
+Розставляйте конуси й бар'єри вручну, вантажте тварин, чіпляйте буксирний трос туди, куди цілитеся, і буксируйте аварійну техніку або затягуйте її на евакуатор. Усе, що ви доставите до пункту приймання чи евакуації, приносить повну оплату, а аварійна сигналізація дає бонус.
+
+Натисніть H, коли йдете пішки, щоб відкрити посібник і налаштування.
+
+Потрібне DLC Emergency Pack. Поки що лише для одиночної гри.
+
+Це відкрита бета-версія. Офіційне завантаження й повідомлення про помилки: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Мод для Farming Simulator.]]></uk>
+        <ru><![CDATA[ТРЕБУЕТСЯ бесплатное DLC Emergency Pack: без него вызовы не придут.
+
+Добавляет 19 новых вызовов на дороге и у дороги в бесплатное DLC Emergency Pack. Вы — местный подрядчик, которого вызывает диспетчер округа, когда на дороге что-то случается, и вы справляетесь с этим той техникой и оборудованием, что у вас есть.
+
+Вызовы:
+- Сбитые на дороге животные: косули, кабаны, свиньи, овцы, козы, коровы, лошади и буйволы
+- Разбитый грузовик поперёк полосы
+- Перевёрнутый трактор
+- Перевёрнутый прицеп с тюками на дороге
+- Авария скотовоза, с разбежавшимися животными, которых надо поймать
+- Последствия бури после смерча
+- Оборванная линия электропередачи
+- Авария лесовоза, с брёвнами поперёк дороги
+- Машина, заглохшая на железнодорожном переезде, когда к нему идёт поезд
+- Машина в воде, водитель всё ещё внутри
+- Дерево на машине, водитель заперт внутри
+- Стадо овец на дороге, которое надо загнать в загон
+
+Вызовы приходят с любой дороги карты, и движение за ними останавливается, пока дорога не освободится. Ещё до вашего ответа пейджер говорит, где вызов, что там, что нужно и какая из ваших машин с этим справится, сколько у вас времени и сколько примерно платят. Вы получаете только вызовы, с которыми ваша ферма справится. Во время работы панель сбоку экрана перечисляет её шаги и отмечает выполненные.
+
+Расставляйте конусы и барьеры вручную, грузите животных, цепляйте буксировочный трос туда, куда целитесь, и буксируйте аварийную технику или затягивайте её на эвакуатор. Всё, что вы доставите в пункт приёма или эвакуации, приносит полную оплату, а аварийная сигнализация даёт бонус.
+
+Нажмите H, когда идёте пешком, чтобы открыть руководство и настройки.
+
+Требуется DLC Emergency Pack. Пока только для одиночной игры.
+
+Это открытая бета-версия. Официальная загрузка и сообщения об ошибках: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Мод для Farming Simulator.]]></ru>
+        <cz><![CDATA[VYŽADUJE bezplatné DLC Emergency Pack: bez něj nepřijde žádná výzva.
+
+Přidává 19 nových výzev na silnici a u silnice do bezplatného DLC Emergency Pack. Jsi místní dodavatel, kterému volá okresní dispečink, když se na silnici něco stane, a poradíš si s tím vozidly a nářadím, které máš.
+
+Výzvy:
+- Zvířata sražená na silnici: srny, divočáci, prasata, ovce, kozy, skot, koně a buvoli
+- Havarovaný nákladní vůz napříč jízdním pruhem
+- Převrácený traktor
+- Převrácený přívěs s balíky na silnici
+- Nehoda přívěsu se zvířaty, se zatoulanými zvířaty k chycení
+- Škody po bouři po tornádu
+- Spadlé elektrické vedení
+- Nehoda kamionu se dřevem, s kmeny přes silnici
+- Vozidlo uvízlé na železničním přejezdu, zatímco se blíží vlak
+- Auto ve vodě, s řidičem stále uvnitř
+- Strom na autě, s uvězněným řidičem
+- Stádo ovcí na silnici, které je třeba zahnat do ohrady
+
+Výzvy přicházejí z jakékoli silnice na mapě a provoz se za nimi zastaví, dokud silnice nebude volná. Než odpovíš, pager řekne, kde výzva je, co tam je, co vyžaduje a které z tvých vozidel to zvládne, kolik máš času a kolik to zhruba platí. Dostaneš jen výzvy, které tvoje farma zvládne. Během práce panel na okraji obrazovky vypisuje její kroky a odškrtává je.
+
+Stavěj kužely a zábrany rukama, nakládej zvířata, zahákni tažný popruh tam, kam míříš, a odtahuj vraky nebo je navíjej na odtahovku s plošinou. Všechno, co dovezeš na sběrné nebo odtahové místo, přinese plnou výplatu a výstražná světla přinesou bonus.
+
+Stiskni H pěšky pro průvodce a nastavení.
+
+Vyžaduje DLC Emergency Pack. Zatím jen pro jednoho hráče.
+
+Toto je veřejná beta verze. Oficiální stažení a hlášení chyb: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod pro Farming Simulator.]]></cz>
+        <pl><![CDATA[WYMAGA darmowego DLC Emergency Pack: bez niego nie przyjdzie żadne zgłoszenie.
+
+Dodaje 19 nowych zgłoszeń na drodze i przy drodze do darmowego DLC Emergency Pack. Jesteś miejscowym wykonawcą, do którego dzwoni dyspozytor powiatowy, gdy na drodze coś się dzieje, i radzisz sobie z tym pojazdami i maszynami, które masz.
+
+Zgłoszenia:
+- Zwierzęta potrącone na drodze: sarny, dziki, świnie, owce, kozy, bydło, konie i bawoły
+- Rozbita ciężarówka w poprzek pasa
+- Przewrócony ciągnik
+- Przewrócona przyczepa z belami na drodze
+- Wypadek przyczepy ze zwierzętami, z wolnymi zwierzętami do złapania
+- Szkody po burzy po trąbie powietrznej
+- Zerwana linia energetyczna
+- Wypadek ciężarówki z drewnem, z kłodami w poprzek drogi
+- Pojazd, który utknął na przejeździe kolejowym, gdy nadjeżdża pociąg
+- Auto w wodzie, z kierowcą w środku
+- Drzewo na aucie, z uwięzionym kierowcą
+- Stado owiec na drodze, do zapędzenia do zagrody
+
+Zgłoszenia przychodzą z dowolnej drogi na mapie, a ruch staje za nimi, dopóki droga nie będzie przejezdna. Zanim odpowiesz, pager mówi, gdzie jest zgłoszenie, co tam jest, czego wymaga i który z twoich pojazdów sobie z tym poradzi, ile masz czasu i ile mniej więcej płaci. Dostajesz tylko zgłoszenia, które twoja farma może wykonać. W trakcie pracy panel z boku ekranu wypisuje jej kroki i je odhacza.
+
+Stawiaj pachołki i bariery ręcznie, ładuj zwierzęta, zaczepiaj pas holowniczy tam, gdzie celujesz, i holuj wraki albo wciągaj je na lawetę. Wszystko, co dowieziesz do punktu odbioru lub pomocy drogowej, daje pełną zapłatę, a światła ostrzegawcze dają premię.
+
+Naciśnij H pieszo, by otworzyć poradnik i ustawienia.
+
+Wymaga DLC Emergency Pack. Na razie tylko dla jednego gracza.
+
+To publiczna wersja beta. Oficjalne pobieranie i zgłaszanie błędów: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod do Farming Simulator.]]></pl>
+        <br><![CDATA[PRECISA da DLC gratuita Emergency Pack: sem ela, nenhum chamado chega.
+
+Adiciona 19 novos chamados na estrada e à beira dela à DLC gratuita Emergency Pack. Você é o prestador local que a central do condado chama quando algo dá errado na estrada, e resolve tudo com os veículos e implementos que tiver.
+
+Os chamados:
+- Animais atropelados na estrada: cervos, javalis, porcos, ovelhas, cabras, gado, cavalos e búfalos
+- Um caminhão acidentado atravessado na pista
+- Um trator capotado
+- Um reboque tombado com seus fardos na estrada
+- Um acidente com reboque de gado, com animais soltos para pegar
+- Estragos de tempestade depois de um tornado
+- Uma linha de energia caída
+- Um acidente com caminhão de toras, com toras atravessadas na estrada
+- Um veículo parado em uma passagem de nível, com o trem a caminho
+- Um carro na água, com o motorista ainda dentro
+- Uma árvore sobre um carro, com o motorista preso dentro
+- Um rebanho de ovelhas na estrada, para conduzir até um cercado
+
+Os chamados vêm de qualquer estrada do mapa, e o trânsito para atrás deles até a estrada ser liberada. Antes de você responder, o pager diz onde é o chamado, o que há lá, o que o trabalho exige e qual dos seus veículos consegue fazê-lo, quanto tempo você tem e quanto paga, mais ou menos. Você só recebe chamados que a sua fazenda consegue terminar. Durante um trabalho, um painel no canto da tela lista os passos e marca cada um.
+
+Coloque cones e cavaletes com as mãos, carregue os animais, prenda a cinta de reboque onde você mirar, e reboque os veículos acidentados ou puxe-os para um guincho plataforma. Tudo o que você leva a um ponto de entrega ou de recuperação rende o pagamento completo, e as luzes de alerta rendem um bônus.
+
+Aperte H a pé para o guia e as configurações.
+
+Precisa da DLC Emergency Pack. Só para um jogador por enquanto.
+
+Este é um beta público. Download oficial e relatos de bugs: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod para Farming Simulator.]]></br>
+        <it><![CDATA[RICHIEDE il DLC gratuito Emergency Pack: senza di esso non arriva nessuna chiamata.
+
+Aggiunge 19 nuove chiamate sulla strada e a bordo strada al DLC gratuito Emergency Pack. Sei il contoterzista locale che la centrale della contea chiama quando qualcosa va storto sulla strada, e te ne occupi con i veicoli e gli attrezzi che possiedi.
+
+Le chiamate:
+- Animali investiti sulla strada: caprioli, cinghiali, maiali, pecore, capre, bovini, cavalli e bufali
+- Un camion incidentato di traverso sulla corsia
+- Un trattore ribaltato
+- Un rimorchio ribaltato con le sue balle sulla strada
+- Un incidente di un rimorchio per bestiame, con animali liberi da catturare
+- Danni da tempesta dopo un tornado
+- Una linea elettrica caduta
+- Un incidente di un camion per legname, con tronchi di traverso sulla strada
+- Un veicolo fermo su un passaggio a livello, con il treno in arrivo
+- Un'auto in acqua, con il conducente ancora dentro
+- Un albero su un'auto, con il conducente intrappolato dentro
+- Un gregge di pecore sulla strada, da guidare in un recinto
+
+Le chiamate arrivano da qualsiasi strada della mappa, e il traffico si ferma dietro di esse finché la strada non è libera. Prima che tu risponda, il cercapersone dice dov'è la chiamata, cosa c'è, cosa serve e quale dei tuoi veicoli può farlo, quanto tempo hai e circa quanto paga. Ricevi solo chiamate che la tua fattoria può portare a termine. Durante un lavoro, un pannello a lato dello schermo ne elenca i passi e li spunta.
+
+Posa coni e transenne a mano, carica gli animali, aggancia la cinghia di traino dove miri, e traina i relitti o tirali su un carro attrezzi a pianale. Tutto ciò che porti a un punto di consegna o di recupero ti dà la paga piena, e le luci d'emergenza danno un bonus.
+
+Premi H a piedi per la guida e le impostazioni.
+
+Richiede il DLC Emergency Pack. Per ora solo giocatore singolo.
+
+Questa è una beta pubblica. Download ufficiale e segnalazione dei bug: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod per Farming Simulator.]]></it>
+        <es><![CDATA[NECESITA el DLC gratuito Emergency Pack: sin él, no llega ningún aviso.
+
+Añade 19 nuevos avisos en la carretera y junto a ella al DLC gratuito Emergency Pack. Eres el contratista local al que llama la central del condado cuando algo sale mal en la carretera, y te encargas con los vehículos y aperos que tengas.
+
+Los avisos:
+- Animales atropellados en la carretera: corzos, jabalíes, cerdos, ovejas, cabras, ganado vacuno, caballos y búfalos
+- Un camión siniestrado cruzado en el carril
+- Un tractor volcado
+- Un remolque volcado con sus pacas en la carretera
+- Un accidente de remolque para ganado, con animales sueltos que atrapar
+- Daños por tormenta tras un tornado
+- Una línea eléctrica caída
+- Un accidente de camión maderero, con troncos cruzados en la carretera
+- Un vehículo parado en un paso a nivel, con el tren de camino
+- Un coche en el agua, con el conductor todavía dentro
+- Un árbol sobre un coche, con el conductor atrapado dentro
+- Un rebaño de ovejas en la carretera, que hay que guiar hasta un corral
+
+Los avisos llegan desde cualquier carretera del mapa, y el tráfico se detiene detrás hasta que la carretera queda despejada. Antes de que contestes, el buscapersonas dice dónde es el aviso, qué hay, qué hace falta y cuál de tus vehículos puede hacerlo, cuánto tiempo tienes y cuánto paga, más o menos. Solo recibes avisos que tu granja puede terminar. Mientras dura un trabajo, un panel a un lado de la pantalla lista sus pasos y los va marcando.
+
+Coloca conos y barreras a mano, carga los animales, engancha la eslinga de rescate donde apuntes, y remolca los siniestros o súbelos a una grúa plataforma. Todo lo que lleves a un punto de entrega o de recuperación cobra el pago completo, y las luces de aviso dan un bono.
+
+Pulsa H a pie para la guía y los ajustes.
+
+Necesita el DLC Emergency Pack. Solo para un jugador por ahora.
+
+Esta es una beta pública. Descarga oficial e informes de errores: https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod para Farming Simulator.]]></es>
+        <fr><![CDATA[NÉCESSITE le DLC gratuit Emergency Pack : sans lui, aucun appel n'arrive.
+
+Ajoute 19 nouvelles interventions sur la route et au bord de la route au DLC gratuit Emergency Pack. Vous êtes le prestataire local que le central du comté appelle quand quelque chose tourne mal sur la route, et vous vous en chargez avec les véhicules et les outils que vous possédez.
+
+Les appels :
+- Animaux percutés sur la route : chevreuils, sangliers, cochons, moutons, chèvres, bovins, chevaux et buffles
+- Un camion accidenté en travers de la voie
+- Un tracteur renversé
+- Une remorque renversée avec ses balles sur la route
+- Un accident de bétaillère, avec des animaux en liberté à attraper
+- Des dégâts de tempête après une tornade
+- Une ligne électrique tombée
+- Un accident de grumier, avec des grumes en travers de la route
+- Un véhicule en panne sur un passage à niveau, avec le train qui arrive
+- Une voiture dans l'eau, avec le conducteur encore à l'intérieur
+- Un arbre sur une voiture, avec le conducteur coincé à l'intérieur
+- Un troupeau de moutons sur la route, à mener dans un enclos
+
+Les appels viennent de n'importe quelle route de la carte, et la circulation s'arrête derrière eux jusqu'à ce que la route soit dégagée. Avant que vous répondiez, le bipeur indique où se trouve l'appel, ce qu'il y a, ce qu'il faut et lequel de vos véhicules peut le faire, de combien de temps vous disposez et environ combien cela paie. Vous ne recevez que des appels que votre ferme peut terminer. Pendant une intervention, un panneau sur le côté de l'écran liste les étapes et les coche.
+
+Posez des cônes et des barrières à la main, chargez les animaux, accrochez la sangle de dépannage là où vous visez, et remorquez les épaves ou enroulez-les sur une dépanneuse plateau. Tout ce que vous rapportez à un point de dépôt ou de dépannage rapporte la paie complète, et les feux d'alerte rapportent un bonus.
+
+Appuyez sur H à pied pour le guide et les réglages.
+
+Nécessite le DLC Emergency Pack. Solo uniquement pour l'instant.
+
+Ceci est une bêta publique. Téléchargement officiel et signalement de bugs : https://github.com/Corencas/FS25_RoadsideEmergencies
+
+Mod pour Farming Simulator.]]></fr>
     </description>
     <iconFilename>icon_roadsideEmergencies.dds</iconFilename>
     <multiplayer supported="false"/>
@@ -108,6 +348,7 @@ Mod für den Landwirtschafts-Simulator.]]></de>
         <sourceFile filename="scripts/core/PanelRules.lua"/>
         <sourceFile filename="scripts/core/CrewRules.lua"/>
         <sourceFile filename="scripts/core/PagerRules.lua"/>
+        <sourceFile filename="scripts/core/Plural.lua"/>
         <!-- game adapters -->
         <sourceFile filename="scripts/game/Text.lua"/>
         <sourceFile filename="scripts/game/Draw.lua"/>

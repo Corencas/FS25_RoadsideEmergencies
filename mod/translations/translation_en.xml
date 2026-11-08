@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <l10n>
     <texts>
+        <!-- which form a counted word takes (scripts/core/Plural.lua): default, eastSlavic, polish or czech -->
+        <text name="rse_plural_rule" text="default"/>
+
         <!-- keys -->
         <text name="input_RSE_STRAP" text="RSE: Recovery strap"/>
 

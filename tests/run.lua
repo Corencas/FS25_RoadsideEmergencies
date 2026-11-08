@@ -53,13 +53,14 @@ end
 for _, name in ipairs({ "Config", "Log", "AnimalCatalog", "PayRules", "PointRegistry", "SaveCodec", "Settings", "Store", "RoadClearRule",
     "SceneSpec", "CallPlanner", "KitRules", "SpotRules", "LeftBehindRule", "JobRules", "Guide", "ProgressRules", "HerdRules", "FlockRules",
     "GroundRules", "GaitRules", "WreckRules", "TwisterRules", "LineRules", "LogRules", "WaterRules", "CrossingRules", "ToolRules", "PanelRules",
-    "CrewRules", "PagerRules" }) do
+    "CrewRules", "PagerRules", "Plural" }) do
     dofile("mod/scripts/core/" .. name .. ".lua")
 end
 
 for _, name in ipairs({ "AnimalCatalog", "PayRules", "PointRegistry", "SaveCodec", "Store", "RoadClearRule", "SceneSpec",
     "CallPlanner", "KitRules", "SpotRules", "LeftBehindRule", "JobRules", "Guide", "ProgressRules", "HerdRules", "FlockRules", "GroundRules", "GaitRules",
-    "WreckRules", "TwisterRules", "LineRules", "LogRules", "WaterRules", "CrossingRules", "ToolRules", "Settings", "PanelRules", "CrewRules", "PagerRules" }) do
+    "WreckRules", "TwisterRules", "LineRules", "LogRules", "WaterRules", "CrossingRules", "ToolRules", "Settings", "PanelRules", "CrewRules",
+    "PagerRules", "Plural" }) do
     dofile("tests/spec/" .. name .. "_spec.lua")
 end
 

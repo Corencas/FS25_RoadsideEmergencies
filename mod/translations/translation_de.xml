@@ -2,6 +2,9 @@
 <!-- German: machine-drafted, corrections from native speakers welcome (see README). -->
 <l10n>
     <texts>
+        <!-- which form a counted word takes (scripts/core/Plural.lua): default, eastSlavic, polish or czech -->
+        <text name="rse_plural_rule" text="default"/>
+
         <!-- keys -->
         <text name="input_RSE_STRAP" text="RSE: Bergegurt"/>
 
@@ -61,9 +64,9 @@
         <text name="rse_action_tooHeavyShort" text="Zu schwer"/>
         <text name="rse_kitShort_cone" text="Leitkegel"/>
         <text name="rse_kitShort_barricade" text="Absperrung"/>
-        <text name="rse_kitShort_coneTape" text="Kegel mit Band"/>
+        <text name="rse_kitShort_coneTape" text="Bandkegel"/>
         <text name="rse_animalShort_deer" text="Reh"/>
-        <text name="rse_animalShort_boar" text="Wildschwein"/>
+        <text name="rse_animalShort_boar" text="Keiler"/>
         <text name="rse_animalShort_pig" text="Schwein"/>
         <text name="rse_animalShort_sheep" text="Schaf"/>
         <text name="rse_animalShort_goat" text="Ziege"/>
@@ -188,8 +191,8 @@
         <text name="rse_kit_coneTape" text="Leitkegel mit Absperrband"/>
         <text name="rse_kit_stop" text="Ausrüstung zu"/>
         <text name="rse_kit_open" text="Ausrüstung"/>
-        <text name="rse_kit_place" text="%s aufstellen"/>
-        <text name="rse_kit_pickup" text="%s einsammeln"/>
+        <text name="rse_kit_place" text="%s stellen"/>
+        <text name="rse_kit_pickup" text="%s holen"/>
         <text name="rse_kit_turn" text="%s drehen"/>
         <text name="rse_kit_loadFailed" text="Dieses Teil konnte nicht geladen werden: %s."/>
         <text name="rse_kit_limit" text="Mehr als %d Teile gleichzeitig sind nicht möglich."/>
@@ -294,8 +297,8 @@
         <text name="rse_crash_warn" text="Leitstelle des Landkreises: In %s übernimmt ein anderer Dienstleister den Rest dieses Auftrags."/>
         <text name="rse_crash_handedOver" text="Leitstelle des Landkreises: Ein anderer Dienstleister kümmert sich um den Rest. Du wirst für das bezahlt, was du erledigt hast."/>
         <text name="rse_crash_bonus" text="Du hast beide Teile des Auftrags erledigt: %d %% Bonus."/>
-        <text name="rse_survivor_catch" text="%s einfangen"/>
-        <text name="rse_survivor_load" text="%s verladen"/>
+        <text name="rse_survivor_catch" text="%s fangen"/>
+        <text name="rse_survivor_load" text="%s laden"/>
         <text name="rse_survivor_caught" text="Du führst das Tier (%s) am Strick. Bring es zu deinem eigenen Viehanhänger."/>
         <text name="rse_survivor_gotAway" text="Das Tier (%s) ist dir entwischt."/>
         <text name="rse_survivor_noRoom" text="Dein Viehanhänger kann dieses Tier nicht aufnehmen: Er ist voll oder hat schon eine andere Tierart geladen."/>

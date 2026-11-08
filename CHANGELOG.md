@@ -2,6 +2,10 @@
 
 Versions match the mod's version in the game.
 
+## 0.9.9.5
+
+- **Eight more languages:** French, Spanish, Italian, Brazilian Portuguese, Polish, Czech, Russian and Ukrainian, alongside English and German. Counted animals read right in each language ("2 коровы", "5 коров"). Corrections from native speakers are welcome.
+
 ## 0.9.9.4
 
 - **The pager beeps** when a call comes in, at the game's interface volume. The settings (`H`) can turn it off.
