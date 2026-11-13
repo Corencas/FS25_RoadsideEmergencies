@@ -225,9 +225,6 @@
         <text name="rse_ep_horse_description" text="Okresní dispečink: auto srazilo hospodářská zvířata, která utekla na silnici. Provoz se zastavuje."/>
         <text name="rse_ep_buffalo_description" text="Okresní dispečink: nákladní vůz srazil na silnici buvoly. Provoz se zastavuje."/>
         <text name="rse_ep_hint_arrive" text="Jeď na označené místo."/>
-        <text name="rse_call_vehicle" text="Dispečink hlásí vozidlo: %s."/>
-        <text name="rse_call_towSmall" text="Odtáhne ho pick-up nebo jakékoli větší vozidlo."/>
-        <text name="rse_call_towBig" text="Je velké: přijeď s větším vozidlem nebo odtahovkou s plošinou. Pick-up ho neodtáhne."/>
         <text name="rse_pager_where" text="Kde: asi %s %s od tebe"/>
         <text name="rse_pager_whereNear" text="Kde: blízko tebe"/>
         <text name="rse_dir_n" text="na sever"/>
@@ -365,7 +362,6 @@
         <text name="rse_flock_pen" text="Ohrada pro ovce"/>
         <text name="rse_flock_marker" text="Stádo"/>
         <text name="rse_crossing_hint" text="Zahákni vozidlo popruhem ({key:RSE_STRAP}) a stáhni ho z kolejí, než přijede vlak."/>
-        <text name="rse_crossing_call" text="Vlak dorazí na přejezd za %s."/>
         <text name="rse_crossing_clock" text="Vlak na přejezdu za %s"/>
         <text name="rse_crossing_clear" text="Vozidlo je mimo koleje. Teď ho odvez na odtahové místo."/>
         <text name="rse_crossing_hit" text="Vlak byl první. Nikdo se nezranil, ale práce je ztracená a výplata není."/>
@@ -403,8 +399,8 @@
         <text name="rse_guide_tools_1" text="Je to pevné pravidlo: když tvoje farma nemá, co práce vyžaduje, výzva vůbec nepřijde. Před každou výzvou dispečink zkontroluje každé vozidlo, které vlastníš nebo si pronajímáš, takže když se pager ozve, máš vše potřebné."/>
         <text name="rse_guide_tools_2" text="Bez ničeho: srny, divočáci, ovce, prasata a kozy na silnici, které odtáhneš rukama, a hnaní stáda, které zvládneš pěšky."/>
         <text name="rse_guide_tools_3" text="S pick-upem nebo jakýmkoli motorovým vozidlem o hmotnosti {mass:1} nebo víc: krávy, koně a buvoli, auta ve vodě, stromy na autech, elektrická vedení, nehody kamionů se dřevem, železniční přejezdy a menší převrácené přívěsy."/>
-        <text name="rse_guide_tools_4" text="S traktorem, nákladním vozem nebo jakýmkoli motorovým vozidlem o hmotnosti {mass:3} nebo víc: také havarované nákladní vozy, převrácené traktory a větší vozidla v ostatních pracích."/>
-        <text name="rse_guide_tools_5" text="Některé výzvy chtějí ještě něco. Velké balíky vyžadují vidle, drapák nebo nakladač na balíky, nebo vysokozdvižný vozík. Škody po bouři vyžadují přívěs nebo korbu pick-upu. Nehoda přívěsu se zvířaty vyžaduje tvůj vlastní přívěs na zvířata."/>
+        <text name="rse_guide_tools_4" text="S traktorem, nákladním vozem nebo jakýmkoli motorovým vozidlem o hmotnosti {mass:3} nebo víc: také havarované nákladní vozy, převrácené traktory, nehody přívěsů se zvířaty a větší vozidla v ostatních pracích."/>
+        <text name="rse_guide_tools_5" text="Některé výzvy chtějí ještě něco. Velké balíky vyžadují vidle, drapák nebo nakladač na balíky, nebo vysokozdvižný vozík. Škody po bouři vyžadují přívěs nebo korbu pick-upu. Nehoda přívěsu se zvířaty vyžaduje tvůj vlastní přívěs na ovce, prasata nebo skot; přívěs na koně nestačí."/>
         <text name="rse_guide_tools_6" text="Pager řekne, co je potřeba, ještě než odpovíš. Když máš vybavení na druhém konci mapy, odmítni: nic to nestojí."/>
         <text name="rse_guide_title_calls" text="Výzva krok za krokem"/>
         <text name="rse_guide_calls_1" text="Pager pípne a zeptá se, jestli výzvu přijmeš. Řekne, co se stalo, a na každý řádek jednu věc: kde to je, co tam je (zvířata, nebo vozidlo a jeho náklad), co práce vyžaduje a které z tvých vozidel to zvládne, kolik máš času a kolik to zhruba platí. Odmítnutí nic nestojí."/>
@@ -476,7 +472,7 @@
         <text name="rse_guide_tree_2" text="Odklid ze silnice každý kus a odvez auto na odtahové místo, v pořadí, jaké ti vyhovuje. Dostaň řidiče ven do 6 minut od příjezdu a získáš bonus. Kmeny odjedou s prací, pokud ji nepředáš dřív."/>
         <text name="rse_guide_title_flock" text="Hnaní stáda"/>
         <text name="rse_guide_flock_1" text="Ovce stojí ve skupinkách podél silnice a farmář postavil ohradu na nedaleké louce. Vozidlem i pěšky: ovce se od tebe vzdalují v přímce a ty vedle nich jdou s nimi. Dej skupinky dohromady a pak nažeň stádo k brance."/>
-        <text name="rse_guide_flock_2" text="Tlač ze strany opačné k té, kam mají jít, a obcházej je, abys je otočil: stádo se vzdaluje od místa, kde jsi. Přiblíž se a půjdou rychleji, ale tlač moc a některá může utéct, a jeď kolem nich rychle a rozprchnou se. Zatroubení každých pár sekund trochu stáhne každou skupinku a občas je popožene; troubíš-li bez přestání, rozprchnou se. Ty v ohradě v ní zůstanou a farmář zavře branku za poslední."/>
+        <text name="rse_guide_flock_2" text="Tlač ze strany opačné k té, kam mají jít, a obcházej je, abys je otočil: stádo se vzdaluje od místa, kde jsi. Přiblíž se a půjdou rychleji, ale tlač moc a některá může utéct, a jeď kolem nich rychle a rozprchnou se. Zatroubení přivolá každou ovci, která ho slyší, k největší skupince, trochu ji stáhne a občas je popožene; troubíš-li bez přestání, rozprchnou se. Ty v ohradě v ní zůstanou a farmář zavře branku za poslední."/>
         <text name="rse_guide_flock_3" text="Nepotřebuješ žádné vybavení. Práce končí, když je poslední ovce v ohradě; předáš-li ji dřív, dostaneš zaplaceno za každou, která už je uvnitř."/>
         <text name="rse_guide_title_kit" text="Kužely a zábrany"/>
         <text name="rse_guide_kit_1" text="Během výzvy stiskni pěšky {key:RSE_KIT_MENU}, abys otevřel značení. {key:RSE_KIT_NEXT} vybere další předmět, {key:RSE_KIT_USE} ho postaví nebo sebere ten, na který míříš, a držení {key:RSE_KIT_TURN} ho otáčí. Jsou zdarma a zastavují provoz."/>
@@ -497,9 +493,6 @@
         <text name="rse_guide_mods_3" text="Better Winch od ThundR: jeho naviják zahákne mrtvá zvířata i vraky. UniversalAutoload od loki_79: naloží je na přívěsy, které podporuje."/>
         <text name="rse_guide_mods_4" text="Čelní nakladače, drapáky na balíky a přívěsy s jeřábem si s mrtvými zvířaty poradí, ale malý jeřáb krávu nezvedne."/>
         <text name="rse_crash_hint_load" text="Vyprosti přívěs a odvez balíky na odtahové místo."/>
-        <text name="rse_crash_arrivedLoad" text="Balíky na silnici: %d."/>
-        <text name="rse_load_call_small" text="Náklad jsou malé balíky, takže stačí pick-up a tvé ruce."/>
-        <text name="rse_load_call_big" text="Náklad jsou velké balíky, takže přijeď s čelním nakladačem nebo teleskopickým manipulátorem a něčím na jejich odvoz."/>
         <text name="rse_load_arrived_small" text="Nos malé balíky rukama na korbu pick-upu, nebo do přívěsu, až zase stojí na kolech. Každý, který dorazí na odtahové místo, se platí."/>
         <text name="rse_load_arrived_big" text="Velké balíky potřebují čelní nakladač nebo teleskopický manipulátor. Každý, který dorazí na odtahové místo, se platí."/>
         <text name="rse_crash_trailerDoneBales" text="Přívěs je dodán. Přivez i balíky a získáš bonus %d%%. Jinak je po %s převezme jiný dodavatel; v nastavení ({key:RSE_SETTINGS}) je můžeš předat dřív."/>

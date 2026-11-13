@@ -209,9 +209,6 @@
         <text name="rse_ep_horse_description" text="Central du comté : une voiture a heurté du bétail échappé sur la route. La circulation s'arrête."/>
         <text name="rse_ep_buffalo_description" text="Central du comté : un camion a heurté des buffles sur la route. La circulation s'arrête."/>
         <text name="rse_ep_hint_arrive" text="Rendez-vous à l'endroit indiqué."/>
-        <text name="rse_call_vehicle" text="Le central signale le véhicule : %s."/>
-        <text name="rse_call_towSmall" text="Un pick-up ou tout véhicule plus gros peut le remorquer."/>
-        <text name="rse_call_towBig" text="Il est gros : venez avec un véhicule plus gros ou une dépanneuse plateau. Un pick-up ne peut pas le remorquer."/>
         <text name="rse_pager_where" text="Où : à environ %s %s de vous"/>
         <text name="rse_pager_whereNear" text="Où : près de vous"/>
         <text name="rse_dir_n" text="au nord"/>
@@ -349,7 +346,6 @@
         <text name="rse_flock_pen" text="Enclos à moutons"/>
         <text name="rse_flock_marker" text="Le troupeau"/>
         <text name="rse_crossing_hint" text="Sanglez le véhicule ({key:RSE_STRAP}) et tirez-le hors des voies avant le passage du train."/>
-        <text name="rse_crossing_call" text="Le train arrive au passage à niveau dans %s."/>
         <text name="rse_crossing_clock" text="Train au passage à niveau dans %s"/>
         <text name="rse_crossing_clear" text="Le véhicule est hors des voies. Amenez-le maintenant au point de dépannage."/>
         <text name="rse_crossing_hit" text="Le train est arrivé le premier. Personne n'est blessé, mais l'intervention est perdue, et il n'y a pas de paie."/>
@@ -387,8 +383,8 @@
         <text name="rse_guide_tools_1" text="C'est une règle stricte : si votre ferme n'a pas ce qu'il faut pour une intervention, cet appel n'arrive pas du tout. Le central vérifie chaque véhicule que vous possédez ou louez avant chaque appel : si le bipeur sonne, vous avez ce qu'il faut."/>
         <text name="rse_guide_tools_2" text="Sans rien du tout : chevreuils, sangliers, moutons, cochons et chèvres sur la route, que vous traînez à la main, et la conduite d'un troupeau, possible à pied."/>
         <text name="rse_guide_tools_3" text="Avec un pick-up, ou tout véhicule motorisé de {mass:1} ou plus : vaches, chevaux et buffles, voitures dans l'eau, arbres sur des voitures, lignes électriques, accidents de grumier, passages à niveau et petites remorques renversées."/>
-        <text name="rse_guide_tools_4" text="Avec un tracteur, un camion, ou tout véhicule motorisé de {mass:3} ou plus : aussi les camions accidentés, les tracteurs renversés, et les plus gros véhicules des autres interventions."/>
-        <text name="rse_guide_tools_5" text="Certains appels demandent un élément de plus. Les grosses balles demandent une fourche, une pince, un chargeur à balles ou un chariot élévateur. Les dégâts de tempête demandent une remorque ou une benne de pick-up. Un accident de bétaillère demande votre propre bétaillère."/>
+        <text name="rse_guide_tools_4" text="Avec un tracteur, un camion, ou tout véhicule motorisé de {mass:3} ou plus : aussi les camions accidentés, les tracteurs renversés, les accidents de bétaillère, et les plus gros véhicules des autres interventions."/>
+        <text name="rse_guide_tools_5" text="Certains appels demandent un élément de plus. Les grosses balles demandent une fourche, une pince, un chargeur à balles ou un chariot élévateur. Les dégâts de tempête demandent une remorque ou une benne de pick-up. Un accident de bétaillère demande votre propre bétaillère pour moutons, porcs ou bovins ; un van à chevaux ne suffit pas."/>
         <text name="rse_guide_tools_6" text="Le bipeur indique ce qu'il faut avant que vous répondiez. Si votre matériel est à l'autre bout de la carte, refusez : cela ne coûte rien."/>
         <text name="rse_guide_title_calls" text="Un appel, étape par étape"/>
         <text name="rse_guide_calls_1" text="Un bipeur sonne et vous demande si vous acceptez l'appel. Il dit ce qui s'est passé et, une ligne chacun : où c'est, ce qu'il y a (les animaux, ou le véhicule et son chargement), ce qu'il faut et lequel de vos véhicules peut le faire, de combien de temps vous disposez, et environ combien cela paie. Refuser ne coûte rien."/>
@@ -460,7 +456,7 @@
         <text name="rse_guide_tree_2" text="Dégagez chaque morceau de la route et amenez la voiture à un point de dépannage, dans l'ordre qui vous convient. Sortez le conducteur dans les 6 minutes suivant votre arrivée pour un bonus. Les grumes partent avec l'intervention, sauf si vous la confiez tôt."/>
         <text name="rse_guide_title_flock" text="Conduire un troupeau"/>
         <text name="rse_guide_flock_1" text="Les moutons sont en groupes le long de la route, et le fermier a monté un enclos dans un pré tout près. En véhicule ou à pied, ils s'éloignent droit devant vous, et ceux à côté suivent. Rassemblez les groupes, puis guidez le troupeau jusqu'à la barrière."/>
-        <text name="rse_guide_flock_2" text="Poussez depuis le côté opposé à la direction voulue, et faites le tour pour les faire tourner : le troupeau s'éloigne de l'endroit où vous êtes. Approchez-vous et ils vont plus vite, mais pressez-les trop et l'un peut s'échapper, et roulez vite près d'eux et ils se dispersent. Un coup de klaxon toutes les quelques secondes resserre un peu chaque groupe, et les pousse de temps en temps ; klaxonnez sans arrêt et ils se dispersent. Ceux dans l'enclos y restent, et le fermier ferme la barrière derrière le dernier."/>
+        <text name="rse_guide_flock_2" text="Poussez depuis le côté opposé à la direction voulue, et faites le tour pour les faire tourner : le troupeau s'éloigne de l'endroit où vous êtes. Approchez-vous et ils vont plus vite, mais pressez-les trop et l'un peut s'échapper, et roulez vite près d'eux et ils se dispersent. Un coup de klaxon rappelle chaque mouton qui l'entend vers le plus gros groupe, resserre un peu ce groupe, et les pousse de temps en temps ; klaxonnez sans arrêt et ils se dispersent. Ceux dans l'enclos y restent, et le fermier ferme la barrière derrière le dernier."/>
         <text name="rse_guide_flock_3" text="Aucun matériel n'est nécessaire. L'intervention est terminée quand le dernier est dans l'enclos ; confiez-la tôt et vous êtes payé pour chacun déjà dedans."/>
         <text name="rse_guide_title_kit" text="Cônes et barrières"/>
         <text name="rse_guide_kit_1" text="Lors d'un appel, appuyez sur {key:RSE_KIT_MENU} à pied pour ouvrir le balisage. {key:RSE_KIT_NEXT} choisit l'élément suivant, {key:RSE_KIT_USE} le pose ou ramasse celui que vous visez, et maintenir {key:RSE_KIT_TURN} le tourne. Ils sont gratuits, et ils arrêtent la circulation."/>
@@ -481,9 +477,6 @@
         <text name="rse_guide_mods_3" text="Better Winch de ThundR : son treuil accroche les animaux morts et les épaves. UniversalAutoload de loki_79 : il les charge sur les remorques qu'il prend en charge."/>
         <text name="rse_guide_mods_4" text="Chargeurs frontaux, pinces à balles et remorques à grue prennent tous les animaux morts, mais une petite grue ne peut pas soulever une vache."/>
         <text name="rse_crash_hint_load" text="Récupérez la remorque, et rapportez les balles à un point de dépannage."/>
-        <text name="rse_crash_arrivedLoad" text="Balles sur la route : %d."/>
-        <text name="rse_load_call_small" text="Le chargement est en petites balles : un pick-up et vos mains suffisent."/>
-        <text name="rse_load_call_big" text="Le chargement est en grosses balles : venez avec un chargeur frontal ou un télescopique et de quoi les transporter."/>
         <text name="rse_load_arrived_small" text="Portez les petites balles à la main dans une benne de pick-up, ou dans la remorque une fois remise sur ses roues. Chacune qui atteint un point de dépannage paie."/>
         <text name="rse_load_arrived_big" text="Les grosses balles demandent un chargeur frontal ou un télescopique. Chacune qui atteint un point de dépannage paie."/>
         <text name="rse_crash_trailerDoneBales" text="La remorque est rapportée. Rapportez aussi les balles pour un bonus de %d%%. Sinon, un autre prestataire prend le relais après %s ; les réglages ({key:RSE_SETTINGS}) peuvent les confier plus tôt."/>

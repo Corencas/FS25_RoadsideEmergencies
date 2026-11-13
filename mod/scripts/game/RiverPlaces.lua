@@ -108,6 +108,11 @@ function RseRiver:canOffer()
     return self.triesLeft == nil and #self.places > 0
 end
 
+-- true while the map is still being searched after a load
+function RseRiver:isSearching()
+    return self.triesLeft ~= nil
+end
+
 -- the place for the call being laid out, as a spot the emergency can stand on
 function RseRiver:pickSpot()
     local near = RseScenes.spotNear

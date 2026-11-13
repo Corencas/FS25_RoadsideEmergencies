@@ -338,6 +338,17 @@ function RseFlock:rejoin(animal)
     end
     local angle = math.random() * 2 * math.pi
     animal.x, animal.z = world.cx + math.sin(angle) * RseConfig.FLOCK_TIGHT * 0.5, world.cz + math.cos(angle) * RseConfig.FLOCK_TIGHT * 0.5
+    -- on the ground of the nearest one already there: up on a bridge with them, not under it
+    local nearest, best = nil, math.huge
+    for _, other in ipairs(animal.scene.survivors or {}) do
+        local gap = (other.x - animal.x) ^ 2 + (other.z - animal.z) ^ 2
+        if other ~= animal and not other.penned and gap < best then
+            nearest, best = other, gap
+        end
+    end
+    if nearest ~= nil then
+        RseSurvivors.standLike(animal, nearest)
+    end
     animal.blocked = false
     RseLog.debug("flock: one that was stuck has rejoined the others")
 end

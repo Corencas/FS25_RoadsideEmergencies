@@ -14,7 +14,7 @@ end
 function RseCalls:init()
     self.state = RseCallPlanner.newState(RseConfig)
     self.crossingWaitMs = nil
-    self.fleetNow, self.fleetMs, self.pretendFleet = nil, 0, nil
+    self.fleetNow, self.fleetMs = nil, 0
     RseTwisterTravel:reset()
     RseToolSwitch:reset()
     RseRiver:reset()
@@ -61,6 +61,13 @@ local function liftsBales(vehicle)
     return false
 end
 
+-- Can this livestock trailer carry what a crash's loose animals are? A horse trailer can't take cattle (Z). If the game won't say, it counts, as it
+-- always did, and the log says why.
+local function carriesCrashAnimals(vehicle)
+    local ok, carries = RseLog.try("see what a livestock trailer carries", RseSurvivors.carriesAny, vehicle, RseConfig.WRECKS.livestock.kinds)
+    return not ok or carries == true
+end
+
 local function machineOf(vehicle)
     local belts = vehicle.spec_tensionBelts
     local named, name = false, nil
@@ -75,7 +82,7 @@ local function machineOf(vehicle)
         lifts = liftsBales(vehicle),
         carries = vehicle.spec_trailer ~= nil or vehicle.spec_baleLoader ~= nil or vehicle.spec_universalAutoload ~= nil
             or (belts ~= nil and belts.hasTensionBelts == true),
-        livestockTrailer = vehicle.spec_livestockTrailer ~= nil
+        livestockTrailer = vehicle.spec_livestockTrailer ~= nil and carriesCrashAnimals(vehicle)
     }
 end
 
@@ -95,9 +102,6 @@ end
 
 -- What the farm has right now. It can't be read? Then dispatch assumes nothing: a call it can't be sure of doesn't come.
 function RseCalls:fleet()
-    if self.pretendFleet ~= nil then
-        return self.pretendFleet
-    end
     if self.fleetNow == nil or (self.fleetMs or 0) <= 0 then
         self.fleetMs = RseConfig.FLEET_CHECK_MS
         local ok, fleet = RseLog.try("look over the farm's vehicles", scanFleet)
@@ -171,11 +175,15 @@ function RseCalls:request(store, id)
         end
         return true, "wait", id
     end
+    -- the scan takes a minute or two after a load (50 to 95 seconds on save 19), and a reviewer types rseStart straight away
+    if (id == "river" and RseRiver:isSearching()) or (id == "flock" and RseFlockPlaces:isSearching()) then
+        return false, "searching"
+    end
     if id == "river" and not RseRiver:canOffer() then
-        return false, "this map has no shallow water with a gentle bank beside a road, or it is still being searched"
+        return false, "this map has no shallow water with a gentle bank beside a road"
     end
     if id == "flock" and not RseFlockPlaces:canOffer() then
-        return false, "this map has no road through open country with a meadow beside it for a pen, or it is still being searched"
+        return false, "this map has no road through open country with a meadow beside it for a pen"
     end
     local ok, reason = askPack(id)
     if ok and self.state ~= nil then

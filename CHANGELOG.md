@@ -2,6 +2,17 @@
 
 Versions match the mod's version in the game.
 
+## 0.9.10.5
+
+- **Sheep and loose animals stay on bridges:** driven onto a bridge, they walk across on the road instead of sinking through it to the ground below, and they don't step off its edge or over a steep drop at its end.
+- **The flock's pen goes up in open meadow:** no tree inside it, none within 5 m of its fence, and none in front of its opening. Before, a small tree could stand inside the pen or the woods right against it.
+- **A honk calls the flock together:** every sheep within earshot heads over to the biggest bunch, and that bunch closes up a little. No more five bunches going their own ways while you drive them to the pen.
+- **Sheep don't get stuck at fences:** crowded against the hurdles or the farmer's truck, a sheep runs along it, away from your side, instead of standing still. One left facing a fence turns round and walks back to the others, or comes when you honk, instead of standing there until it was moved to the flock.
+- **Livestock trailer crash, always in a trailer that carries the animals:** the horse trailer is gone (it had cows in it). The crash is always the big Fliegl trailer now, so it takes a rollback, or a truck or tractor of 3 t or more. Your own livestock trailer counts only if it carries sheep, pigs or cattle.
+- **Fewer repeated messages:** after you answer a call, the pager's lines on the vehicle, the train's clock and the load no longer come again as messages (the call panel shows the clock). At spilled bales, one message on arrival instead of two.
+- **Fewer console commands:** the testing ones are gone. `rseHelp`, `rseDebug`, `rseStart`, `rseCalls`, `rseJobSize`, `rseMarkers`, `rsePoints`, `rsePointAdd`, `rsePointRemove`, `rseFee` and `rseWelcome` stay. `rseStart` names all 19 calls in its help.
+- **`rseStart flock` and `rseStart river` right after loading** say that the map is still being searched and to try again in a minute or two, instead of sounding as if the map had no place for the call.
+
 ## 0.9.9.5
 
 - **Eight more languages:** French, Spanish, Italian, Brazilian Portuguese, Polish, Czech, Russian and Ukrainian, alongside English and German. Counted animals read right in each language ("2 коровы", "5 коров"). Corrections from native speakers are welcome.

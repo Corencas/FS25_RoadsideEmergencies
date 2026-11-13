@@ -210,9 +210,6 @@
         <text name="rse_ep_horse_description" text="Leitstelle des Landkreises: Ein Auto hat entlaufenes Vieh auf der Straße angefahren. Der Verkehr staut sich."/>
         <text name="rse_ep_buffalo_description" text="Leitstelle des Landkreises: Ein Lkw hat Wasserbüffel auf der Straße angefahren. Der Verkehr staut sich."/>
         <text name="rse_ep_hint_arrive" text="Fahre zur markierten Stelle."/>
-        <text name="rse_call_vehicle" text="Die Leitstelle meldet als Fahrzeug: %s."/>
-        <text name="rse_call_towSmall" text="Ein Pickup oder etwas Größeres kann es abschleppen."/>
-        <text name="rse_call_towBig" text="Es ist groß, also bring ein größeres Fahrzeug oder einen Abschleppwagen mit. Ein Pickup kann es nicht abschleppen."/>
         <text name="rse_pager_where" text="Wo: etwa %s %s von dir"/>
         <text name="rse_pager_whereNear" text="Wo: ganz in deiner Nähe"/>
         <text name="rse_dir_n" text="nördlich"/>
@@ -350,7 +347,6 @@
         <text name="rse_flock_pen" text="Schafpferch"/>
         <text name="rse_flock_marker" text="Die Herde"/>
         <text name="rse_crossing_hint" text="Hak das Fahrzeug an ({key:RSE_STRAP}) und zieh es von den Gleisen, bevor der Zug kommt."/>
-        <text name="rse_crossing_call" text="Der Zug erreicht den Bahnübergang in %s."/>
         <text name="rse_crossing_clock" text="Zug am Bahnübergang in %s"/>
         <text name="rse_crossing_clear" text="Das Fahrzeug ist von den Gleisen. Bringe es jetzt zur Bergungsstelle."/>
         <text name="rse_crossing_hit" text="Der Zug war zuerst da. Niemand wurde verletzt, aber der Auftrag ist verloren, und es gibt kein Geld."/>
@@ -388,8 +384,8 @@
         <text name="rse_guide_tools_1" text="Das ist eine feste Regel: Fehlt deinem Hof, was ein Auftrag braucht, kommt der Einsatz gar nicht erst. Die Leitstelle prüft vor jedem Einsatz alle Fahrzeuge, die du besitzt oder least. Fragt der Pager, hast du also, was es braucht."/>
         <text name="rse_guide_tools_2" text="Ganz ohne Ausrüstung: Rehe, Wildschweine, Schafe, Schweine und Ziegen auf der Straße, die du von Hand ziehst, und das Treiben einer Herde, das auch zu Fuß geht."/>
         <text name="rse_guide_tools_3" text="Mit einem Pickup oder einem anderen Motorfahrzeug ab {mass:1}: Kühe, Pferde und Büffel, Autos im Wasser, Bäume auf Autos, Stromleitungen, Holzunfälle, Bahnübergänge und kleinere umgekippte Anhänger."/>
-        <text name="rse_guide_tools_4" text="Mit einem Traktor, Lkw oder einem anderen Motorfahrzeug ab {mass:3}: auch verunglückte Lkw, umgekippte Traktoren und die größeren Fahrzeuge bei den anderen Aufträgen."/>
-        <text name="rse_guide_tools_5" text="Manche Einsätze brauchen noch etwas mehr. Große Ballen brauchen eine Ballengabel, Ballenzange, einen Ballenlader oder Gabelstapler. Sturmschäden brauchen einen Anhänger oder eine Pickup-Ladefläche. Ein Viehtransporter-Unfall braucht deinen eigenen Viehanhänger."/>
+        <text name="rse_guide_tools_4" text="Mit einem Traktor, Lkw oder einem anderen Motorfahrzeug ab {mass:3}: auch verunglückte Lkw, umgekippte Traktoren, Viehtransporter-Unfälle und die größeren Fahrzeuge bei den anderen Aufträgen."/>
+        <text name="rse_guide_tools_5" text="Manche Einsätze brauchen noch etwas mehr. Große Ballen brauchen eine Ballengabel, Ballenzange, einen Ballenlader oder Gabelstapler. Sturmschäden brauchen einen Anhänger oder eine Pickup-Ladefläche. Ein Viehtransporter-Unfall braucht deinen eigenen Viehanhänger für Schafe, Schweine oder Rinder; ein Pferdeanhänger reicht nicht."/>
         <text name="rse_guide_tools_6" text="Der Pager sagt vor deiner Antwort, was der Auftrag braucht. Steht deine Ausrüstung am anderen Ende der Karte, lehne einfach ab: Das kostet nichts."/>
         <text name="rse_guide_title_calls" text="Ein Einsatz, Schritt für Schritt"/>
         <text name="rse_guide_calls_1" text="Ein Pager piept und fragt, ob du den Einsatz übernimmst. Er sagt, was passiert ist, und je eine Zeile: wo es ist, was dort ist (die Tiere, oder das Fahrzeug und seine Ladung), was der Auftrag braucht und welches deiner Fahrzeuge das kann, wie viel Zeit du hast und etwa die Bezahlung. Absagen kostet nichts."/>
@@ -461,7 +457,7 @@
         <text name="rse_guide_tree_2" text="Räum jedes Stück von der Straße und bring das Auto zu einer Bergungsstelle, in der Reihenfolge, die dir passt. Holst du den Fahrer innerhalb von 6 Minuten nach deiner Ankunft heraus, gibt es einen Bonus. Die Stämme gehören zum Auftrag, außer du gibst ihn vorher ab."/>
         <text name="rse_guide_title_flock" text="Eine Herde treiben"/>
         <text name="rse_guide_flock_1" text="Schafe stehen in Gruppen an der Straße, und der Bauer hat in der Nähe auf einer Wiese einen Pferch aufgestellt. Ob im Fahrzeug oder zu Fuß: Sie laufen direkt von dir weg, und die daneben laufen mit. Treib die Gruppen zusammen und lenke die Herde zum Tor."/>
-        <text name="rse_guide_flock_2" text="Dränge von der Seite gegenüber der Richtung, in die sie laufen sollen, und geh oder fahr um sie herum, um sie zu wenden: Die Herde dreht immer von dir weg. Kommst du näher, werden sie schneller. Bedrängst du sie zu sehr, bricht eines aus, und fährst du schnell in ihrer Nähe, stieben sie auseinander. Alle paar Sekunden gehupt, rückt jede Gruppe ein Stück zusammen und wird ab und zu angetrieben; Dauerhupen treibt sie auseinander. Wer im Pferch ist, bleibt drin, und der Bauer schließt das Tor hinter dem letzten."/>
+        <text name="rse_guide_flock_2" text="Dränge von der Seite gegenüber der Richtung, in die sie laufen sollen, und geh oder fahr um sie herum, um sie zu wenden: Die Herde dreht immer von dir weg. Kommst du näher, werden sie schneller. Bedrängst du sie zu sehr, bricht eines aus, und fährst du schnell in ihrer Nähe, stieben sie auseinander. Ein Hupen ruft jedes Schaf in Hörweite zur größten Gruppe, rückt diese ein Stück zusammen und treibt sie ab und zu an; Dauerhupen treibt sie auseinander. Wer im Pferch ist, bleibt drin, und der Bauer schließt das Tor hinter dem letzten."/>
         <text name="rse_guide_flock_3" text="Dafür brauchst du keine Ausrüstung. Der Auftrag ist erledigt, wenn das letzte Schaf im Pferch ist; gibst du ihn vorher ab, wird jedes bezahlt, das schon drin ist."/>
         <text name="rse_guide_title_kit" text="Leitkegel und Absperrungen"/>
         <text name="rse_guide_kit_1" text="Drücke bei einem Einsatz zu Fuß {key:RSE_KIT_MENU} für die Ausrüstung. {key:RSE_KIT_NEXT} wählt das nächste Teil, {key:RSE_KIT_USE} stellt es auf oder hebt auf, worauf du zielst, und gehaltenes {key:RSE_KIT_TURN} dreht es. Sie sind kostenlos und stoppen den Verkehr."/>
@@ -482,9 +478,6 @@
         <text name="rse_guide_mods_3" text="Better Winch von ThundR: Die Winde hakt tote Tiere und Wracks an. UniversalAutoload von loki_79: Es lädt sie auf die Anhänger, die es unterstützt."/>
         <text name="rse_guide_mods_4" text="Frontlader, Ballengreifer und Krananhänger können tote Tiere bewegen, aber ein kleiner Kran hebt keine Kuh."/>
         <text name="rse_crash_hint_load" text="Birg den Anhänger und bring die Ballen zu einer Bergungsstelle."/>
-        <text name="rse_crash_arrivedLoad" text="Ballen auf der Straße: %d."/>
-        <text name="rse_load_call_small" text="Die Ladung sind kleine Ballen. Ein Pickup und deine eigenen Hände reichen dafür."/>
-        <text name="rse_load_call_big" text="Die Ladung sind große Ballen. Bring einen Frontlader oder Teleskoplader mit und etwas, worauf sie passen."/>
         <text name="rse_load_arrived_small" text="Trage die kleinen Ballen von Hand auf eine Pickup-Ladefläche oder in den Anhänger, sobald er wieder auf den Rädern steht. Jeder Ballen, der eine Bergungsstelle erreicht, wird bezahlt."/>
         <text name="rse_load_arrived_big" text="Die großen Ballen brauchen einen Frontlader oder Teleskoplader. Jeder Ballen, der eine Bergungsstelle erreicht, wird bezahlt."/>
         <text name="rse_crash_trailerDoneBales" text="Der Anhänger ist da. Bring auch die Ballen für %d %% Bonus. Sonst übernimmt nach %s ein anderer Dienstleister; im Einstellungsfenster ({key:RSE_SETTINGS}) kannst du sie früher abgeben."/>

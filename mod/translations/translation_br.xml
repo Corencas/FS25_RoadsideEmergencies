@@ -209,9 +209,6 @@
         <text name="rse_ep_horse_description" text="Central do condado: um carro atropelou animais que fugiram para a estrada. O trânsito está parando."/>
         <text name="rse_ep_buffalo_description" text="Central do condado: um caminhão atropelou búfalos na estrada. O trânsito está parando."/>
         <text name="rse_ep_hint_arrive" text="Vá até o local marcado."/>
-        <text name="rse_call_vehicle" text="A central informa que o veículo é: %s."/>
-        <text name="rse_call_towSmall" text="Uma picape ou qualquer veículo maior consegue rebocá-lo."/>
-        <text name="rse_call_towBig" text="Ele é grande: traga um veículo maior ou um guincho plataforma. Uma picape não consegue rebocá-lo."/>
         <text name="rse_pager_where" text="Onde: a cerca de %s %s de você"/>
         <text name="rse_pager_whereNear" text="Onde: perto de você"/>
         <text name="rse_dir_n" text="ao norte"/>
@@ -349,7 +346,6 @@
         <text name="rse_flock_pen" text="Cercado das ovelhas"/>
         <text name="rse_flock_marker" text="O rebanho"/>
         <text name="rse_crossing_hint" text="Prenda a cinta no veículo ({key:RSE_STRAP}) e tire-o dos trilhos antes que o trem chegue."/>
-        <text name="rse_crossing_call" text="O trem chega à passagem de nível em %s."/>
         <text name="rse_crossing_clock" text="Trem na passagem de nível em %s"/>
         <text name="rse_crossing_clear" text="O veículo saiu dos trilhos. Agora leve-o ao ponto de recuperação."/>
         <text name="rse_crossing_hit" text="O trem chegou primeiro. Ninguém se feriu, mas o trabalho foi perdido, e não há pagamento."/>
@@ -387,8 +383,8 @@
         <text name="rse_guide_tools_1" text="É uma regra firme: se a sua fazenda não tem o que um trabalho exige, esse chamado nem chega. Antes de cada chamado, a central confere cada veículo que você tem ou aluga, então se o pager toca, você tem o necessário."/>
         <text name="rse_guide_tools_2" text="Sem nada: cervos, javalis, ovelhas, porcos e cabras na estrada, que você arrasta com as mãos, e conduzir um rebanho, o que dá para fazer a pé."/>
         <text name="rse_guide_tools_3" text="Com uma picape, ou qualquer veículo motorizado de {mass:1} ou mais: vacas, cavalos e búfalos, carros na água, árvores sobre carros, linhas de energia, acidentes com caminhão de toras, passagens de nível e reboques tombados menores."/>
-        <text name="rse_guide_tools_4" text="Com um trator, um caminhão ou qualquer veículo motorizado de {mass:3} ou mais: também caminhões acidentados, tratores capotados e os veículos maiores dos outros trabalhos."/>
-        <text name="rse_guide_tools_5" text="Alguns chamados pedem algo a mais. Fardos grandes precisam de um garfo, garra ou carregador de fardos, ou de uma empilhadeira. Estragos de tempestade precisam de um reboque ou da caçamba de uma picape. Um acidente com reboque de gado precisa do seu próprio reboque de gado."/>
+        <text name="rse_guide_tools_4" text="Com um trator, um caminhão ou qualquer veículo motorizado de {mass:3} ou mais: também caminhões acidentados, tratores capotados, acidentes com reboque de gado e os veículos maiores dos outros trabalhos."/>
+        <text name="rse_guide_tools_5" text="Alguns chamados pedem algo a mais. Fardos grandes precisam de um garfo, garra ou carregador de fardos, ou de uma empilhadeira. Estragos de tempestade precisam de um reboque ou da caçamba de uma picape. Um acidente com reboque de gado precisa do seu próprio reboque para ovelhas, porcos ou bois; um reboque de cavalos não serve."/>
         <text name="rse_guide_tools_6" text="O pager diz o que é preciso antes de você responder. Se o seu equipamento estiver do outro lado do mapa, recuse: não custa nada."/>
         <text name="rse_guide_title_calls" text="Um chamado, passo a passo"/>
         <text name="rse_guide_calls_1" text="Um pager apita e pergunta se você aceita o chamado. Ele diz o que aconteceu e, uma linha para cada: onde é, o que há lá (os animais, ou o veículo e sua carga), o que o trabalho exige e qual dos seus veículos consegue fazê-lo, quanto tempo você tem e quanto paga, mais ou menos. Recusar não custa nada."/>
@@ -460,7 +456,7 @@
         <text name="rse_guide_tree_2" text="Tire cada pedaço da estrada e leve o carro a um ponto de recuperação, na ordem que preferir. Tire o motorista em até 6 minutos depois de chegar para ganhar um bônus. As toras vão embora com o trabalho, a menos que você o repasse antes."/>
         <text name="rse_guide_title_flock" text="Conduzir um rebanho"/>
         <text name="rse_guide_flock_1" text="As ovelhas estão em grupos ao longo da estrada, e o fazendeiro montou um cercado em um pasto ali perto. De veículo ou a pé, elas se afastam de você em linha reta, e as que estão ao lado vão junto. Junte os grupos e depois conduza o rebanho até a porteira."/>
-        <text name="rse_guide_flock_2" text="Empurre pelo lado oposto ao que você quer que elas vão, e dê a volta para fazê-las virar: o rebanho se afasta de onde você estiver. Chegue mais perto e elas vão mais rápido, mas pressione demais e uma pode escapar, e dirija rápido perto delas e elas se espalham. Uma buzinada a cada poucos segundos junta um pouco cada grupo, e de vez em quando as empurra; buzine sem parar e elas se espalham. As que estão no cercado ficam lá, e o fazendeiro fecha a porteira atrás da última."/>
+        <text name="rse_guide_flock_2" text="Empurre pelo lado oposto ao que você quer que elas vão, e dê a volta para fazê-las virar: o rebanho se afasta de onde você estiver. Chegue mais perto e elas vão mais rápido, mas pressione demais e uma pode escapar, e dirija rápido perto delas e elas se espalham. Uma buzinada chama cada ovelha que a ouve para o maior grupo, junta um pouco esse grupo e de vez em quando as empurra; buzine sem parar e elas se espalham. As que estão no cercado ficam lá, e o fazendeiro fecha a porteira atrás da última."/>
         <text name="rse_guide_flock_3" text="Você não precisa de nenhum equipamento. O trabalho termina quando a última está no cercado; se repassar antes, você recebe por cada uma que já estiver dentro."/>
         <text name="rse_guide_title_kit" text="Cones e cavaletes"/>
         <text name="rse_guide_kit_1" text="Em um chamado, aperte {key:RSE_KIT_MENU} a pé para abrir a sinalização. {key:RSE_KIT_NEXT} escolhe o próximo item, {key:RSE_KIT_USE} coloca ou recolhe o que você mira, e segurar {key:RSE_KIT_TURN} o gira. Eles são de graça e param o trânsito."/>
@@ -481,9 +477,6 @@
         <text name="rse_guide_mods_3" text="Better Winch de ThundR: o guincho dele prende animais mortos e veículos acidentados. UniversalAutoload de loki_79: ele os carrega nos reboques que suporta."/>
         <text name="rse_guide_mods_4" text="Carregadeiras frontais, garras de fardos e reboques com guindaste lidam com animais mortos, mas um guindaste pequeno não consegue levantar uma vaca."/>
         <text name="rse_crash_hint_load" text="Recupere o reboque, e leve os fardos a um ponto de recuperação."/>
-        <text name="rse_crash_arrivedLoad" text="Fardos na estrada: %d."/>
-        <text name="rse_load_call_small" text="A carga é de fardos pequenos, então uma picape e suas mãos dão conta."/>
-        <text name="rse_load_call_big" text="A carga é de fardos grandes, então traga uma carregadeira frontal ou uma manipuladora telescópica e algo para levá-los."/>
         <text name="rse_load_arrived_small" text="Carregue os fardos pequenos com as mãos até a caçamba de uma picape, ou até o reboque quando ele estiver de volta nas rodas. Cada um que chega a um ponto de recuperação paga."/>
         <text name="rse_load_arrived_big" text="Os fardos grandes precisam de uma carregadeira frontal ou de uma manipuladora telescópica. Cada um que chega a um ponto de recuperação paga."/>
         <text name="rse_crash_trailerDoneBales" text="O reboque chegou. Traga também os fardos para um bônus de %d%%. Se não, outro prestador assume após %s; as configurações ({key:RSE_SETTINGS}) podem repassá-los antes."/>

@@ -209,9 +209,6 @@
         <text name="rse_ep_horse_description" text="Central del condado: un coche ha atropellado ganado que se escapó a la carretera. El tráfico se está deteniendo."/>
         <text name="rse_ep_buffalo_description" text="Central del condado: un camión ha atropellado búfalos en la carretera. El tráfico se está deteniendo."/>
         <text name="rse_ep_hint_arrive" text="Ve al lugar marcado."/>
-        <text name="rse_call_vehicle" text="La central informa de que el vehículo es: %s."/>
-        <text name="rse_call_towSmall" text="Una pickup o cualquier vehículo más grande puede remolcarlo."/>
-        <text name="rse_call_towBig" text="Es grande: trae un vehículo más grande o una grúa plataforma. Una pickup no puede remolcarlo."/>
         <text name="rse_pager_where" text="Dónde: a unos %s al %s de ti"/>
         <text name="rse_pager_whereNear" text="Dónde: cerca de ti"/>
         <text name="rse_dir_n" text="norte"/>
@@ -349,7 +346,6 @@
         <text name="rse_flock_pen" text="Corral de ovejas"/>
         <text name="rse_flock_marker" text="El rebaño"/>
         <text name="rse_crossing_hint" text="Engancha el vehículo con la eslinga ({key:RSE_STRAP}) y sácalo de la vía antes de que llegue el tren."/>
-        <text name="rse_crossing_call" text="El tren llega al paso a nivel en %s."/>
         <text name="rse_crossing_clock" text="Tren en el paso a nivel en %s"/>
         <text name="rse_crossing_clear" text="El vehículo está fuera de la vía. Ahora llévalo al punto de recuperación."/>
         <text name="rse_crossing_hit" text="El tren ha llegado antes. No hay heridos, pero el trabajo se ha perdido y no hay pago."/>
@@ -387,8 +383,8 @@
         <text name="rse_guide_tools_1" text="Es una regla firme: si tu granja no tiene lo que hace falta para un trabajo, ese aviso no llega nunca. La central revisa cada vehículo que tienes en propiedad o en alquiler antes de cada aviso, así que si el buscapersonas pregunta, tienes lo necesario."/>
         <text name="rse_guide_tools_2" text="Sin nada: corzos, jabalíes, ovejas, cerdos y cabras en la carretera, que arrastras a mano, y guiar un rebaño, que puedes hacer a pie."/>
         <text name="rse_guide_tools_3" text="Con una pickup, o cualquier vehículo motorizado de {mass:1} o más: vacas, caballos y búfalos, coches en el agua, árboles sobre coches, líneas eléctricas, accidentes de camión maderero, pasos a nivel y remolques volcados más pequeños."/>
-        <text name="rse_guide_tools_4" text="Con un tractor, un camión o cualquier vehículo motorizado de {mass:3} o más: también camiones siniestrados, tractores volcados y los vehículos más grandes de los otros trabajos."/>
-        <text name="rse_guide_tools_5" text="Algunos avisos piden algo más. Las pacas grandes necesitan una horquilla, pinza o cargador de pacas, o una carretilla elevadora. Los daños por tormenta necesitan un remolque o la caja de una pickup. Un accidente de remolque para ganado necesita tu propio remolque para ganado."/>
+        <text name="rse_guide_tools_4" text="Con un tractor, un camión o cualquier vehículo motorizado de {mass:3} o más: también camiones siniestrados, tractores volcados, accidentes de remolque para ganado y los vehículos más grandes de los otros trabajos."/>
+        <text name="rse_guide_tools_5" text="Algunos avisos piden algo más. Las pacas grandes necesitan una horquilla, pinza o cargador de pacas, o una carretilla elevadora. Los daños por tormenta necesitan un remolque o la caja de una pickup. Un accidente de remolque para ganado necesita tu propio remolque para ovejas, cerdos o vacas; uno para caballos no sirve."/>
         <text name="rse_guide_tools_6" text="El buscapersonas dice qué hace falta antes de que contestes. Si tu equipo está en la otra punta del mapa, di que no: no cuesta nada."/>
         <text name="rse_guide_title_calls" text="Un aviso, paso a paso"/>
         <text name="rse_guide_calls_1" text="Un buscapersonas pita y pregunta si aceptas el aviso. Dice qué ha pasado y, una línea cada cosa: dónde es, qué hay (los animales, o el vehículo y su carga), qué hace falta y cuál de tus vehículos puede hacerlo, cuánto tiempo tienes y cuánto paga, más o menos. Decir que no no cuesta nada."/>
@@ -460,7 +456,7 @@
         <text name="rse_guide_tree_2" text="Retira cada trozo de la carretera y lleva el coche a un punto de recuperación, en el orden que prefieras. Saca al conductor en menos de 6 minutos desde tu llegada para un bono. Los troncos se van con el trabajo, salvo que lo pases antes."/>
         <text name="rse_guide_title_flock" text="Guiar un rebaño"/>
         <text name="rse_guide_flock_1" text="Las ovejas están en grupos a lo largo de la carretera, y el granjero ha montado un corral en un prado cercano. En vehículo o a pie, se alejan de ti en línea recta, y las que van a su lado las siguen. Junta los grupos y luego guía el rebaño hasta la puerta."/>
-        <text name="rse_guide_flock_2" text="Empuja desde el lado contrario al que quieres que vayan, y rodéalas para girarlas: el rebaño se aleja de donde estés. Acércate y van más rápido, pero si las presionas demasiado alguna puede escaparse, y si conduces rápido cerca de ellas se dispersan. Un toque de claxon cada pocos segundos junta un poco cada grupo, y de vez en cuando los empuja; si no paras de pitar, se dispersan. Las que están en el corral se quedan dentro, y el granjero cierra la puerta tras la última."/>
+        <text name="rse_guide_flock_2" text="Empuja desde el lado contrario al que quieres que vayan, y rodéalas para girarlas: el rebaño se aleja de donde estés. Acércate y van más rápido, pero si las presionas demasiado alguna puede escaparse, y si conduces rápido cerca de ellas se dispersan. Un toque de claxon llama a cada oveja que lo oye hacia el grupo más grande, junta un poco ese grupo y de vez en cuando las empuja; si no paras de pitar, se dispersan. Las que están en el corral se quedan dentro, y el granjero cierra la puerta tras la última."/>
         <text name="rse_guide_flock_3" text="No necesitas ningún equipo. El trabajo termina cuando la última está en el corral; si lo pasas antes, cobras por cada una que ya esté dentro."/>
         <text name="rse_guide_title_kit" text="Conos y barreras"/>
         <text name="rse_guide_kit_1" text="En un aviso, pulsa {key:RSE_KIT_MENU} a pie para abrir la señalización. {key:RSE_KIT_NEXT} elige el siguiente elemento, {key:RSE_KIT_USE} lo coloca o recoge el que apuntas, y mantener {key:RSE_KIT_TURN} lo gira. Son gratis y detienen el tráfico."/>
@@ -481,9 +477,6 @@
         <text name="rse_guide_mods_3" text="Better Winch de ThundR: su cabrestante engancha animales muertos y siniestros. UniversalAutoload de loki_79: los carga en los remolques que admite."/>
         <text name="rse_guide_mods_4" text="Los cargadores frontales, las pinzas de pacas y los remolques con grúa manejan animales muertos, pero una grúa pequeña no puede levantar una vaca."/>
         <text name="rse_crash_hint_load" text="Recupera el remolque, y lleva las pacas a un punto de recuperación."/>
-        <text name="rse_crash_arrivedLoad" text="Pacas en la carretera: %d."/>
-        <text name="rse_load_call_small" text="La carga son pacas pequeñas, así que bastan una pickup y tus manos."/>
-        <text name="rse_load_call_big" text="La carga son pacas grandes, así que trae un cargador frontal o una manipuladora telescópica y algo para llevarlas."/>
         <text name="rse_load_arrived_small" text="Lleva las pacas pequeñas a mano a la caja de una pickup, o al remolque cuando vuelva a estar sobre sus ruedas. Cada una que llega a un punto de recuperación paga."/>
         <text name="rse_load_arrived_big" text="Las pacas grandes necesitan un cargador frontal o una manipuladora telescópica. Cada una que llega a un punto de recuperación paga."/>
         <text name="rse_crash_trailerDoneBales" text="El remolque ya está. Trae también las pacas para un bono del %d%%. Si no, otro contratista se encarga tras %s; los ajustes ({key:RSE_SETTINGS}) pueden traspasarlas antes."/>

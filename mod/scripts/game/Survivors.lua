@@ -51,6 +51,16 @@ local function subTypeFor(trailer, pattern, needRoom)
     return nil
 end
 
+-- can this livestock trailer carry any of these animals? A horse trailer can't take cattle (Z), so it doesn't count for a crash with sheep, pigs or cows.
+function RseSurvivors.carriesAny(trailer, kinds)
+    for _, kind in ipairs(kinds) do
+        if subTypeFor(trailer, RseAnimalCatalog.get(kind).subType, false) ~= nil then
+            return true
+        end
+    end
+    return false
+end
+
 -- your own livestock trailers, never the wreck
 local function ownTrailers()
     local list = {}
@@ -396,7 +406,13 @@ function RseSurvivors:spawn(scene, kind, spots, flock)
             end
             local title = RseText.get("rse_marker_loose", RseText.animal(kind))
             animal.markerInfo = { kind = "loose", title = title, image = RseCarcasses.liveImage(def.subType) or RseMarkers.imagePath("loose") }
-            animal.groundOffset = math.max(0, spot.y - getTerrainHeightAtWorldPos(g_terrainNode, spot.x, 0, spot.z))
+            local above = spot.y - getTerrainHeightAtWorldPos(g_terrainNode, spot.x, 0, spot.z)
+            if above >= RseConfig.HERD_DECK then
+                animal.groundOffset = 0
+                animal.deckY, animal.deckTarget, animal.deckX, animal.deckZ = spot.y, spot.y, spot.x, spot.z
+            else
+                animal.groundOffset = math.max(0, above)
+            end
             animal.groundTarget = animal.groundOffset
             setWorldTranslation(node, animal.x, animal.y, animal.z)
             setWorldRotation(node, 0, animal.yaw, 0)
@@ -561,28 +577,55 @@ local function heightBelow(x, y, z, reach, mask)
     return RseSurvivors.rayY
 end
 
--- what is right ahead of it, looking this way: "slope" too steep to climb, "water", an "object" (a wall, a tree, a vehicle), or nil
+-- the ground it would stand on below this point, for one walking at height y: the terrain, a road, a bridge's deck, or nil
+local function groundBelow(x, y, z)
+    return heightBelow(x, y + RAY_START, z, RAY_START + RAY_BELOW, CollisionFlag.TERRAIN + CollisionFlag.STATIC_OBJECT + CollisionFlag.ROAD)
+end
+
+-- On a deck (a bridge) it keeps to the deck's height, from fromY now, and remembers where it stands on it.
+local function onDeck(animal, fromY, deckY)
+    animal.deckY, animal.deckTarget = fromY, deckY
+    animal.deckX, animal.deckZ = animal.x, animal.z
+end
+
+-- What is right ahead of it, looking this way: "slope" too steep to climb or the edge of a deck, "water", an "object" (a wall, a tree, a vehicle), or nil.
+-- Second: true if the ground ahead is a deck at its own level, well above the terrain under it (a bridge it is walking onto).
 local function lookAlong(animal, y, yaw)
     local dirX, dirZ = math.sin(yaw), math.cos(yaw)
     local reach = RseConfig.HERD_LOOK_AHEAD
     local aheadX, aheadZ = animal.x + dirX * reach, animal.z + dirZ * reach
     local terrainAhead = getTerrainHeightAtWorldPos(g_terrainNode, aheadX, 0, aheadZ)
-    if animal.groundOffset < 1 and math.abs(terrainAhead - getTerrainHeightAtWorldPos(g_terrainNode, animal.x, 0, animal.z)) > RseConfig.HERD_MAX_RISE then
-        return "slope"
+    local ground = groundBelow(aheadX, y, aheadZ)
+    local deck = ground ~= nil and math.abs(ground - y) <= RseConfig.HERD_MAX_STEP and ground - terrainAhead >= RseConfig.HERD_DECK
+    local floor = terrainAhead
+    if animal.deckY ~= nil then
+        if ground == nil or ground < y - RseConfig.HERD_MAX_RISE then
+            return "slope", deck -- the edge of the deck: the terrain far below doesn't count, the drop does (Z: they fell through a bridge)
+        end
+        floor = ground
+    elseif deck then
+        floor = ground -- onto a bridge: the bank falling away under it is no slope for one up on the deck
+    elseif math.abs(terrainAhead - getTerrainHeightAtWorldPos(g_terrainNode, animal.x, 0, animal.z)) > RseConfig.HERD_MAX_RISE then
+        return "slope", deck
     end
     local water = heightBelow(aheadX, y + RAY_START, aheadZ, RAY_START + RAY_BELOW, CollisionFlag.WATER)
-    if water ~= nil and water > terrainAhead + 0.2 then
-        return "water"
+    if water ~= nil and water > floor + 0.2 then
+        return "water", deck -- a river under a bridge is below the deck
     end
     RseSurvivors.rayHit = false
     raycastClosest(animal.x, y + RAY_HEIGHT, animal.z, dirX, 0, dirZ, reach, "onObstacleRaycast", RseSurvivors,
         CollisionFlag.STATIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.BUILDING + CollisionFlag.TREE)
-    return RseSurvivors.rayHit and "object" or nil
+    return RseSurvivors.rayHit and "object" or nil, deck
 end
 
--- Something right ahead? A flock's animal also looks to each side, to know which way along it is open.
+-- Something right ahead? A flock's animal also looks to each side, to know which way along it is open. Walking onto a deck, it keeps to the deck's height
+-- from here, a step before the terrain falls away under it.
 local function lookAhead(animal, y)
-    animal.blockedBy = lookAlong(animal, y, animal.yaw)
+    local deck
+    animal.blockedBy, deck = lookAlong(animal, y, animal.yaw)
+    if deck and animal.deckY == nil then
+        onDeck(animal, y, y)
+    end
     animal.openSide = nil
     if animal.blockedBy ~= nil and animal.flock then
         local plus = lookAlong(animal, y, animal.yaw + RseConfig.FLOCK_FEELER)
@@ -596,22 +639,72 @@ local function lookAhead(animal, y)
     return animal.blockedBy ~= nil
 end
 
--- how far the ground under it lies above the terrain: a road surface, a bridge. It used to compare with the height of the scene, so an animal that
--- walked downhill floated, and then stood stuck in the air because everything looked too steep (M4 round 1).
+-- On a deck: the height of the deck under it. Gone from under it (over the edge, between two looks): back where it last stood on the deck, and true. Where
+-- the deck meets the ground at its own level, it follows the terrain again.
+local function measureDeck(animal, terrain)
+    local hit = groundBelow(animal.x, animal.deckY, animal.z)
+    if hit == nil or hit < animal.deckY - RseConfig.HERD_MAX_RISE then
+        animal.x, animal.z = animal.deckX, animal.deckZ
+        return true
+    end
+    if hit > animal.deckY + RseConfig.HERD_MAX_STEP then
+        return false -- a rail over the deck isn't the ground
+    end
+    animal.deckX, animal.deckZ = animal.x, animal.z
+    if hit - terrain < RseConfig.HERD_DECK / 2 then
+        animal.groundOffset, animal.groundTarget = math.max(0, animal.deckY - terrain), math.max(0, hit - terrain)
+        animal.deckY, animal.deckTarget, animal.deckX, animal.deckZ = nil, nil, nil, nil
+    else
+        animal.deckTarget = hit
+    end
+    return false
+end
+
+-- How far the ground under it lies above the terrain: a road surface. It used to compare with the height of the scene, so an animal that walked downhill
+-- floated, and then stood stuck in the air because everything looked too steep (M4 round 1). Well above the terrain, it is a deck (measureDeck). Returns
+-- true if it was put back on a deck it had left.
 local function measureGround(animal)
     local terrain = getTerrainHeightAtWorldPos(g_terrainNode, animal.x, 0, animal.z)
-    local hit = heightBelow(animal.x, terrain + animal.groundOffset + RAY_START, animal.z, RAY_START + RAY_BELOW,
-        CollisionFlag.TERRAIN + CollisionFlag.STATIC_OBJECT + CollisionFlag.ROAD)
+    if animal.deckY ~= nil then
+        return measureDeck(animal, terrain)
+    end
+    local here = terrain + animal.groundOffset
+    if animal.lookY ~= nil and animal.lookY - here > RseConfig.HERD_MAX_STEP then
+        -- down more than a step since the last look, as under a deck it got onto from the side: the deck is still at the height it was at
+        local deck = groundBelow(animal.x, animal.lookY, animal.z)
+        if deck ~= nil and math.abs(deck - animal.lookY) <= RseConfig.HERD_MAX_STEP and deck - terrain >= RseConfig.HERD_DECK then
+            onDeck(animal, deck, deck)
+            return false
+        end
+    end
+    local hit = groundBelow(animal.x, here, animal.z)
     local offset = hit ~= nil and hit - terrain or 0
     if offset > animal.groundOffset + RseConfig.HERD_MAX_STEP then
         offset = animal.groundOffset -- something above the ground it stands on: a rail, a low wall
     end
-    animal.groundTarget = math.max(0, offset)
+    if offset >= RseConfig.HERD_DECK then
+        onDeck(animal, terrain + animal.groundOffset, terrain + offset)
+    else
+        animal.groundTarget = math.max(0, offset)
+    end
+    return false
+end
+
+-- An animal put down somewhere new (a flock's straggler rejoining it) stands on the ground of `other`, one already there: on the same deck, or the same
+-- ground.
+function RseSurvivors.standLike(animal, other)
+    animal.groundOffset, animal.groundTarget = other.groundOffset, other.groundTarget
+    animal.deckY, animal.deckTarget, animal.lookY = other.deckY, other.deckTarget, nil
+    if other.deckY ~= nil then
+        animal.deckX, animal.deckZ = other.x, other.z
+    else
+        animal.deckX, animal.deckZ = nil, nil
+    end
 end
 
 -- leaning with the ground
 local function measureSlope(animal)
-    if animal.groundOffset >= 1 then
+    if animal.deckY ~= nil then
         animal.slopePitch, animal.slopeRoll = 0, 0
         return
     end
@@ -638,10 +731,11 @@ end
 
 -- the slower things, a few times a second
 local function check(self, animal, y, px, pz)
-    RseLog.try("measure the ground", measureGround, animal)
+    local okGround, putBack = RseLog.try("measure the ground", measureGround, animal)
     RseLog.try("measure the slope", measureSlope, animal)
     local okLook, blocked = RseLog.try("look ahead", lookAhead, animal, y)
-    animal.blocked = okLook and blocked == true
+    animal.blocked = (okLook and blocked == true) or (okGround and putBack == true)
+    animal.lookY = animal.deckY or y
     local over = self.parked[animal.scene] ~= nil
     if animal.flock and (animal.penned or not RseFlock:nearRoad(animal)) then
         removeBlocker(animal)
@@ -682,10 +776,37 @@ local function playerAt()
     return x, z, true
 end
 
+-- A step that would take it down far more steeply than it can walk (over the edge of a drop, where the bank falls away at a bridge) isn't taken: the
+-- look-ahead stops it walking there, but pressed or sliding along the edge it crept over (Z: sheep ended up under a bridge). On a deck, measureDeck does
+-- this.
+local function keepFromEdge(animal, fromX, fromZ)
+    local moved = math.sqrt((animal.x - fromX) ^ 2 + (animal.z - fromZ) ^ 2)
+    if animal.deckY ~= nil or moved <= 0 or moved > RseConfig.HERD_EDGE_JUMP then
+        return
+    end
+    local from = getTerrainHeightAtWorldPos(g_terrainNode, fromX, 0, fromZ)
+    local function over(x, z)
+        local step = math.sqrt((x - fromX) ^ 2 + (z - fromZ) ^ 2)
+        return from - getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z) > step * RseConfig.HERD_EDGE_SLOPE + 0.03
+    end
+    if not over(animal.x, animal.z) then
+        return
+    end
+    -- the part of the step along the edge it may still take, so it can slide along the drop
+    if not over(animal.x, fromZ) then
+        animal.z = fromZ
+    elseif not over(fromX, animal.z) then
+        animal.x = fromX
+    else
+        animal.x, animal.z = fromX, fromZ
+    end
+end
+
 local function updateAnimal(self, animal, dt, px, pz, onFoot)
     if self.leading == animal and not onFoot then
         self.leading = nil -- you got in a vehicle: it stays behind
     end
+    local fromX, fromZ = animal.x, animal.z
     if animal.flock then
         local flock = animal.scene.flock
         if animal.penned or flock.parked then
@@ -705,11 +826,18 @@ local function updateAnimal(self, animal, dt, px, pz, onFoot)
             RseText.notify(RseText.get("rse_survivor_gotAway", RseText.animal(animal.kind)), true)
         end
     end
+    RseLog.try("keep from an edge", keepFromEdge, animal, fromX, fromZ)
     local blend = math.min(1, dt / RseConfig.HERD_SMOOTH_MS)
-    animal.groundOffset = animal.groundOffset + (animal.groundTarget - animal.groundOffset) * blend
     animal.pitch = animal.pitch + (animal.slopePitch - animal.pitch) * blend
     animal.roll = animal.roll + (animal.slopeRoll - animal.roll) * blend
-    local y = getTerrainHeightAtWorldPos(g_terrainNode, animal.x, 0, animal.z) + animal.groundOffset
+    local y
+    if animal.deckY ~= nil then
+        animal.deckY = animal.deckY + (animal.deckTarget - animal.deckY) * blend -- on a bridge: the deck's height, never the terrain's below
+        y = animal.deckY
+    else
+        animal.groundOffset = animal.groundOffset + (animal.groundTarget - animal.groundOffset) * blend
+        y = getTerrainHeightAtWorldPos(g_terrainNode, animal.x, 0, animal.z) + animal.groundOffset
+    end
     animal.y = y
     local bob, rock, sway = 0, 0, 0
     animal.gait = animal.gait + (math.min(1, animal.speed / RseConfig.HERD_GAIT_FULL) - animal.gait) * blend

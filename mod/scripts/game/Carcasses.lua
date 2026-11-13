@@ -4,7 +4,6 @@
 
 RseCarcasses = {
     entries = {},           -- list of entries; entry.id is the Store id
-    showBodies = false,     -- rseCarcassBodies: show the hidden bodies (debug)
     usingFallbackBodies = false
 }
 
@@ -260,7 +259,7 @@ function RseCarcasses:followBody(entry)
     local x, y, z = getWorldTranslation(node)
     setWorldTranslation(entry.anchor, x, y, z)
     setWorldRotation(entry.anchor, getWorldRotation(node))
-    setVisibility(node, self.showBodies)
+    setVisibility(node, false)
     return true
 end
 
@@ -305,15 +304,6 @@ function RseCarcasses:update(dt)
     end
 end
 
-function RseCarcasses:clear()
-    local list = {}
-    for i, entry in ipairs(self.entries) do
-        list[i] = entry
-    end
-    for _, entry in ipairs(list) do
-        self:remove(entry)
-    end
-end
 
 -- while the map unloads: the game deletes objects itself; release only our nodes, prompts and shared files
 function RseCarcasses:unload()

@@ -99,7 +99,7 @@ and function name only.
 | Emergency Pack scenario `setProgress`: **replaced on our own emergency objects only** (the instance, not the class) | `EpSteps.lua` | The bar shows what has really been done |
 | `Vehicle:setAbsolutePosition` on our own wrecks | `Wrecks.lua` | Lay a wreck flat on its side |
 | `LivestockTrailer` (`getSupportsAnimalSubType`, `getNumOfFreeAnimalSlots`, `addAnimals`) on the player's own trailers | `Survivors.lua` | Lead a live animal into a trailer as a real animal |
-| `environment.weather.twister` (`isSpawned`, `fadeValue`, `sendPosX`, `sendPosZ`, read only), `weather:consoleCommandWeatherTwisterSpawn` (only from `rseTwister`) | `Calls.lua`, `Console.lua` | A storm call when a twister ends |
+| `environment.weather.twister` (`isSpawned`, `fadeValue`, `sendPosX`, `sendPosZ`, read only) | `Calls.lua` | A storm call when a twister ends |
 | `g_currentMission.rolePlay.thirdPartyMods`, `scenarioReferences`, `scenarioPools`, `runningScenarios` (Emergency Pack, read only) | `EpBridge.lua` | Check the pack read our emergency folder; is the farm busy |
 | Emergency Pack `messageCenter:publish(ScenarioMessageType.SCENARIO_TOGGLE, farmId, pool, true)` | `EpBridge.lua` | Ask the pack to page the player with one of our emergencies (the route its own pager and console command use, P7b) |
 | Emergency Pack scenario `targetPosition`, checkpoint `getScenario`, `isActive`, `setActionCompleted` | `EpSteps.lua` | Where the pack put the emergency; complete our steps |

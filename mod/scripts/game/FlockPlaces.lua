@@ -2,7 +2,8 @@
 -- behind the shop: a call has to look like somewhere a farmer's sheep really got out, with a meadow nearby for the pen. As the map loads, road spots are
 -- looked at a few a frame (as RiverPlaces.lua does for water), and a call only ever comes from a place that passed:
 --   the start: open country round each bunch, no town, yard or station (RseGroundRules.isCountry); nothing hemming them in; the railroad well away;
---   the pen: on grass or a grass field (RseGroundRules.isPasture) with nothing built underfoot, open country round it, not in the woods, flat and dry, clear
+--   the pen: on grass or a grass field (RseGroundRules.isPasture) with nothing built underfoot, open country round it, no tree in it, against its fence or
+--   by its opening (RseFlockRules.isClearOfTrees), not in the woods, flat and dry, clear
 --   of every lane and of the railroad, a clear way to it from the road that doesn't cross the tracks, and room for the farmer's truck.
 -- Nothing is saved. A map with no such place never gets this call.
 
@@ -62,6 +63,25 @@ local function isTreeLine(x1, z1, x2, z2)
     probe.hit = false
     raycastClosest(x1, y1, z1, dx / length, dy / length, dz / length, length, "onHit", probe, CollisionFlag.TREE)
     return probe.hit
+end
+
+function probe:onTree(objectId)
+    if self.trunks ~= nil and objectId ~= nil and objectId ~= 0 and entityExists(objectId) then
+        local x, _, z = getWorldTranslation(objectId)
+        table.insert(self.trunks, { x = x, z = z })
+    end
+end
+
+-- Where the trees stand round (x, z), out to reach metres and FLOCK_TREE_RISE above or below: { { x, z }, ... }. Every standing tree, small ones too, as
+-- the game looks for them (TreePlantManager:consoleCommandCutTrees): the static shapes with the tree flag, all reported before overlapSphere returns.
+local function treesAround(x, z, reach)
+    probe.trunks = {}
+    local rise = RseConfig.FLOCK_TREE_RISE
+    overlapSphere(x, terrainAt(x, z) + RseConfig.FLOCK_RAY_HEIGHT, z, math.sqrt(reach * reach + rise * rise), "onTree", probe, CollisionFlag.TREE,
+        false, false, true, false)
+    local trunks = probe.trunks
+    probe.trunks = nil
+    return trunks
 end
 
 -- something built lying on the ground at (x, z): rails, a slab, a platform, a road
@@ -228,7 +248,8 @@ local function penPoints(pen, truck, gateYaw)
     return points
 end
 
--- Is this a pen a farmer would really put up? Cheap looks first, rays last. Returns the kinds of ground under it, or nil and why not.
+-- Is this a pen a farmer would really put up? Cheap looks first, rays last. Returns the kinds of ground under it and the trees round it
+-- ({ nearest, count }), or nil and why not.
 local function judgePen(self, candidate, sceneX, sceneZ, segments, bunches)
     local pen = RseFlockRules.newPen(candidate.x, candidate.z, candidate.gateYaw, RseConfig)
     local fromRoad = RseRoadClearRule.distanceToRoad(pen.x, pen.z, segments)
@@ -269,6 +290,12 @@ local function judgePen(self, candidate, sceneX, sceneZ, segments, bunches)
     end
     if not RseGroundRules.isCountry(around, RseConfig) then
         return nil, "built up round it"
+    end
+    -- no tree in it, against its fence or by the opening: one look at every tree near, where rays between them would miss a small one (Z)
+    local trunks = treesAround(pen.x, pen.z, RseFlockRules.treeReach(RseConfig))
+    local clearOfTrees, nearestTree = RseFlockRules.isClearOfTrees(pen, trunks, RseConfig)
+    if not clearOfTrees then
+        return nil, "trees"
     end
     -- flat and dry
     local middle = terrainAt(pen.x, pen.z)
@@ -321,19 +348,29 @@ local function judgePen(self, candidate, sceneX, sceneZ, segments, bunches)
     if not isOpenWay(pen.gateX, pen.gateZ, pen.gateX + math.sin(candidate.gateYaw) * room, pen.gateZ + math.cos(candidate.gateYaw) * room) then
         return nil, "no way there"
     end
-    return kinds
+    return kinds, { nearest = nearestTree, count = #trunks }
+end
+
+-- what the log says about the trees round a pen
+local function describeTrees(trees, config)
+    local reach = RseFlockRules.treeReach(config)
+    if trees == nil or trees.nearest == nil then
+        return string.format("no tree within %.0f m", reach)
+    end
+    return string.format("the nearest tree %.1f m from its middle (%d within %.0f m)", trees.nearest, trees.count, reach)
 end
 
 -- One pen candidate from a look in progress { x, z, segments, bunches, candidates, index }: the candidate if it will do, with the ground under it
 local function tryNextPen(self, look)
     local candidate = look.candidates[look.index]
     look.index = look.index + 1
-    local kinds, why = judgePen(self, candidate, look.x, look.z, look.segments, look.bunches)
+    local kinds, treesOrWhy = judgePen(self, candidate, look.x, look.z, look.segments, look.bunches)
     if kinds ~= nil then
         candidate.ground = RseGroundRules.describe(RseGroundRules.tally(kinds))
+        candidate.trees = describeTrees(treesOrWhy, RseConfig)
         return candidate
     end
-    self.counts.pens[why] = (self.counts.pens[why] or 0) + 1
+    self.counts.pens[treesOrWhy] = (self.counts.pens[treesOrWhy] or 0) + 1
     return nil
 end
 
@@ -458,7 +495,12 @@ function RseFlockPlaces:canOffer()
     return self.triesLeft == nil and #self.places > 0
 end
 
--- The place for the call being laid out, as a spot the emergency can stand on: near where it was asked for (rseHere) if it was, otherwise any but the
+-- true while the map is still being searched after a load
+function RseFlockPlaces:isSearching()
+    return self.triesLeft ~= nil
+end
+
+-- The place for the call being laid out, as a spot the emergency can stand on: near where it was asked for if it was, otherwise any but the
 -- last one and any with a vehicle on it.
 function RseFlockPlaces:pickSpot()
     local near = RseScenes.spotNear
@@ -489,7 +531,8 @@ function RseFlockPlaces:pickSpot()
         return nil
     end
     self.chosen, self.last = place, { x = place.x, z = place.z }
-    RseLog.info("flock: the sheep are out at %.0f, %.0f; the pen goes up at %.0f, %.0f on %s", place.x, place.z, place.pen.x, place.pen.z, place.pen.ground)
+    RseLog.info("flock: the sheep are out at %.0f, %.0f; the pen goes up at %.0f, %.0f on %s, %s", place.x, place.z, place.pen.x, place.pen.z,
+        place.pen.ground, place.pen.trees or "the trees not looked at")
     return { x = place.x, y = place.y, z = place.z, dirX = place.dirX, dirY = 0, dirZ = place.dirZ }
 end
 

@@ -22,7 +22,6 @@ RseScenes = {
     plannedKinds = nil, -- the animals the pager promised (CallPlan.lua), for the next scene
     plannedLoad = nil,  -- and the load
     lastPayRatio = nil, -- what the pack paid for our amount last time (CallPanel.lua asks it), for the pager's "about"
-    forcedLoad = nil,  -- test: the load of every spilled-load job (rseLoad)
     drawFailed = false
 }
 
@@ -235,9 +234,6 @@ function RseScenes:createWreck(x, y, z, kind, emergency)
     local size = self.store ~= nil and self.store.settings.jobSize or nil
     local load = self.plannedLoad or RseWreckRules.pickLoad(def, math.random(), RseConfig, RseCalls ~= nil and RseCalls:fleet() or nil)
     self.plannedKinds, self.plannedLoad = nil, nil
-    if load ~= nil and self.forcedLoad ~= nil then
-        load = RseWreckRules.loadById(def, self.forcedLoad, RseConfig)
-    end
     local spots = {}
     local count = RseWreckRules.baleCount(load, math.random, size, variant or def)
     if count > 0 then
@@ -782,7 +778,7 @@ function RseScenes:animalsLeft(scene)
     return left, #(scene.kinds or {})
 end
 
--- counts per status, for the log and rseScene
+-- counts per status, for the log
 function RseScenes:counts(scene)
     local counts = { onRoad = 0, verge = 0, loaded = 0, away = 0, gone = 0 }
     for _, entry in ipairs(scene.entries) do
@@ -804,16 +800,8 @@ function RseScenes:announce(scene)
     elseif away ~= nil then
         RseText.notify(RseText.get("rse_call_details", caller, away))
     end
-    if scene.wreck ~= nil and scene.wreck.variant ~= nil and not scene.wreck.def.scenery then
-        scene.towReminderMs = RseConfig.TOW_REMINDER_MS
-    end
-    if scene.crossing ~= nil and scene.crossing.seconds ~= nil then
-        RseText.notify(RseText.get("rse_crossing_call", RseCrossingRules.clock(scene.crossing.seconds)), true)
-    end
-    -- what the load is, while you can still choose what to bring
-    if scene.wreck ~= nil and scene.wreck.load ~= nil then
-        RseText.notify(RseText.get("rse_load_call_" .. scene.wreck.load.id))
-    end
+    -- The vehicle and what it takes, the train's clock and the load are on the pager, and the clock on the call panel: said again here, they only
+    -- doubled the pack's own line after yes (Z, 0.9.10.0).
 end
 
 -- what you find on arrival
@@ -832,8 +820,7 @@ function RseScenes:announceArrival(scene)
     elseif scene.spill ~= nil then
         RseText.notify(RseText.get("rse_logs_arrived", scene.spill.total))
     elseif scene.wreck ~= nil and scene.wreck.load ~= nil then
-        RseText.notify(RseText.get("rse_crash_arrivedLoad", #scene.wreck.bales))
-        RseText.notify(RseText.get("rse_load_arrived_" .. scene.wreck.load.id))
+        RseText.notify(RseText.get("rse_load_arrived_" .. scene.wreck.load.id)) -- how many: the call panel
     elseif scene.handover ~= nil and scene.line == nil then -- at a power line, the step's hint says what you find
         RseText.notify(RseText.get("rse_crash_arrived", count, RseSurvivors:remaining(scene)))
     elseif count == 1 then
@@ -1211,22 +1198,6 @@ local function updatePointMarkers(self)
     end
 end
 
--- A few seconds after yes, on its own: what the pager said about the vehicle (Z didn't see it among the messages that come with yes).
-local function remindTow(scene, elapsed)
-    if scene.towReminderMs == nil then
-        return
-    end
-    scene.towReminderMs = scene.towReminderMs - elapsed
-    if scene.towReminderMs > 0 then
-        return
-    end
-    scene.towReminderMs = nil
-    if scene.wreck ~= nil and scene.wreck.variant ~= nil then
-        RseText.notify(RseWrecks:towText(scene.wreck.variant), scene.wreck.variant.heavy == true)
-        RseLog.info("scene %d: told the player again what the vehicle takes", scene.id)
-    end
-end
-
 function RseScenes:update(dt)
     self.checkMs = self.checkMs + dt
     if self.checkMs < CHECK_INTERVAL_MS then
@@ -1236,7 +1207,6 @@ function RseScenes:update(dt)
     self.checkMs = 0
     RseWrecks:removeResetCopies()
     for _, scene in pairs(self.scenes) do
-        remindTow(scene, elapsed)
         for _, entry in ipairs(scene.entries) do
             if exists(entry) then
                 judge(self, scene, entry, elapsed)

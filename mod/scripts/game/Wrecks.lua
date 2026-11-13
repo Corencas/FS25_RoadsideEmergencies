@@ -12,7 +12,6 @@ RseWrecks = {
     resetCopies = {},                                 -- what the game made when it reset one anyway
     resetSubscribed = false,
     lastFile = {},                                    -- kind -> the vehicle of the last call of that kind
-    forcedVariant = nil,                              -- test: { kind, number }, the next one of that kind (rseVehicle)
     planned = nil,                                    -- { kind, variant }: the vehicle the pager has named
     modDir = nil
 }
@@ -470,11 +469,6 @@ end
 -- the vehicle for the next wreck of this kind. If the store knows none of them, the lookup itself is at fault, so it doesn't count.
 function RseWrecks:pickVariant(kind)
     local def = RseConfig.WRECKS[kind]
-    local forced = self.forcedVariant
-    if forced ~= nil and forced.kind == kind then
-        self.forcedVariant = nil
-        return def.variants[forced.number]
-    end
     local last = self.lastFile[kind]
     local fleet = RseCalls ~= nil and RseCalls:fleet() or nil
     local function canRecover(_, variant)
@@ -512,31 +506,18 @@ function RseWrecks:nameOf(variant)
     return ok and name or nil
 end
 
--- which vehicle it is, and what it takes to tow it
-function RseWrecks:towText(variant)
-    local need = RseText.get(variant.heavy and "rse_call_towBig" or "rse_call_towSmall")
-    local ok, name = RseLog.try("name the vehicle", vehicleName, variant.file)
-    if ok and name ~= nil then
-        return RseText.get("rse_call_vehicle", name) .. " " .. need
-    end
-    return need
-end
-
--- Before the pager asks (Z: you must know before you say yes): which vehicle this call has. Returns what the pager should add,
--- or nil for a call with nothing to tow.
+-- Before the pager asks (Z: you must know before you say yes): which vehicle this call has (self.planned; CallPlan.lua writes the pager's lines).
 function RseWrecks:planCall(id)
     self.planned = nil
     for _, emergency in ipairs(RseConfig.EMERGENCIES) do
         if emergency.id == id and emergency.wreck ~= nil then
             local variant = self:pickVariant(emergency.wreck)
-            if variant == nil then
-                return nil
+            if variant ~= nil then
+                self.planned = { kind = emergency.wreck, variant = variant }
             end
-            self.planned = { kind = emergency.wreck, variant = variant }
-            return self:towText(variant)
+            return
         end
     end
-    return nil
 end
 
 -- the vehicle for a wreck being laid out: the one the pager has named, if it has
@@ -1073,7 +1054,6 @@ function RseWrecks:unload()
     self.everWreck = setmetatable({}, { __mode = "k" })
     self.resetCopies = {}
     self.lastFile = {}
-    self.forcedVariant = nil
     self.planned = nil
     if self.resetSubscribed and g_messageCenter ~= nil then
         g_messageCenter:unsubscribeAll(self)

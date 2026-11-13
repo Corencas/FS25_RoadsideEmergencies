@@ -191,10 +191,10 @@ RseConfig = {
             { file = "$data/vehicles/kroeger/pwo24/pwo24.xml", length = 12, weight = 1, heavy = true }
         }, pay = 3000, damage = 0.6, tipped = true, twoParts = true, bothBonus = 0.25, spills = true },
         -- a livestock trailer on its side, with two parts to the job (Z): the trailer (pay) and the animals (dead ones as on an animal call, plus
-        -- payPerSurvivor for each one caught and loaded). Doing both earns bothBonus on top. kinds: one is picked per call
+        -- payPerSurvivor for each one caught and loaded). Doing both earns bothBonus on top. kinds: one is picked per call, and the trailer carries all of
+        -- them. Left out (Z, 0.9.10.0): the Kingston Belvedere, a horse trailer: it carries nothing else, and cows in it looked wrong.
         livestock = { variants = {
-            { file = "$data/vehicles/fliegl/noahTTW140/noahTTW140.xml", length = 10, weight = 1, heavy = true },
-            { file = "$data/vehicles/kingstonTrailers/belvedere/belvedere.xml", length = 7.15, weight = 3 }
+            { file = "$data/vehicles/fliegl/noahTTW140/noahTTW140.xml", length = 10, weight = 1, heavy = true }
         }, pay = 3000, damage = 0.6, tipped = true, twoParts = true, payPerSurvivor = 75,
             bothBonus = 0.25, kinds = { "sheep", "pig", "cow" }, dead = { min = 1, max = 2 }, survivors = { min = 2, max = 5 } },
         -- bales blown across the road by a twister: no vehicle at all
@@ -378,6 +378,10 @@ RseConfig = {
     FLOCK_HORN_GATHER = 0.8,      -- at this speed, along to where that middle is now,
     FLOCK_HORN_RAMP = 0.5,        -- slowing within this of being close enough,
     FLOCK_HORN_STEADY = 0.6,      -- and wandering off the line this much less while it steps
+    FLOCK_HORN_CALL_RADIUS = 70,  -- metres: and each one this close to you that isn't with the biggest bunch heads for it (Z: the bigger picture, all of the
+                                  -- flock, not five bunches),
+    FLOCK_HORN_JOINED = 7,        -- until it is this close to its middle,
+    FLOCK_HORN_JOIN_MS = 40000,   -- or has tried this long
     FLOCK_HALF = 0.5,             -- you hear when this share is in
     FLOCK_GATE_DRAW = 6,          -- metres from the gate, with others already in, it wants to join them:
     FLOCK_DRAW_WEIGHT = 0.25,     -- this much when pressed,
@@ -396,7 +400,11 @@ RseConfig = {
     FLOCK_SLIDE_KEEP_MS = 3000,   -- the flock keeps to that side this long after the last one met anything,
     FLOCK_SLIDE_SWAP_MS = 25000,  -- and tries the other side after this long
     FLOCK_ALONG_SHARE = 0.7,      -- along a hurdle or the truck it keeps this share of the speed it would otherwise lose,
-    FLOCK_ALONG_SURE = 0.25,      -- if it was at least this share of its way going along it anyway; straight at it, it stands and presses
+    FLOCK_ALONG_SURE = 0.25,      -- if it was at least this share of its way going along it anyway; closer to straight at it, it stands and presses,
+                                  -- but crowded there (you within FLOCK_PUSH_FULL) it is pinned, and gets out along it:
+    FLOCK_PIN_LEAN = 0.05,        -- it goes along to the side it leant toward by at least this share of its way, or else
+    FLOCK_PIN_OFFSET = 1,         -- metres: away from you, when you are within FLOCK_PUSH_FULL and this far off to one side, or else the flock's way round,
+    FLOCK_PIN_KEEP_MS = 2000,     -- and keeps to that side this long after it was last pinned (Z: two pinned against the pen by the buggy stood still)
     FLOCK_IDLE_MS = 9000,         -- left alone, it takes a few steps about this often,
     FLOCK_IDLE_WALK_MS = 2500,    -- for this long
     FLOCK_STUCK_MS = 15000,       -- trying and getting nowhere for this long, it joins the others again,
@@ -430,6 +438,9 @@ RseConfig = {
     FLOCK_TRUCK_ANGLE = 0.9,      -- and this far round from the gate
     FLOCK_TRUCK_ROAD = 5,         -- and this far from any lane
     FLOCK_GATE_ROOM = 10,         -- metres clear in front of the gate, to line a flock up
+    FLOCK_TREE_GAP = 5,           -- no tree inside the pen or this close to its fence, all the way round, nor in front of the gate this far either side of
+                                  -- the opening, out to FLOCK_GATE_ROOM past it (Z: a small tree in the pen, the woods against it, trees by the opening)
+    FLOCK_TREE_RISE = 6,          -- looking for trees this far above or below the pen too
     FLOCK_PEN_DISTANCES = { 130, 110, 150, 90, 70, 55 }, -- metres from the flock to try for a pen, best first: the walk there is the job (Z: longer),
     FLOCK_PEN_ANGLES = 16,        -- this many ways round at each
     FLOCK_PEN_ROAD = 3,           -- clear of every lane by this much
@@ -466,7 +477,6 @@ RseConfig = {
     SURVIVOR_REACH = 3,           -- how close you must be to catch a loose animal
     POINT_MARKER_RANGE = 40,      -- drop-off points show on the map while you are this close to an animal you have loaded, strapped or in hand
     MARKER_SCALE = 0.5,           -- our map markers against the game's size (Z: they hid where things are)
-    TOW_REMINDER_MS = 6000,       -- this long after yes, the pager's line about the vehicle comes back, on its own
     JOB_PENALTY_SHARE = 0.1,      -- a job you said yes to that ends with no pay costs this part of that pay (Z: small; the number is mine)
     PAGER_CHECK_MS = 700,         -- this long after asking for a call, we look whether the pager's text has our fields in it
     PAGER_PAY_STEP = 50,          -- the pager's "about" pay, to the nearest this many (the job's own figures may move a little)
@@ -499,6 +509,12 @@ RseConfig = {
     HERD_MAX_RISE = 1,            -- metres over HERD_LOOK_AHEAD: too steep to walk
     HERD_BLOCKER_STEP = 1.5,      -- the hidden cone that stops traffic for it follows once it has walked this far
     HERD_MAX_STEP = 0.6,          -- metres: the ground under it can't jump up by more than this (a fence rail isn't the ground)
+    HERD_DECK = 1,                -- metres: ground this far above the terrain is a deck (a bridge): it keeps to the deck's height, not the terrain's far below,
+                                  -- and a drop at its edge stops it like a wall (Z, 0.9.10.2: sheep driven onto a bridge fell through the road). Back on the
+                                  -- terrain's height once the ground is within half of this of it
+    HERD_EDGE_SLOPE = 1.4,        -- a step that takes it down more than this per metre is over an edge, and isn't taken: pressed against a drop, it crept
+                                  -- over (twice the slope the look-ahead lets it walk, so a bumpy hillside is still a hillside)
+    HERD_EDGE_JUMP = 3,           -- metres in one frame: more than this is a straggler put back with the flock, not a step
     HERD_SMOOTH_MS = 300,         -- how quickly it settles to the ground, a slope or a stop
     HERD_MODEL_YAW = 0,           -- added to the heading if a model faces another way
     -- the walk on a model's bones (GaitRules.lua)

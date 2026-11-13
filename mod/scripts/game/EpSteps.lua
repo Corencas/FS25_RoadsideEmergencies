@@ -17,7 +17,7 @@
 
 RseEpSteps = {
     defined = false,
-    waiting = nil   -- the expiry state of the job not reached yet (rseExpireSoon)
+    waiting = nil   -- the expiry state of the job not reached yet
 }
 
 local function xmlString(xmlFile, path)
@@ -205,7 +205,7 @@ local function defineSteps(base)
     RseStepArrive = {}
     local arriveMt = Class(RseStepArrive, base)
 
-    -- the step is done (reached, or handed over first): the clock for another contractor stops, and rseExpireSoon no longer finds it
+    -- the step is done (reached, or handed over first): the clock for another contractor stops
     local function reached(self)
         if RseEpSteps.waiting == self.rseExpiry then
             RseEpSteps.waiting = nil

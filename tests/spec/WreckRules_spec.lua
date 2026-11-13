@@ -4,13 +4,16 @@ describe("RseWreckRules", function()
         local function fits(_, variant)
             return RseWreckRules.canRecover(variant, fleet)
         end
-        for _, kind in ipairs({ "crossing", "trailer", "livestock" }) do
+        for _, kind in ipairs({ "crossing", "trailer" }) do
             for roll = 0, 0.99, 0.01 do
                 local variant = RseWreckRules.pickVariant(RseConfig.WRECKS[kind], roll, nil, fits)
                 expectTrue(variant ~= nil and not variant.heavy, kind)
             end
         end
         expectNil(RseWreckRules.pickVariant(RseConfig.WRECKS.truck, 0.5, nil, fits), "the wrecked trucks are all big")
+        expectNil(RseWreckRules.pickVariant(RseConfig.WRECKS.livestock, 0.5, nil, fits), "so is the livestock trailer, since the horse trailer went (Z)")
+        local offered = RseJobRules.unavailable(RseConfig.EMERGENCIES, { canPull = true, canPullHeavy = false, hasLivestockTrailer = true }, RseConfig)
+        expectTrue(offered.livestock, "so a farm that can't pull it gets no livestock crash")
     end)
 
     it("spills no big bales for a farm with nothing to lift them", function()
@@ -311,7 +314,7 @@ describe("RseWreckRules", function()
         local def = { variants = { { file = "small", weight = 3 }, { file = "big", weight = 1 } } }
         expectEqual(RseWreckRules.pickVariant(def, 0.74, nil).file, "small")
         expectEqual(RseWreckRules.pickVariant(def, 0.76, nil).file, "big")
-        for _, kind in ipairs({ "truck", "tractor", "trailer", "livestock", "powerline" }) do
+        for _, kind in ipairs({ "truck", "tractor", "trailer", "powerline" }) do -- the livestock crash has one trailer
             local smallest, biggest = 0, math.huge
             for _, variant in ipairs(RseConfig.WRECKS[kind].variants) do
                 smallest, biggest = math.max(smallest, variant.weight), math.min(biggest, variant.weight)

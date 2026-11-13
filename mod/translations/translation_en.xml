@@ -209,9 +209,6 @@
         <text name="rse_ep_horse_description" text="County dispatch: a car has hit livestock that got out onto the road. Traffic is stopping."/>
         <text name="rse_ep_buffalo_description" text="County dispatch: a truck has hit water buffalo on the road. Traffic is stopping."/>
         <text name="rse_ep_hint_arrive" text="Drive to the marked spot."/>
-        <text name="rse_call_vehicle" text="Dispatch reports the vehicle as %s."/>
-        <text name="rse_call_towSmall" text="A pickup truck or anything bigger can tow it."/>
-        <text name="rse_call_towBig" text="It is big, so bring a bigger vehicle or a rollback. A pickup truck can't tow it."/>
         <text name="rse_pager_where" text="Where: about %s %s of you"/>
         <text name="rse_pager_whereNear" text="Where: close to you"/>
         <text name="rse_dir_n" text="north"/>
@@ -349,7 +346,6 @@
         <text name="rse_flock_pen" text="Sheep pen"/>
         <text name="rse_flock_marker" text="The flock"/>
         <text name="rse_crossing_hint" text="Strap the vehicle ({key:RSE_STRAP}) and pull it off the tracks before the train comes."/>
-        <text name="rse_crossing_call" text="The train reaches the crossing in %s."/>
         <text name="rse_crossing_clock" text="Train at the crossing in %s"/>
         <text name="rse_crossing_clear" text="The vehicle is off the tracks. Now take it to the recovery point."/>
         <text name="rse_crossing_hit" text="The train got there first. Nobody was hurt, but the job is lost, and there is no pay."/>
@@ -387,8 +383,8 @@
         <text name="rse_guide_tools_1" text="This is a firm rule: if your farm doesn't have what a job takes, that call doesn't come at all. Dispatch checks every vehicle you own or lease before each call, so if the pager asks, you have what it takes."/>
         <text name="rse_guide_tools_2" text="With nothing at all: deer, boar, sheep, pigs and goats in the road, which you drag by hand, and driving a flock, which you can do on foot."/>
         <text name="rse_guide_tools_3" text="With a pickup truck, or any motorized vehicle of {mass:1} or more: cows, horses and buffalo, cars in the water, trees on cars, power lines, logging crashes, railroad crossings and smaller overturned trailers."/>
-        <text name="rse_guide_tools_4" text="With a tractor, a truck, or any motorized vehicle of {mass:3} or more: also wrecked trucks, overturned tractors, and the bigger vehicles on the other jobs."/>
-        <text name="rse_guide_tools_5" text="Some calls take one thing more. Big bales need a bale fork, bale grab, bale loader or forklift. Storm damage needs a trailer or a pickup bed. A livestock trailer crash needs your own livestock trailer."/>
+        <text name="rse_guide_tools_4" text="With a tractor, a truck, or any motorized vehicle of {mass:3} or more: also wrecked trucks, overturned tractors, livestock trailer crashes, and the bigger vehicles on the other jobs."/>
+        <text name="rse_guide_tools_5" text="Some calls take one thing more. Big bales need a bale fork, bale grab, bale loader or forklift. Storm damage needs a trailer or a pickup bed. A livestock trailer crash needs your own livestock trailer for sheep, pigs or cattle; a horse trailer won't do."/>
         <text name="rse_guide_tools_6" text="The pager says what a job takes before you answer. If your equipment is at the other end of the map, say no: that costs nothing."/>
         <text name="rse_guide_title_calls" text="A call, step by step"/>
         <text name="rse_guide_calls_1" text="A pager beeps and asks whether you will take the call. It says what happened and, a line each: where it is, what is there (the animals, or the vehicle and its load), what the job takes and which of your vehicles can do it, how long you have, and about what it pays. Saying no costs nothing."/>
@@ -460,7 +456,7 @@
         <text name="rse_guide_tree_2" text="Clear every piece off the road and take the car to a recovery point, in whichever order suits you. Get the driver out within 6 minutes of your arrival for a bonus. The logs go with the job, unless you hand it over early."/>
         <text name="rse_guide_title_flock" text="Driving a flock"/>
         <text name="rse_guide_flock_1" text="Sheep are in bunches along the road, and the farmer has put up a pen in a meadow nearby. In a vehicle or on foot, they move straight away from you, and those beside them go along. Bring the bunches together, then steer the flock round to the gate."/>
-        <text name="rse_guide_flock_2" text="Press from the side opposite where you want them to go, and go round them to turn them: the flock turns away from wherever you are. Come closer and they go faster, but lean on them and one may break away, and drive fast near them and they scatter. A honk every few seconds brings each bunch a little closer together, and now and then nudges them on; lean on the horn and they scatter. Those in the pen stay in, and the farmer shuts the gate behind the last one."/>
+        <text name="rse_guide_flock_2" text="Press from the side opposite where you want them to go, and go round them to turn them: the flock turns away from wherever you are. Come closer and they go faster, but lean on them and one may break away, and drive fast near them and they scatter. A honk calls every sheep within earshot over to the biggest bunch, closes that bunch up a little, and now and then nudges them on; lean on the horn and they scatter. Those in the pen stay in, and the farmer shuts the gate behind the last one."/>
         <text name="rse_guide_flock_3" text="You need no equipment for it. The job is done when the last one is in the pen; hand it over early and you are paid for each one already in."/>
         <text name="rse_guide_title_kit" text="Cones and barricades"/>
         <text name="rse_guide_kit_1" text="At a call, press {key:RSE_KIT_MENU} on foot to open the scene kit. {key:RSE_KIT_NEXT} picks the next item, {key:RSE_KIT_USE} places it or picks up what you aim at, and holding {key:RSE_KIT_TURN} turns it. They are free, and they stop traffic."/>
@@ -481,9 +477,6 @@
         <text name="rse_guide_mods_3" text="Better Winch by ThundR: its winch hooks dead animals and wrecks. UniversalAutoload by loki_79: it loads them onto the trailers it supports."/>
         <text name="rse_guide_mods_4" text="Front loaders, bale grabs and crane trailers all handle dead animals, but a small crane can't lift a cow."/>
         <text name="rse_crash_hint_load" text="Recover the trailer, and bring the bales to a recovery point."/>
-        <text name="rse_crash_arrivedLoad" text="Bales on the road: %d."/>
-        <text name="rse_load_call_small" text="The load is small bales, so a pickup truck and your own hands can handle it."/>
-        <text name="rse_load_call_big" text="The load is big bales, so bring a front loader or a telehandler and something to carry them on."/>
         <text name="rse_load_arrived_small" text="Carry the small bales by hand into a pickup bed, or into the trailer once it is back on its wheels. Each one that reaches a recovery point pays."/>
         <text name="rse_load_arrived_big" text="The big bales need a front loader or a telehandler. Each one that reaches a recovery point pays."/>
         <text name="rse_crash_trailerDoneBales" text="The trailer is in. Bring in the bales too for a %d%% bonus. If you don't, another contractor takes over after %s; the settings panel ({key:RSE_SETTINGS}) can hand them over sooner."/>

@@ -225,9 +225,6 @@
         <text name="rse_ep_horse_description" text="Dyspozytor powiatowy: samochód potrącił zwierzęta gospodarskie, które wyszły na drogę. Ruch staje."/>
         <text name="rse_ep_buffalo_description" text="Dyspozytor powiatowy: ciężarówka potrąciła bawoły na drodze. Ruch staje."/>
         <text name="rse_ep_hint_arrive" text="Jedź do zaznaczonego miejsca."/>
-        <text name="rse_call_vehicle" text="Dyspozytor zgłasza pojazd: %s."/>
-        <text name="rse_call_towSmall" text="Pickup albo każdy większy pojazd może go odholować."/>
-        <text name="rse_call_towBig" text="Jest duży: przyjedź większym pojazdem albo lawetą. Pickup go nie odholuje."/>
         <text name="rse_pager_where" text="Gdzie: około %s na %s od ciebie"/>
         <text name="rse_pager_whereNear" text="Gdzie: blisko ciebie"/>
         <text name="rse_dir_n" text="północ"/>
@@ -365,7 +362,6 @@
         <text name="rse_flock_pen" text="Zagroda dla owiec"/>
         <text name="rse_flock_marker" text="Stado"/>
         <text name="rse_crossing_hint" text="Zaczep pojazd pasem ({key:RSE_STRAP}) i ściągnij go z torów, zanim przyjedzie pociąg."/>
-        <text name="rse_crossing_call" text="Pociąg dojedzie do przejazdu za %s."/>
         <text name="rse_crossing_clock" text="Pociąg na przejeździe za %s"/>
         <text name="rse_crossing_clear" text="Pojazd jest poza torami. Teraz zawieź go do punktu pomocy drogowej."/>
         <text name="rse_crossing_hit" text="Pociąg był pierwszy. Nikomu nic się nie stało, ale praca przepadła i nie ma zapłaty."/>
@@ -403,8 +399,8 @@
         <text name="rse_guide_tools_1" text="To twarda zasada: jeśli twoja farma nie ma tego, czego wymaga praca, to zgłoszenie w ogóle nie przyjdzie. Przed każdym zgłoszeniem dyspozytor sprawdza każdy pojazd, który masz lub wynajmujesz, więc jeśli pager pyta, masz wszystko, czego trzeba."/>
         <text name="rse_guide_tools_2" text="Bez niczego: sarny, dziki, owce, świnie i kozy na drodze, które ciągniesz ręcznie, oraz zaganianie stada, które da się zrobić pieszo."/>
         <text name="rse_guide_tools_3" text="Z pickupem albo dowolnym pojazdem silnikowym o masie {mass:1} lub więcej: krowy, konie i bawoły, auta w wodzie, drzewa na autach, linie energetyczne, wypadki ciężarówek z drewnem, przejazdy kolejowe i mniejsze przewrócone przyczepy."/>
-        <text name="rse_guide_tools_4" text="Z ciągnikiem, ciężarówką albo dowolnym pojazdem silnikowym o masie {mass:3} lub więcej: także rozbite ciężarówki, przewrócone ciągniki i większe pojazdy w innych pracach."/>
-        <text name="rse_guide_tools_5" text="Niektóre zgłoszenia wymagają czegoś więcej. Duże bele wymagają widłów, chwytaka albo ładowacza do bel lub wózka widłowego. Szkody po burzy wymagają przyczepy albo paki pickupa. Wypadek przyczepy ze zwierzętami wymaga twojej własnej przyczepy na zwierzęta."/>
+        <text name="rse_guide_tools_4" text="Z ciągnikiem, ciężarówką albo dowolnym pojazdem silnikowym o masie {mass:3} lub więcej: także rozbite ciężarówki, przewrócone ciągniki, wypadki przyczep ze zwierzętami i większe pojazdy w innych pracach."/>
+        <text name="rse_guide_tools_5" text="Niektóre zgłoszenia wymagają czegoś więcej. Duże bele wymagają widłów, chwytaka albo ładowacza do bel lub wózka widłowego. Szkody po burzy wymagają przyczepy albo paki pickupa. Wypadek przyczepy ze zwierzętami wymaga twojej własnej przyczepy na owce, świnie lub bydło; przyczepa na konie nie wystarczy."/>
         <text name="rse_guide_tools_6" text="Pager mówi, czego trzeba, zanim odpowiesz. Jeśli twój sprzęt jest na drugim końcu mapy, odmów: to nic nie kosztuje."/>
         <text name="rse_guide_title_calls" text="Zgłoszenie krok po kroku"/>
         <text name="rse_guide_calls_1" text="Pager pika i pyta, czy przyjmujesz zgłoszenie. Mówi, co się stało, i po linii na każdą rzecz: gdzie to jest, co tam jest (zwierzęta albo pojazd i jego ładunek), czego wymaga praca i który z twoich pojazdów sobie z nią poradzi, ile masz czasu i ile mniej więcej płaci. Odmowa nic nie kosztuje."/>
@@ -476,7 +472,7 @@
         <text name="rse_guide_tree_2" text="Usuń z drogi każdy kawałek i zawieź auto do punktu pomocy drogowej, w dowolnej kolejności. Wyciągnij kierowcę w ciągu 6 minut od przyjazdu, a dostaniesz premię. Kłody znikają razem z pracą, chyba że przekażesz ją wcześniej."/>
         <text name="rse_guide_title_flock" text="Zaganianie stada"/>
         <text name="rse_guide_flock_1" text="Owce stoją w grupkach wzdłuż drogi, a rolnik postawił zagrodę na pobliskiej łące. Pojazdem albo pieszo: owce oddalają się od ciebie w linii prostej, a te obok idą z nimi. Zbierz grupki razem, a potem zapędź stado do bramy."/>
-        <text name="rse_guide_flock_2" text="Naciskaj od strony przeciwnej do tej, w którą mają iść, i obchodź je, by je skręcić: stado oddala się od miejsca, w którym jesteś. Podejdź bliżej, a pójdą szybciej, ale naciskaj za mocno, a któraś może uciec, a jedź szybko obok nich, a się rozbiegną. Klakson co kilka sekund trochę ściąga każdą grupkę i co jakiś czas popycha je dalej; trąb bez przerwy, a się rozbiegną. Owce w zagrodzie w niej zostają, a rolnik zamyka bramę za ostatnią."/>
+        <text name="rse_guide_flock_2" text="Naciskaj od strony przeciwnej do tej, w którą mają iść, i obchodź je, by je skręcić: stado oddala się od miejsca, w którym jesteś. Podejdź bliżej, a pójdą szybciej, ale naciskaj za mocno, a któraś może uciec, a jedź szybko obok nich, a się rozbiegną. Klakson przywołuje każdą owcę, która go słyszy, do największej grupki, trochę ją ściąga i co jakiś czas popycha je dalej; trąb bez przerwy, a się rozbiegną. Owce w zagrodzie w niej zostają, a rolnik zamyka bramę za ostatnią."/>
         <text name="rse_guide_flock_3" text="Nie potrzebujesz żadnego sprzętu. Praca się kończy, gdy ostatnia owca jest w zagrodzie; przekaż ją wcześniej, a dostaniesz zapłatę za każdą, która już jest w środku."/>
         <text name="rse_guide_title_kit" text="Pachołki i bariery"/>
         <text name="rse_guide_kit_1" text="Podczas zgłoszenia naciśnij pieszo {key:RSE_KIT_MENU}, by otworzyć oznakowanie. {key:RSE_KIT_NEXT} wybiera następny element, {key:RSE_KIT_USE} stawia go albo podnosi ten, w który celujesz, a przytrzymanie {key:RSE_KIT_TURN} go obraca. Są darmowe i zatrzymują ruch."/>
@@ -497,9 +493,6 @@
         <text name="rse_guide_mods_3" text="Better Winch od ThundR: jego wyciągarka zaczepia martwe zwierzęta i wraki. UniversalAutoload od loki_79: ładuje je na obsługiwane przyczepy."/>
         <text name="rse_guide_mods_4" text="Ładowacze czołowe, chwytaki do bel i przyczepy z dźwigiem radzą sobie z martwymi zwierzętami, ale mały dźwig nie podniesie krowy."/>
         <text name="rse_crash_hint_load" text="Odzyskaj przyczepę i dowieź bele do punktu pomocy drogowej."/>
-        <text name="rse_crash_arrivedLoad" text="Bele na drodze: %d."/>
-        <text name="rse_load_call_small" text="Ładunek to małe bele, więc wystarczy pickup i twoje ręce."/>
-        <text name="rse_load_call_big" text="Ładunek to duże bele, więc przyjedź z ładowaczem czołowym albo ładowarką teleskopową i czymś do ich przewozu."/>
         <text name="rse_load_arrived_small" text="Noś małe bele ręcznie na pakę pickupa albo do przyczepy, gdy znowu stoi na kołach. Każda dowieziona do punktu pomocy drogowej płaci."/>
         <text name="rse_load_arrived_big" text="Duże bele wymagają ładowacza czołowego albo ładowarki teleskopowej. Każda dowieziona do punktu pomocy drogowej płaci."/>
         <text name="rse_crash_trailerDoneBales" text="Przyczepa dostarczona. Przywieź też bele, a dostaniesz %d%% premii. Jeśli nie, po %s przejmie je inny wykonawca; w ustawieniach ({key:RSE_SETTINGS}) możesz je oddać wcześniej."/>

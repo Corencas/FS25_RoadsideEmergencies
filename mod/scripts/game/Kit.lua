@@ -558,20 +558,6 @@ function RseKit:draw()
     end
 end
 
--- rseKit: how far each hidden traffic blocker has moved from its item
-function RseKit:logBlockers()
-    for _, entry in ipairs(self.entries) do
-        for i, blocker in ipairs(entry.blockers or {}) do
-            if nodeExists(blocker.node) and getNumOfChildren(blocker.node) > 0 then
-                local bx, _, bz = getWorldTranslation(getChildAt(blocker.node, 0))
-                local ix, _, iz = getWorldTranslation(entry.node)
-                RseLog.info("kit %s blocker %d: at %.1f, %.1f, %.1f m from its item (offset %.1f)", entry.def.id, i, bx, bz,
-                    math.sqrt((bx - ix) ^ 2 + (bz - iz) ^ 2), entry.def.blockers[i])
-            end
-        end
-    end
-end
-
 -- a job ended: what was set down for it is now owed
 function RseKit:onJobEnded(sceneId)
     local count = self.store:apply("kitJobEnded", { sceneId = sceneId })
@@ -603,13 +589,6 @@ function RseKit:restore(saved)
         end
     end
     return placed
-end
-
--- removes every item (rseKit clear)
-function RseKit:clear()
-    while #self.entries > 0 do
-        pickUp(self, self.entries[1])
-    end
 end
 
 -- while the map unloads

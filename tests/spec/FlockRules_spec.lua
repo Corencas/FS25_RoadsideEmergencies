@@ -265,6 +265,96 @@ describe("RseFlockRules", function()
         expectTrue(near(vx, 0) and near(vz, 0), vx .. ", " .. vz)
     end)
 
+    it("crowded against the ring, it gets out along it, away from your side, and doesn't just stand (Z: two pinned by the buggy stood still)", function()
+        local z = 100 + RseConfig.FLOCK_PEN_RADIUS + 0.5
+        local close = RseConfig.FLOCK_PUSH_FULL - 3
+        local behind = sheep(0, z)
+        local vx, vz = RseFlockRules.steer(behind, world({ animals = { behind }, cx = 0, cz = z, playerX = 0, playerZ = z + close }), RseConfig)
+        expectTrue(math.abs(vx) > RseConfig.FLOCK_WALK * 0.5 and math.abs(vx) > math.abs(vz) * 3, "along the ring: " .. vx .. ", " .. vz)
+        local offRight = sheep(0, z)
+        vx = RseFlockRules.steer(offRight, world({ animals = { offRight }, cx = 0, cz = z, playerX = 1.5, playerZ = z + close }), RseConfig)
+        expectTrue(vx < 0, "you a little to its right: it goes left: " .. vx)
+        local offLeft = sheep(0, z)
+        vx = RseFlockRules.steer(offLeft, world({ animals = { offLeft }, cx = 0, cz = z, playerX = -1.5, playerZ = z + close }), RseConfig)
+        expectTrue(vx > 0, "and the other way round: " .. vx)
+        local w = world({ animals = { behind }, cx = 0, cz = z, playerX = 0, playerZ = z + close })
+        local first = RseFlockRules.steer(behind, w, RseConfig)
+        for _ = 1, 10 do
+            local again = RseFlockRules.steer(behind, w, RseConfig)
+            expectTrue(again * first > 0, "it keeps to the side it picked: " .. again .. " after " .. first)
+        end
+    end)
+
+    it("left alone facing a fence, it still turns away to graze about", function()
+        local animal = sheep(0, 0)
+        animal.blocked, animal.yaw = true, 0
+        local w = world({ animals = { animal } })
+        local turned = false
+        for _ = 1, math.ceil(3 * RseConfig.FLOCK_IDLE_MS / 33) do
+            RseFlockRules.step(animal, 33, w, RseConfig, middling)
+            turned = turned or math.abs(animal.yaw) > 0.5
+        end
+        expectTrue(turned, "it turned: " .. animal.yaw)
+        expectNear(animal.x, 0, 1e-9, "but didn't walk into what is in front of it")
+    end)
+
+    it("facing a fence with the others behind it, it turns round to them and isn't turned back into the fence (Z: stood there till the stuck rule)", function()
+        local animal = sheep(0, 0)
+        animal.yaw, animal.blocked = 0, true -- facing +z, a fence in front of it
+        local others = { sheep(-1, -15), sheep(0, -15), sheep(1, -15), sheep(0, -16) }
+        local w = world({ animals = { animal, others[1], others[2], others[3], others[4] } })
+        local stuck = false
+        for _ = 1, math.ceil(4000 / 33) do
+            stuck = stuck or RseFlockRules.step(animal, 33, w, RseConfig, middling) == "stuck"
+            if math.abs(RseHerdRules.angleDiff(animal.yaw, 0)) > math.pi / 2 then
+                animal.blocked = false -- turned away from it: the look-ahead finds the way clear
+            end
+        end
+        expectTrue(math.abs(RseHerdRules.angleDiff(animal.yaw, math.pi)) < 0.6, "it faces the others: " .. animal.yaw)
+        expectTrue(animal.z < -0.5, "and is on its way: " .. animal.z)
+        expectTrue(not stuck, "and nothing had to move it")
+    end)
+
+    it("a honk calls those away from the biggest bunch over to it, the whole way (Z: the bigger picture)", function()
+        local main = { sheep(0, 0), sheep(1, 0), sheep(0, 1), sheep(1, 1) }
+        local stray, far = sheep(40, 0), sheep(200, 0)
+        local animals = { main[1], main[2], main[3], main[4], stray, far }
+        local w = world({ animals = animals })
+        RseFlockRules.think(w, animals, { x = 20, z = -30, horn = true }, 33, RseConfig)
+        expectTrue((stray.joinMs or 0) > 0, "the stray is called")
+        expectEqual(far.joinMs or 0, 0, "one out of earshot isn't")
+        expectEqual(main[1].joinMs or 0, 0, "the biggest bunch stays where it is")
+        for _ = 1, math.ceil(RseConfig.FLOCK_HORN_JOIN_MS / 33) do
+            RseFlockRules.think(w, animals, { x = 20, z = -30, horn = false }, 33, RseConfig)
+            for _, one in ipairs(animals) do
+                RseFlockRules.step(one, 33, w, RseConfig, middling)
+            end
+            if (stray.joinMs or 0) == 0 then
+                break
+            end
+        end
+        local gap = math.sqrt((stray.x - w.mainX) ^ 2 + (stray.z - w.mainZ) ^ 2)
+        expectTrue(gap <= RseConfig.FLOCK_HORN_JOINED + 1, "it came all the way: " .. gap .. " m off")
+    end)
+
+    it("called to the others on your far side, it goes round you, and never at you", function()
+        local stray = sheep(0, 20)
+        stray.joinMs = RseConfig.FLOCK_HORN_JOIN_MS
+        local w = world({ animals = { stray }, playerX = 0, playerZ = 0, mainX = 0, mainZ = -20 })
+        local vx, vz = RseFlockRules.steer(stray, w, RseConfig)
+        expectTrue(vx * vx + vz * vz > 0.5, "it keeps going: " .. vx .. ", " .. vz)
+        expectTrue(vz >= -1e-6, "and not toward you: " .. vz)
+    end)
+
+    it("ranks bunches by size, and of two the same size the one nearer you first", function()
+        local animals = { sheep(0, 0), sheep(1, 0), sheep(50, 0), sheep(51, 0), sheep(100, 0) }
+        local groups = RseFlockRules.bunches(animals, RseConfig, 60, 0)
+        expectEqual(#groups, 3)
+        expectEqual(groups[1].count, 2)
+        expectNear(groups[1].x, 50.5, 1e-9, "the pair nearer you")
+        expectEqual(groups[3].count, 1)
+    end)
+
     it("can't pass through a hurdle however it is pushed", function()
         local z = 100 + RseConfig.FLOCK_PEN_RADIUS + 3
         local animal = sheep(0, z)
@@ -538,6 +628,41 @@ describe("RseFlockRules", function()
             end
         end
         expectEqual(said, 1, "after " .. RseConfig.FLOCK_STUCK_MS .. " ms, and not again at once")
+    end)
+
+    it("puts no pen where a tree stands in it, near its fence or in front of its gate (Z: a small tree in the pen)", function()
+        local pen = RseFlockRules.newPen(0, 0, 0, RseConfig) -- the gate faces +z
+        local fence, gap = pen.radius, RseConfig.FLOCK_TREE_GAP
+        local function clear(x, z)
+            return (RseFlockRules.isClearOfTrees(pen, { { x = x, z = z } }, RseConfig))
+        end
+        local ok, nearest = RseFlockRules.isClearOfTrees(pen, {}, RseConfig)
+        expectTrue(ok, "no trees at all")
+        expectNil(nearest)
+        -- all the way round, between where eight rays would look too (Z's pen: a small tree 6 m from the middle)
+        for i = 0, 31 do
+            local angle = i * 2 * math.pi / 32
+            for _, distance in ipairs({ 2, 6, fence, fence + gap - 0.1 }) do
+                expectTrue(not clear(math.sin(angle) * distance, math.cos(angle) * distance), "a tree " .. distance .. " m out at " .. i .. "/32")
+            end
+        end
+        expectTrue(clear(0, -(fence + gap + 0.1)), "behind the pen, just past the gap")
+        expectTrue(clear(fence + gap + 0.1, 0), "beside it, just past the gap")
+        -- in front of the gate: the opening and the gap either side, the whole room long
+        local opening = fence * math.sin(RseConfig.FLOCK_GATE_HALF)
+        local laneEnd = fence + 1 + RseConfig.FLOCK_GATE_ROOM
+        expectTrue(not clear(0, laneEnd - 0.1), "in line with the gate, at the far end of the room")
+        expectTrue(not clear(opening + gap - 0.1, fence + gap + 1), "beside the opening, past the ring's gap")
+        expectTrue(clear(opening + gap + 0.1, fence + gap + 1), "far enough beside the opening")
+        expectTrue(clear(0, laneEnd + 0.1), "past the room")
+        -- the nearest is reported, the others don't hide it
+        ok, nearest = RseFlockRules.isClearOfTrees(pen, { { x = 0, z = -30 }, { x = -20, z = 0 }, { x = 3, z = -4 } }, RseConfig)
+        expectTrue(not ok)
+        expectTrue(near(nearest, 5), "the nearest: " .. tostring(nearest))
+        -- looked for far enough to see every tree that counts
+        local reach = RseFlockRules.treeReach(RseConfig)
+        expectTrue(reach >= fence + gap, "the ring and its gap")
+        expectTrue(reach * reach >= laneEnd * laneEnd + (opening + gap) ^ 2 - 1e-6, "the far corners of the lane")
     end)
 
     it("keeps a saved flock, and those in the pen", function()

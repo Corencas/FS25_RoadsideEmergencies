@@ -11,6 +11,9 @@
 -- Z on the fourth: a honk should draw them together, so they are easier to get going and into the pen, but each honk only a little, and not hold them: who is
 -- together keeps changing as they move. So one honk moves each a share of the way in toward those it can see at that moment, and that is all. And they
 -- walk a little faster. Then: more honks before they scatter, and more gathering, above all while you drive them: hard to bunch them for the gate.
+-- Z on the fifth (0.9.10.0): the honk should see the bigger picture, all of the flock, so there aren't five bunches going their own ways as you drive them.
+-- So a honk now calls every one in earshot that isn't with the biggest bunch over to it, the whole way, and the biggest bunch closes up a step as before.
+-- And two pinned against the pen by the buggy just stood there: crowded against the pen or the truck, one now gets out along it.
 -- An animal: { x, z, yaw, speed, moving, penned, blocked }. Yaw 0 looks along +z.
 
 RseFlockRules = {}
@@ -122,6 +125,10 @@ function RseFlockRules.think(world, animals, player, dt, config)
         world.playerX, world.playerZ, world.onFoot, world.playerSpeed = nil, nil, false, 0
     end
     RseFlockRules.hearHorn(world, player ~= nil and player.horn == true, dt, config)
+    if world.honked and world.playerX ~= nil then
+        RseFlockRules.callTogether(world, animals, config)
+    end
+    RseFlockRules.followMain(world)
     if world.slideSide ~= nil then
         world.slideMs = world.slideMs - dt
         world.slideSideMs = world.slideSideMs + dt
@@ -190,20 +197,19 @@ function RseFlockRules.startGroups(total, config, random)
     return { { count = total, along = 0 } }
 end
 
--- The bunches they are in now, biggest first: { { x, z, count, lead }, ... }. The first of each smaller one is marked (stray), so you can see where it is, and
--- world.groups keeps the list.
-function RseFlockRules.markGroups(world, animals, config)
+-- The bunches the loose ones are in now: biggest first, and of two the same size the one nearer (px, pz), if given. { { x, z, count, lead, members }, ... }
+function RseFlockRules.bunches(animals, config, px, pz)
     local groups, placed = {}, {}
     local link = config.FLOCK_GROUP_LINK ^ 2
     for _, first in ipairs(animals) do
         if not first.penned and not placed[first] then
-            local group = { x = 0, z = 0, count = 0, lead = first }
+            local group = { x = 0, z = 0, count = 0, lead = first, members = {} }
             local open = { first }
             placed[first] = true
             while #open > 0 do
                 local one = table.remove(open)
                 group.x, group.z, group.count = group.x + one.x, group.z + one.z, group.count + 1
-                one.stray = false
+                table.insert(group.members, one)
                 for _, other in ipairs(animals) do
                     if not other.penned and not placed[other] and (other.x - one.x) ^ 2 + (other.z - one.z) ^ 2 <= link then
                         placed[other] = true
@@ -212,17 +218,68 @@ function RseFlockRules.markGroups(world, animals, config)
                 end
             end
             group.x, group.z = group.x / group.count, group.z / group.count
+            group.away = px ~= nil and (group.x - px) ^ 2 + (group.z - pz) ^ 2 or 0
             table.insert(groups, group)
         end
     end
     table.sort(groups, function(a, b)
-        return a.count > b.count
+        if a.count ~= b.count then
+            return a.count > b.count
+        end
+        return a.away < b.away
     end)
-    for i = 2, #groups do
-        groups[i].lead.stray = true
+    return groups
+end
+
+-- The bunches they are in now (bunches). The first of each smaller one is marked (stray), so you can see where it is, and world.groups keeps the list.
+function RseFlockRules.markGroups(world, animals, config)
+    local groups = RseFlockRules.bunches(animals, config, world.playerX, world.playerZ)
+    for i, group in ipairs(groups) do
+        for _, one in ipairs(group.members) do
+            one.stray = false
+        end
+        group.lead.stray = i > 1
     end
     world.groups = groups
     return groups
+end
+
+-- A honk calls the flock together (Z: it should see the bigger picture, so there aren't five bunches as you drive them to the pen): every one within
+-- FLOCK_HORN_CALL_RADIUS of you that isn't with the biggest bunch heads for that bunch, the whole way (rejoinPull), and the biggest bunch closes up a step as
+-- before (hornStep). world.mainList keeps that bunch, so the others go where it is now while you drive it.
+function RseFlockRules.callTogether(world, animals, config)
+    local groups = RseFlockRules.bunches(animals, config, world.playerX, world.playerZ)
+    world.mainList = nil
+    if #groups < 2 then
+        return
+    end
+    world.mainList = groups[1].members
+    local reach = config.FLOCK_HORN_CALL_RADIUS ^ 2
+    for i = 2, #groups do
+        for _, one in ipairs(groups[i].members) do
+            if (one.x - world.playerX) ^ 2 + (one.z - world.playerZ) ^ 2 <= reach and (one.spookMs or 0) <= 0 then
+                one.joinMs = config.FLOCK_HORN_JOIN_MS
+            end
+        end
+    end
+end
+
+-- where the bunch a honk called them to is now: world.mainX, world.mainZ, or nil once it is all in the pen
+function RseFlockRules.followMain(world)
+    if world.mainList == nil then
+        return
+    end
+    local sumX, sumZ, count = 0, 0, 0
+    for _, one in ipairs(world.mainList) do
+        if not one.penned then
+            sumX, sumZ, count = sumX + one.x, sumZ + one.z, count + 1
+        end
+    end
+    if count == 0 then
+        world.mainList, world.mainX, world.mainZ = nil, nil, nil
+    else
+        world.mainX, world.mainZ = sumX / count, sumZ / count
+    end
 end
 
 function RseFlockRules.isInside(x, z, pen, config)
@@ -249,6 +306,39 @@ function RseFlockRules.penCandidates(x, z, config, random)
     return list
 end
 
+-- The lane in front of the gate that has to be clear of trees: the opening and FLOCK_TREE_GAP either side, out to FLOCK_GATE_ROOM past the gate.
+local function treeLane(pen, config)
+    return pen.radius * math.sin(config.FLOCK_GATE_HALF) + config.FLOCK_TREE_GAP, pen.radius + 1 + config.FLOCK_GATE_ROOM
+end
+
+-- How far from the middle of a pen trees have to be looked for: past the fence by FLOCK_TREE_GAP, and to the far corners of the lane in front of the gate.
+function RseFlockRules.treeReach(config)
+    local pen = RseFlockRules.newPen(0, 0, 0, config)
+    local half, length = treeLane(pen, config)
+    return math.max(pen.radius + config.FLOCK_TREE_GAP, math.sqrt(half * half + length * length))
+end
+
+-- Is a pen clear of trees (Z: a small tree inside the pen, the woods against its fence, and trees beside the opening)? trunks: { { x, z }, ... } where each
+-- tree stands. None inside the ring or within FLOCK_TREE_GAP of it, all the way round, and none in the lane in front of the gate. Returns true or false,
+-- and how far the nearest trunk is from the middle (nil if none was given).
+function RseFlockRules.isClearOfTrees(pen, trunks, config)
+    local half, length = treeLane(pen, config)
+    local alongX, alongZ = math.sin(pen.gateYaw), math.cos(pen.gateYaw)
+    local nearest, clear = nil, true
+    for _, trunk in ipairs(trunks) do
+        local dx, dz = trunk.x - pen.x, trunk.z - pen.z
+        local distance = math.sqrt(dx * dx + dz * dz)
+        if nearest == nil or distance < nearest then
+            nearest = distance
+        end
+        local along, across = dx * alongX + dz * alongZ, math.abs(dx * alongZ - dz * alongX)
+        if distance < pen.radius + config.FLOCK_TREE_GAP or (along > 0 and along <= length and across <= half) then
+            clear = false
+        end
+    end
+    return clear, nearest
+end
+
 -- what the job pays: all of them in, the job and each animal; handed over early, only those in the pen
 function RseFlockRules.pay(def, inPen, total, handedOver)
     if handedOver then
@@ -264,27 +354,66 @@ function RseFlockRules.share(inPen, total)
     return math.min(1, inPen / total)
 end
 
+-- Which way along something it is pushed into almost head on: side +1 is along (-normalZ, normalX). The way it was already tending if it was, else away from
+-- you when you are right behind it and off to one side, else the way the flock is going round things, else either. It keeps that side while it is pinned
+-- (animal.pinSide, for FLOCK_PIN_KEEP_MS after the last time), so it doesn't dither between the two.
+local function pinSide(animal, world, normalX, normalZ, vx, vz, config)
+    if animal.pinSide ~= nil and (animal.pinSideMs or 0) > 0 then
+        animal.pinSideMs = config.FLOCK_PIN_KEEP_MS
+        return animal.pinSide
+    end
+    local tangentX, tangentZ = -normalZ, normalX
+    local speed = math.sqrt(vx * vx + vz * vz)
+    local leaning = vx * tangentX + vz * tangentZ
+    local side
+    if math.abs(leaning) > speed * config.FLOCK_PIN_LEAN then
+        side = leaning > 0 and 1 or -1
+    elseif world.playerX ~= nil and (animal.x - world.playerX) ^ 2 + (animal.z - world.playerZ) ^ 2 < config.FLOCK_PUSH_FULL ^ 2
+        and math.abs((animal.x - world.playerX) * tangentX + (animal.z - world.playerZ) * tangentZ) >= config.FLOCK_PIN_OFFSET then
+        side = (animal.x - world.playerX) * tangentX + (animal.z - world.playerZ) * tangentZ > 0 and 1 or -1
+    else
+        if world.slideSide == nil then
+            world.slideSide, world.slideSideMs = (animal.wobbleTarget or 0) >= 0 and 1 or -1, 0
+        end
+        world.slideMs = config.FLOCK_SLIDE_KEEP_MS
+        side = world.slideSide
+    end
+    animal.pinSide, animal.pinSideMs = side, config.FLOCK_PIN_KEEP_MS
+    return side
+end
+
 -- Against something it can't go through: what is left of its way is along it, in the direction it was already tending, so you decide which way round it goes.
--- Heading straight at it, it stands and presses until you move to one side.
-local function slideAlong(normalX, normalZ, vx, vz, config)
+-- Pushed at it almost head on from further off, it stands and presses until you move to one side. But crowded there, you within FLOCK_PUSH_FULL, it is
+-- pinned, and doesn't just stand (Z: two pinned against the pen by the buggy stood still): it gets out along it, to one side (pinSide). Marks the animal as
+-- going along something the flock knows about (animal.alongKnown), so its look-ahead doesn't turn it a second time.
+local function slideAlong(animal, world, normalX, normalZ, vx, vz, config)
     local into = vx * normalX + vz * normalZ
     if into >= 0 then
         return vx, vz
     end
+    animal.alongKnown = true
     local dirX, dirZ, along = unit(vx - into * normalX, vz - into * normalZ)
     local speed = math.sqrt(vx * vx + vz * vz)
     local sure = math.min(1, along / (speed * config.FLOCK_ALONG_SURE))
+    local crowded = world.playerX ~= nil and (animal.x - world.playerX) ^ 2 + (animal.z - world.playerZ) ^ 2 < config.FLOCK_PUSH_FULL ^ 2
+    if sure < 1 and (crowded or (animal.pinSideMs or 0) > 0) then
+        local side = pinSide(animal, world, normalX, normalZ, vx, vz, config)
+        local kept = speed * config.FLOCK_ALONG_SHARE
+        return -normalZ * side * kept, normalX * side * kept
+    end
+    -- further off, headed straight at it, it stands and presses until you move to one side: you decide which way round it goes
     local kept = along + (speed - along) * config.FLOCK_ALONG_SHARE * sure
     return dirX * kept, dirZ * kept
 end
 
-local function alongRing(animal, pen, vx, vz, config)
+local function alongRing(animal, world, vx, vz, config)
+    local pen = world.pen
     local rx, rz = animal.x - pen.x, animal.z - pen.z
     local fromMiddle = math.sqrt(rx * rx + rz * rz)
     if fromMiddle <= pen.radius or fromMiddle > pen.radius + config.FLOCK_PEN_AVOID or isAtGate(rx, rz, pen, config) then
         return vx, vz
     end
-    return slideAlong(rx / fromMiddle, rz / fromMiddle, vx, vz, config)
+    return slideAlong(animal, world, rx / fromMiddle, rz / fromMiddle, vx, vz, config)
 end
 
 -- the farmer's truck: it walks around that as well, before it gets there, and keeps going the way it was going
@@ -292,7 +421,7 @@ local function aroundObstacles(animal, world, vx, vz, config)
     for _, obstacle in ipairs(world.obstacles or {}) do
         local normalX, normalZ, from = unit(animal.x - obstacle.x, animal.z - obstacle.z)
         if from > 0 and from <= obstacle.radius + config.FLOCK_OBSTACLE_AVOID then
-            vx, vz = slideAlong(normalX, normalZ, vx, vz, config)
+            vx, vz = slideAlong(animal, world, normalX, normalZ, vx, vz, config)
         end
     end
     return vx, vz
@@ -354,6 +483,20 @@ local function huddlePull(animal, stepping, seen, seenX, seenZ, config)
     animal.huddleX, animal.huddleZ = toX, toZ
     local pull = config.FLOCK_HORN_GATHER * math.max(0, math.min(1, (gap - config.FLOCK_HORN_TIGHT) / config.FLOCK_HORN_RAMP))
     return toX * pull, toZ * pull
+end
+
+-- Called by a honk to the biggest bunch (callTogether): it heads for where that bunch is now, at FLOCK_REJOIN, until it is with them (FLOCK_HORN_JOINED)
+-- or has tried for FLOCK_HORN_JOIN_MS. Not while frightened. Pressed, it still goes away from you as well, and never back toward you (steer).
+local function rejoinPull(animal, world, config)
+    if (animal.joinMs or 0) <= 0 or world.mainX == nil or (animal.spookMs or 0) > 0 then
+        return 0, 0
+    end
+    local toX, toZ, gap = unit(world.mainX - animal.x, world.mainZ - animal.z)
+    if gap <= config.FLOCK_HORN_JOINED then
+        animal.joinMs = 0
+        return 0, 0
+    end
+    return toX * config.FLOCK_REJOIN, toZ * config.FLOCK_REJOIN
 end
 
 -- Where one animal wants to go, in metres per second. world: { animals, pen, obstacles, inPen, playerX, playerZ, onFoot, horn }.
@@ -463,16 +606,28 @@ function RseFlockRules.steer(animal, world, config)
         animal.flightSpeed = 0
     end
     local huddleX, huddleZ = huddlePull(animal, stepping, seen, seenX, seenZ, config)
-    vx, vz = vx + apartX + huddleX, vz + apartZ + huddleZ
+    local rejoinX, rejoinZ = rejoinPull(animal, world, config)
+    vx, vz = vx + apartX + huddleX + rejoinX, vz + apartZ + huddleZ + rejoinZ
     -- Nothing but you makes it walk back toward you: not a crush, and not wanting to rejoin the others, which would have it run back in and out of your reach
     -- (Z saw them turn round for no reason).
     if gap ~= nil and gap < (world.onFoot and config.FLOCK_PUSH_FOOT or config.FLOCK_PUSH_VEHICLE) + config.FLOCK_CALM_MARGIN then
         local back = vx * -awayX + vz * -awayZ
         if back > 0 then
+            local called = (animal.joinMs or 0) > 0 and (animal.spookMs or 0) <= 0
+            local speed = math.sqrt(vx * vx + vz * vz)
             vx, vz = vx + back * awayX, vz + back * awayZ
+            if called then
+                -- called to the others on your far side: it goes round you at its pace, and doesn't stop dead
+                local sideX, sideZ, left = unit(vx, vz)
+                if left < 1e-3 then
+                    sideX, sideZ = -awayZ, awayX
+                end
+                vx, vz = sideX * speed, sideZ * speed
+            end
         end
     end
-    vx, vz = alongRing(animal, world.pen, vx, vz, config)
+    animal.alongKnown = false
+    vx, vz = alongRing(animal, world, vx, vz, config)
     return aroundObstacles(animal, world, vx, vz, config)
 end
 
@@ -482,7 +637,7 @@ local function checkSpook(animal, world, dt, config, random)
     if world.hornScare and world.playerX ~= nil and (animal.x - world.playerX) ^ 2 + (animal.z - world.playerZ) ^ 2 < config.FLOCK_HORN_RADIUS ^ 2 then
         animal.spookAngle = (random() * 2 - 1) * config.FLOCK_SPOOK_SPREAD
         animal.spookMs = config.FLOCK_SPOOK_MS
-        animal.huddleMs, animal.huddleLeft = 0, 0
+        animal.huddleMs, animal.huddleLeft, animal.joinMs = 0, 0, 0
         world.scatteredByHorn = true
         return
     end
@@ -495,7 +650,7 @@ local function checkSpook(animal, world, dt, config, random)
             world.scattered = true
         end
         animal.spookMs = config.FLOCK_SPOOK_MS
-        animal.huddleMs, animal.huddleLeft = 0, 0
+        animal.huddleMs, animal.huddleLeft, animal.joinMs = 0, 0, 0
     end
 end
 
@@ -529,6 +684,7 @@ end
 -- One step of time for one animal still loose. Returns "in" when it has reached the pen, "stuck" when it has been trying to move for a long time and can't.
 function RseFlockRules.step(animal, dt, world, config, random)
     animal.huddleMs = math.max(0, (animal.huddleMs or 0) - dt)
+    animal.joinMs = math.max(0, (animal.joinMs or 0) - dt)
     checkSpook(animal, world, dt, config, random)
     checkTemper(animal, dt, config, random)
     local wantX, wantZ = RseFlockRules.steer(animal, world, config)
@@ -546,9 +702,28 @@ function RseFlockRules.step(animal, dt, world, config, random)
     local speed = math.min(config.FLOCK_RUN, math.sqrt(vx * vx + vz * vz))
     local wanting = speed >= config.FLOCK_MIN_SPEED
     local lastX, lastZ = animal.x, animal.z
+    animal.pinSideMs = math.max(0, (animal.pinSideMs or 0) - dt)
+    -- which way it was looking when it found something in the way (the look-ahead looks along its heading)
+    if animal.blocked then
+        animal.blockedYaw = animal.blockedYaw or animal.yaw
+    else
+        animal.blockedYaw = nil
+    end
     if wanting then
         local target = math.atan2(vx, vz)
-        if animal.blocked then
+        if animal.blocked and animal.alongKnown then
+            -- going along the pen or the truck, which the flock knows about, and something still in the way: it turns to where it is going, and if it
+            -- stays blocked, the other way along is the way out
+            animal.blockedMs = (animal.blockedMs or 0) + dt
+            animal.slideHoldMs = 0
+            if animal.blockedMs >= config.FLOCK_CORNER_MS and animal.pinSide ~= nil then
+                animal.pinSide, animal.blockedMs = -animal.pinSide, 0
+            end
+        elseif animal.blocked and math.abs(RseHerdRules.angleDiff(animal.blockedYaw, target)) > math.pi / 2 then
+            -- what is in front of it isn't where it wants to go (the others are behind it): it just turns round. Turning it further round the thing in
+            -- front, as below, pointed it back into the fence (Z: sheep stood at a field fence until the stuck rule moved them to the flock)
+            animal.blockedMs, animal.cornerSide, animal.slideHoldMs = 0, nil, 0
+        elseif animal.blocked then
             local side = RseFlockRules.noteBlocked(world, animal, config, random)
             animal.blockedMs = (animal.blockedMs or 0) + dt
             local most = config.FLOCK_SLIDE_MOST
@@ -582,9 +757,10 @@ function RseFlockRules.step(animal, dt, world, config, random)
             animal.idleWalkMs = config.FLOCK_IDLE_WALK_MS
         end
         animal.idleWalkMs = (animal.idleWalkMs or 0) - dt
-        if animal.idleWalkMs > 0 and not animal.blocked then
+        if animal.idleWalkMs > 0 then
+            -- facing a fence it still turns away to wander; it only walks once the way is clear
             RseHerdRules.turn(animal, animal.idleYaw or animal.yaw, config.HERD_TURN_SPEED, dt)
-            RseHerdRules.go(animal, config.HERD_WANDER_SPEED, config.HERD_ACCEL, dt)
+            RseHerdRules.go(animal, animal.blocked and 0 or config.HERD_WANDER_SPEED, animal.blocked and config.FLOCK_DECEL or config.HERD_ACCEL, dt)
         else
             RseHerdRules.go(animal, 0, config.FLOCK_DECEL, dt)
         end

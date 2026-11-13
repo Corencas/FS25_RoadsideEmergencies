@@ -209,9 +209,6 @@
         <text name="rse_ep_horse_description" text="Centrale della contea: un'auto ha investito del bestiame scappato sulla strada. Il traffico si sta fermando."/>
         <text name="rse_ep_buffalo_description" text="Centrale della contea: un camion ha investito dei bufali sulla strada. Il traffico si sta fermando."/>
         <text name="rse_ep_hint_arrive" text="Vai al punto segnato."/>
-        <text name="rse_call_vehicle" text="La centrale segnala il veicolo: %s."/>
-        <text name="rse_call_towSmall" text="Un pickup o qualsiasi veicolo più grande può trainarlo."/>
-        <text name="rse_call_towBig" text="È grande: porta un veicolo più grande o un carro attrezzi a pianale. Un pickup non può trainarlo."/>
         <text name="rse_pager_where" text="Dove: a circa %s %s rispetto a te"/>
         <text name="rse_pager_whereNear" text="Dove: vicino a te"/>
         <text name="rse_dir_n" text="a nord"/>
@@ -349,7 +346,6 @@
         <text name="rse_flock_pen" text="Recinto delle pecore"/>
         <text name="rse_flock_marker" text="Il gregge"/>
         <text name="rse_crossing_hint" text="Aggancia il veicolo con la cinghia ({key:RSE_STRAP}) e toglilo dai binari prima che arrivi il treno."/>
-        <text name="rse_crossing_call" text="Il treno arriva al passaggio a livello tra %s."/>
         <text name="rse_crossing_clock" text="Treno al passaggio a livello tra %s"/>
         <text name="rse_crossing_clear" text="Il veicolo è fuori dai binari. Ora portalo al punto di recupero."/>
         <text name="rse_crossing_hit" text="Il treno è arrivato prima. Nessun ferito, ma il lavoro è perso e non c'è paga."/>
@@ -387,8 +383,8 @@
         <text name="rse_guide_tools_1" text="È una regola fissa: se la tua fattoria non ha ciò che serve per un lavoro, quella chiamata non arriva affatto. Prima di ogni chiamata la centrale controlla ogni veicolo che possiedi o noleggi, quindi se il cercapersone chiama, hai ciò che serve."/>
         <text name="rse_guide_tools_2" text="Senza niente: caprioli, cinghiali, pecore, maiali e capre sulla strada, che trascini a mano, e guidare un gregge, che puoi fare a piedi."/>
         <text name="rse_guide_tools_3" text="Con un pickup, o qualsiasi veicolo a motore da {mass:1} o più: mucche, cavalli e bufali, auto in acqua, alberi sulle auto, linee elettriche, incidenti di camion per legname, passaggi a livello e rimorchi ribaltati più piccoli."/>
-        <text name="rse_guide_tools_4" text="Con un trattore, un camion o qualsiasi veicolo a motore da {mass:3} o più: anche camion incidentati, trattori ribaltati e i veicoli più grandi degli altri lavori."/>
-        <text name="rse_guide_tools_5" text="Alcune chiamate richiedono qualcosa in più. Le balle grandi richiedono una forca, una pinza o un caricatore per balle, o un muletto. I danni da tempesta richiedono un rimorchio o il cassone di un pickup. Un incidente di un rimorchio per bestiame richiede il tuo rimorchio per bestiame."/>
+        <text name="rse_guide_tools_4" text="Con un trattore, un camion o qualsiasi veicolo a motore da {mass:3} o più: anche camion incidentati, trattori ribaltati, incidenti di rimorchi per bestiame e i veicoli più grandi degli altri lavori."/>
+        <text name="rse_guide_tools_5" text="Alcune chiamate richiedono qualcosa in più. Le balle grandi richiedono una forca, una pinza o un caricatore per balle, o un muletto. I danni da tempesta richiedono un rimorchio o il cassone di un pickup. Un incidente di un rimorchio per bestiame richiede il tuo rimorchio per pecore, maiali o bovini; uno per cavalli non basta."/>
         <text name="rse_guide_tools_6" text="Il cercapersone dice cosa serve prima che tu risponda. Se la tua attrezzatura è dall'altra parte della mappa, rifiuta: non costa nulla."/>
         <text name="rse_guide_title_calls" text="Una chiamata, passo dopo passo"/>
         <text name="rse_guide_calls_1" text="Un cercapersone suona e chiede se accetti la chiamata. Dice cos'è successo e, una riga ciascuno: dov'è, cosa c'è (gli animali, o il veicolo e il suo carico), cosa serve e quale dei tuoi veicoli può farlo, quanto tempo hai, e circa quanto paga. Rifiutare non costa nulla."/>
@@ -460,7 +456,7 @@
         <text name="rse_guide_tree_2" text="Togli ogni pezzo dalla strada e porta l'auto a un punto di recupero, nell'ordine che preferisci. Fai uscire il conducente entro 6 minuti dal tuo arrivo per un bonus. I tronchi se ne vanno con il lavoro, a meno che tu non lo ceda prima."/>
         <text name="rse_guide_title_flock" text="Guidare un gregge"/>
         <text name="rse_guide_flock_1" text="Le pecore sono in gruppi lungo la strada, e il contadino ha montato un recinto in un prato lì vicino. In veicolo o a piedi, si allontanano dritte da te, e quelle accanto le seguono. Riunisci i gruppi, poi guida il gregge fino al cancello."/>
-        <text name="rse_guide_flock_2" text="Spingi dal lato opposto a dove vuoi che vadano, e girale attorno per farle voltare: il gregge si allontana da dove sei. Avvicinati e vanno più veloci, ma se le incalzi troppo una può scappare, e se guidi veloce vicino a loro si disperdono. Un colpo di clacson ogni pochi secondi avvicina un po' ogni gruppo, e ogni tanto le spinge avanti; se suoni di continuo si disperdono. Quelle nel recinto ci restano, e il contadino chiude il cancello dietro l'ultima."/>
+        <text name="rse_guide_flock_2" text="Spingi dal lato opposto a dove vuoi che vadano, e girale attorno per farle voltare: il gregge si allontana da dove sei. Avvicinati e vanno più veloci, ma se le incalzi troppo una può scappare, e se guidi veloce vicino a loro si disperdono. Un colpo di clacson richiama ogni pecora che lo sente verso il gruppo più grande, stringe un po' quel gruppo e ogni tanto le spinge avanti; se suoni di continuo si disperdono. Quelle nel recinto ci restano, e il contadino chiude il cancello dietro l'ultima."/>
         <text name="rse_guide_flock_3" text="Non serve attrezzatura. Il lavoro è finito quando l'ultima è nel recinto; se lo cedi prima, sei pagato per ognuna già dentro."/>
         <text name="rse_guide_title_kit" text="Coni e transenne"/>
         <text name="rse_guide_kit_1" text="Durante una chiamata, premi {key:RSE_KIT_MENU} a piedi per aprire la segnaletica. {key:RSE_KIT_NEXT} sceglie l'oggetto successivo, {key:RSE_KIT_USE} lo posa o raccoglie quello che miri, e tenere premuto {key:RSE_KIT_TURN} lo ruota. Sono gratis e fermano il traffico."/>
@@ -481,9 +477,6 @@
         <text name="rse_guide_mods_3" text="Better Winch di ThundR: il suo verricello aggancia animali morti e relitti. UniversalAutoload di loki_79: li carica sui rimorchi che supporta."/>
         <text name="rse_guide_mods_4" text="Caricatori frontali, pinze per balle e rimorchi con gru gestiscono tutti gli animali morti, ma una gru piccola non può sollevare una mucca."/>
         <text name="rse_crash_hint_load" text="Recupera il rimorchio, e porta le balle a un punto di recupero."/>
-        <text name="rse_crash_arrivedLoad" text="Balle sulla strada: %d."/>
-        <text name="rse_load_call_small" text="Il carico è di balle piccole, quindi bastano un pickup e le tue mani."/>
-        <text name="rse_load_call_big" text="Il carico è di balle grandi, quindi porta un caricatore frontale o un sollevatore telescopico e qualcosa per trasportarle."/>
         <text name="rse_load_arrived_small" text="Porta le balle piccole a mano nel cassone di un pickup, o nel rimorchio quando è di nuovo sulle ruote. Ognuna che arriva a un punto di recupero paga."/>
         <text name="rse_load_arrived_big" text="Le balle grandi richiedono un caricatore frontale o un sollevatore telescopico. Ognuna che arriva a un punto di recupero paga."/>
         <text name="rse_crash_trailerDoneBales" text="Il rimorchio è arrivato. Porta anche le balle per un bonus del %d%%. Altrimenti subentra un altro contoterzista dopo %s; le impostazioni ({key:RSE_SETTINGS}) possono cederle prima."/>

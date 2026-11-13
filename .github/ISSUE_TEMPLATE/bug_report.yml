@@ -46,7 +46,7 @@ body:
     id: mod_version
     attributes:
       label: Mod version
-      description: Shown in the game's mod list, for example 0.9.9.5.
+      description: Shown in the game's mod list, for example 0.9.10.5.
     validations:
       required: true
   - type: input

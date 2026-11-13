@@ -62,7 +62,7 @@ Attach `log.txt` from `Documents/My Games/FarmingSimulator2025`, and copy it **b
 | **Railroad crossing** | A stalled vehicle on the tracks and the train on its way. Only a strap or a winch line moves it: ramming it does nothing. It can be any crossing near you, and the further away it is, the more time you get. Pull it clear in time, then take it to a recovery point. If the train gets there first, the job is lost |
 | **Car in the water** | A car off the road in shallow water, with the driver inside. Wade out for the driver, pull the car up the bank with a strap or a winch, and take it to a recovery point. Only on maps with shallow water and a gentle bank beside a road |
 | **Tree on a car** | A storm has dropped a tree on a car, with the driver on the horn inside. Get the log off the car with a chainsaw, a strap or whatever you have, and the door will open. Help the driver out, clear the road, and take the car to a recovery point. Quick work earns a bonus |
-| **Flock on the road** | Sheep all over the road, and a pen the farmer has put up nearby. They start in bunches along the road and move straight away from you, in a vehicle or on foot. Round them up and steer them to the gate of a pen well off the road. Slow down near them, or they scatter |
+| **Flock on the road** | Sheep all over the road, and a pen the farmer has put up nearby. They start in bunches along the road and move straight away from you, in a vehicle or on foot. A honk calls them together. Round them up and steer them to the gate of a pen well off the road. Slow down near them, or they scatter |
 | **Logging crash** | A timber trailer on its side and its logs across the road. The owner's crew sees to the trailer. Clear every log off the road: load it onto a truck or trailer, or drag it well off to the side, with log forks, a crane or a strap. A chainsaw makes them smaller. When the job is done the crew takes all the logs. If you hand it over early, the logs on your vehicle are yours |
 
 Calls come from anywhere on the map's roads, so one can come from right next to you. The animals lie scattered across the road, differently
@@ -76,9 +76,9 @@ This is a firm rule. If your farm doesn't have what a job takes, that call doesn
 |---|---|
 | **Nothing at all** | Deer, boar, sheep, pigs and goats in the road, which you drag by hand, and driving a flock, which you can do on foot |
 | **A pickup truck, or any motorized vehicle of 1 t or more** | Also cows, horses and buffalo, cars in the water, trees on cars, power lines, logging crashes, railroad crossings and smaller overturned trailers |
-| **A tractor, a truck, or any motorized vehicle of 3 t or more** | Also wrecked trucks, overturned tractors, and the bigger vehicles on the other jobs |
+| **A tractor, a truck, or any motorized vehicle of 3 t or more** | Also wrecked trucks, overturned tractors, livestock trailer crashes, and the bigger vehicles on the other jobs |
 
-Some calls take one thing more. Big bales need a bale fork, bale grab, bale loader or forklift. Storm damage needs a trailer or a pickup bed. A livestock trailer crash needs your own livestock trailer.
+Some calls take one thing more. Big bales need a bale fork, bale grab, bale loader or forklift. Storm damage needs a trailer or a pickup bed. A livestock trailer crash needs your own livestock trailer for sheep, pigs or cattle; a horse trailer won't do.
 
 The pager still says what a job takes before you answer, because what you own may be at the other end of the map. Saying no costs nothing.
 
@@ -113,9 +113,9 @@ Each bale that reaches a recovery point pays, even if you hand over the rest of 
 
 **Livestock trailer crash** has two parts, paid separately, and you choose:
 
-- **The trailer:** $3,000 plus the distance when it reaches a recovery point. It only needs something that can pull.
+- **The trailer:** $3,000 plus the distance when it reaches a recovery point. It is big: it needs a rollback, or a truck or tractor of 3 t or more.
 
-- **The animals:** the dead ones pay as on an animal call, and each live one you load pays $75. The live ones are then yours to sell. This needs a livestock trailer of your own.
+- **The animals:** the dead ones pay as on an animal call, and each live one you load pays $75. The live ones are then yours to sell. This needs a livestock trailer of your own that carries sheep, pigs or cattle.
 - **Both:** 25% on top of everything. Two dead sheep, four live ones and the trailer come to $4,985, plus the distance.
 
 Once you have finished one part, another contractor takes the other after 10 minutes without progress, or sooner if you choose it in the settings (`H`). You are paid for what you did.
@@ -233,7 +233,7 @@ Your own drop-off points only show while you are with something to bring to one.
 
 **Why don't I get railroad crossing calls?** They need a map with crossings, one within 2.5 km of you, and a train that isn't rented. Riverbend Springs has five.
 
-**Which vehicles are the wrecks?** Base-game ones, different from call to call: five trucks, nine tractors, four trailers, two livestock trailers and four cars. The bigger ones come up less often. The pager says which one it is, and whether it takes a bigger vehicle or a rollback, before you answer.
+**Which vehicles are the wrecks?** Base-game ones, different from call to call: five trucks, nine tractors, four trailers, a livestock trailer and four cars. The bigger ones come up less often. The pager says which one it is, and whether it takes a bigger vehicle or a rollback, before you answer.
 
 **Can I take it out of a save?** Yes, the save still loads. Dead animals and cones are gone while the mod is off, and they came back when it was ticked again. That was tested without saving in between, so copy your savegame first if you plan to save without the mod.
 
@@ -245,29 +245,19 @@ Your own drop-off points only show while you are with something to bring to one.
 
 ## Console commands
 
-For testers and video makers, with the game's developer console enabled. `rseStart` is the quick way to try a job.
+For testers and video makers, with the game's developer console enabled. `rseStart` is the quick way to try a job. The settings are also in the **H** panel.
 
 | Command | What it does |
 |---|---|
 | `rseHelp` | List the commands in the log |
 | `rseDebug` | Turn debug logging on or off |
-| `rseStart [emergency]` | Dispatch calls now: an animal, `wreck`, `rollover`, `trailer`, `livestock`, `powerline` or `storm`; none for a random one |
-| `rseTwister` | Spawn the game's twister; a storm call follows when it ends |
+| `rseStart [emergency]` | Dispatch a call now: `deer`, `boar`, `pig`, `sheep`, `goat`, `cow`, `horse`, `buffalo`, `wreck`, `rollover`, `trailer`, `livestock`, `powerline`, `logging`, `crossing`, `river` (car in the water), `tree` (tree on a car), `flock` or `storm`; none for a random one. It can start a call your farm couldn't finish, and says so |
 | `rseCalls [on\|off]` | Show or switch the calls that come by themselves |
 | `rseJobSize [small\|normal\|large\|random]` | Show or set how much work a call is |
-| `rseFleet [pickup\|nothing\|off]` | What your farm can do and which calls that brings; `pickup` or `nothing`: as if that were all you owned |
-| `rseVehicle [kind] [number]` | Test: list the vehicles a wreck can be, or choose the next one of a kind |
-| `rseCarcass [animal] [count]` | Place dead animals 6 m ahead |
-| `rseCarcassClear` | Remove every dead animal |
-| `rseLeftSoon [seconds]` | Bring forward the county's collection |
-| `rseExpireSoon [seconds]` | Bring forward another contractor taking over a call you haven't reached yet |
-| `rseScene` | Log the scenes and where each animal is |
-| `rseRoad` | Log the road where you stand |
-| `rseKit [clear]` | Log the scene kit items, or remove them all |
+| `rseMarkers [on\|off]` | Show or switch the map markers |
 | `rsePoints`, `rsePointAdd`, `rsePointRemove` | List, add or remove drop-off points |
 | `rseFee [factor]` | Show or set the factor on fees and bills |
-| `rseMarkers [on\|off]` | Show or switch the map markers |
-| `rseState` | Log everything the mod tracks |
+| `rseWelcome` | Show the welcome dialog again |
 
 ## Repository
 
