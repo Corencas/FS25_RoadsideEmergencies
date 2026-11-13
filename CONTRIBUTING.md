@@ -2,7 +2,7 @@
 
 Bug reports, and reports on how it works with other mods and maps, are the most useful things right now. Corrections to any of the translations are welcome too.
 
-**Reporting a bug:** use the [bug form](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new/choose). Say what you did, what you expected and what happened, and attach your `log.txt` from
+**Reporting a bug:** use the [bug form](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/issues/new/choose). Say what you did, what you expected and what happened, and attach your `log.txt` from
 `Documents/My Games/FarmingSimulator2025`, copied **before you restart the game**. Lines from this mod start with `[FS25_RoadsideEmergencies]`.
 
 **Sending a fix or a translation:** the mod is all rights reserved (see [LICENSE](LICENSE)). By sending one, you agree that it can be used in the mod, with credit.

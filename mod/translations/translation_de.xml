@@ -58,7 +58,7 @@
         <text name="rse_welcome_subtitle" text="Die Leitstelle ruft dich, wenn auf der Straße etwas passiert."/>
         <text name="rse_welcome_body" text="Einsätze kommen von selbst, während du arbeitest. Sag zu, fahr hin und räum die Straße: Tiere, Wracks, verlorene Ladung, eine umgestürzte Stromleitung, eine Herde für den Pferch.&#10;&#10;Ein Einsatz kommt nur, wenn dein Hof hat, was er braucht. Ein Pickup schafft die kleinen Einsätze; schwere Wracks brauchen einen Abschleppwagen oder einen großen Lkw.&#10;&#10;Die Anleitung erklärt alles; du öffnest sie jederzeit zu Fuß mit {key:RSE_SETTINGS}."/>
         <text name="rse_welcome_pack" text="Es braucht das kostenlose Emergency Pack (DLC), und es ist installiert."/>
-        <text name="rse_welcome_beta" text="Dies ist eine Beta. Fehler gefunden? Melde ihn auf GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_beta" text="Dies ist eine Beta. Fehler gefunden? Melde ihn auf GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_welcome_start" text="Los"/>
         <text name="rse_welcome_guide" text="Anleitung"/>
         <text name="rse_action_tooHeavyShort" text="Zu schwer"/>
@@ -383,7 +383,7 @@
         <text name="rse_guide_welcome_2" text="Roadside Emergencies braucht das kostenlose Emergency Pack (DLC). Wenn du einen Spielstand startest, bietet die Modliste des Spiels an, es mit auszuwählen. Ohne das Pack kommen keine Einsätze."/>
         <text name="rse_guide_welcome_3" text="Du öffnest diese Anleitung jederzeit: Drücke zu Fuß {key:RSE_SETTINGS} und wähle &quot;Anleitung öffnen&quot;. Im selben Menü findest du alle Einstellungen."/>
         <text name="rse_guide_welcome_4" text="Jede Zeile dieser Mod in der F1-Hilfe beginnt mit &quot;RSE:&quot;, und ihre Texte nennen die Tasten, die du im Steuerungsmenü des Spiels gewählt hast."/>
-        <text name="rse_guide_welcome_5" text="Die Mod ist vorerst nur für den Einzelspieler. Fehler gefunden? Melde ihn auf GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_welcome_5" text="Die Mod ist vorerst nur für den Einzelspieler. Fehler gefunden? Melde ihn auf GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_guide_title_tools" text="Du bekommst nur Einsätze, die du schaffen kannst"/>
         <text name="rse_guide_tools_1" text="Das ist eine feste Regel: Fehlt deinem Hof, was ein Auftrag braucht, kommt der Einsatz gar nicht erst. Die Leitstelle prüft vor jedem Einsatz alle Fahrzeuge, die du besitzt oder least. Fragt der Pager, hast du also, was es braucht."/>
         <text name="rse_guide_tools_2" text="Ganz ohne Ausrüstung: Rehe, Wildschweine, Schafe, Schweine und Ziegen auf der Straße, die du von Hand ziehst, und das Treiben einer Herde, das auch zu Fuß geht."/>

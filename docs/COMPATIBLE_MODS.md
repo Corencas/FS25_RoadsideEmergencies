@@ -35,4 +35,4 @@ Better Winch uses the game's own physics rope, so it pulls along the line, but i
 
 ## Tried it with another mod?
 
-[Tell me how it went](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new?template=compatibility_report.yml), and it can move up this list.
+[Tell me how it went](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/issues/new?template=compatibility_report.yml), and it can move up this list.

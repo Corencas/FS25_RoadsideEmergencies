@@ -7,9 +7,9 @@
 
 Adds 19 new callouts to the free [Emergency Pack](https://store.steampowered.com/app/4651570) DLC: you are the local contractor county dispatch calls when something goes wrong on the road. These aren't contracts you pick from a list. The calls come to you, from anywhere on the map's roads.
 
-### [Download the latest version](https://github.com/Corencas/FS25_RoadsideEmergencies/releases/latest/download/FS25_RoadsideEmergencies.zip)
+### [Download the latest version](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/releases/latest/download/FS25_RoadsideEmergencies.zip)
 
-[All releases](https://github.com/Corencas/FS25_RoadsideEmergencies/releases) · [Report a bug](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new/choose)
+[All releases](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/releases) · [Report a bug](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/issues/new/choose)
 
 Free · Public beta · FS25 on PC (tested on Windows) · Single player only for now · **Requires the free Emergency Pack DLC** · English, German, French, Spanish, Italian, Brazilian Portuguese, Polish, Czech, Russian and Ukrainian
 
@@ -41,8 +41,8 @@ The only official download is this page. Copies anywhere else may be old or chan
 
 So far it has been played on one PC, so other maps, mod lists and machines are what it needs most. Finishing any job and saying how it went helps.
 
-- [Report a bug or a job that went wrong](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new?template=bug_report.yml)
-- [Say how it works with another mod](https://github.com/Corencas/FS25_RoadsideEmergencies/issues/new?template=compatibility_report.yml)
+- [Report a bug or a job that went wrong](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/issues/new?template=bug_report.yml)
+- [Say how it works with another mod](https://github.com/zeyadrabie/FS25_RoadsideEmergencies/issues/new?template=compatibility_report.yml)
 
 Attach `log.txt` from `Documents/My Games/FarmingSimulator2025`, and copy it **before you restart the game**, because the game overwrites it.
 

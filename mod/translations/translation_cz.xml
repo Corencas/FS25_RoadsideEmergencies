@@ -73,7 +73,7 @@
         <text name="rse_welcome_subtitle" text="Okresní dispečink ti volá, když se na silnici něco stane."/>
         <text name="rse_welcome_body" text="Výzvy přicházejí samy, zatímco hospodaříš. Přijmi je, jeď na místo a uvolni silnici: zvířata, vraky, rozsypaný náklad, spadlé elektrické vedení, stádo do ohrady.&#10;&#10;Výzva přijde jen tehdy, když tvoje farma má to, co práce vyžaduje. Na malé práce stačí pick-up; těžké vraky vyžadují odtahovku s plošinou nebo velký nákladní vůz.&#10;&#10;Průvodce vysvětlí všechno a otevřeš ho kdykoli klávesou {key:RSE_SETTINGS}, když jdeš pěšky."/>
         <text name="rse_welcome_pack" text="Vyžaduje bezplatné DLC Emergency Pack, které je nainstalované."/>
-        <text name="rse_welcome_beta" text="Toto je beta verze. Našel jsi chybu? Nahlas ji na GitHubu: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_beta" text="Toto je beta verze. Našel jsi chybu? Nahlas ji na GitHubu: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_welcome_start" text="Začít"/>
         <text name="rse_welcome_guide" text="Průvodce"/>
         <text name="rse_action_tooHeavyShort" text="Příliš těžké"/>
@@ -398,7 +398,7 @@
         <text name="rse_guide_welcome_2" text="Roadside Emergencies vyžaduje bezplatné DLC Emergency Pack. Když začínáš uloženou hru, seznam modů ve hře ti ho nabídne vybrat. Bez něj nepřijde žádná výzva."/>
         <text name="rse_guide_welcome_3" text="Tohoto průvodce otevřeš kdykoli: stiskni {key:RSE_SETTINGS}, když jdeš pěšky, a vyber „Otevřít průvodce“. Stejné menu má všechna nastavení."/>
         <text name="rse_guide_welcome_4" text="Každý řádek tohoto modu v nápovědě F1 začíná „RSE:“ a jeho texty uvádějí klávesy, které sis zvolil v menu ovládání hry."/>
-        <text name="rse_guide_welcome_5" text="Mod je zatím jen pro jednoho hráče. Našel jsi chybu? Nahlas ji na GitHubu: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_welcome_5" text="Mod je zatím jen pro jednoho hráče. Našel jsi chybu? Nahlas ji na GitHubu: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_guide_title_tools" text="Dostaneš jen výzvy, které zvládneš"/>
         <text name="rse_guide_tools_1" text="Je to pevné pravidlo: když tvoje farma nemá, co práce vyžaduje, výzva vůbec nepřijde. Před každou výzvou dispečink zkontroluje každé vozidlo, které vlastníš nebo si pronajímáš, takže když se pager ozve, máš vše potřebné."/>
         <text name="rse_guide_tools_2" text="Bez ničeho: srny, divočáci, ovce, prasata a kozy na silnici, které odtáhneš rukama, a hnaní stáda, které zvládneš pěšky."/>

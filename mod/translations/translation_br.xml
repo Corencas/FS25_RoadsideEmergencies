@@ -57,7 +57,7 @@
         <text name="rse_welcome_subtitle" text="A central do condado chama você quando algo dá errado na estrada."/>
         <text name="rse_welcome_body" text="Os chamados chegam sozinhos enquanto você trabalha na fazenda. Aceite, vá até o local e libere a estrada: animais, veículos acidentados, cargas derramadas, uma linha de energia caída, um rebanho para cercar.&#10;&#10;Um chamado só chega se a sua fazenda tiver o que o trabalho exige. Uma picape basta para os trabalhos pequenos; veículos pesados precisam de um guincho plataforma ou de um caminhão grande.&#10;&#10;O guia explica tudo, e você pode abri-lo a qualquer momento com {key:RSE_SETTINGS} a pé."/>
         <text name="rse_welcome_pack" text="Ele precisa da DLC gratuita Emergency Pack, que está instalada."/>
-        <text name="rse_welcome_beta" text="Isto é um beta. Achou um bug? Relate no GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_beta" text="Isto é um beta. Achou um bug? Relate no GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_welcome_start" text="Começar"/>
         <text name="rse_welcome_guide" text="Guia"/>
         <text name="rse_action_tooHeavyShort" text="Pesado demais"/>
@@ -382,7 +382,7 @@
         <text name="rse_guide_welcome_2" text="Roadside Emergencies precisa da DLC gratuita Emergency Pack. Quando você inicia um jogo salvo, a lista de mods do jogo oferece selecioná-la para você. Sem ela, nenhum chamado chega."/>
         <text name="rse_guide_welcome_3" text="Abra este guia a qualquer momento: aperte {key:RSE_SETTINGS} a pé e escolha &quot;Abrir o guia&quot;. O mesmo menu tem todas as configurações."/>
         <text name="rse_guide_welcome_4" text="Cada linha deste mod na ajuda F1 começa com &quot;RSE:&quot;, e seus textos mostram as teclas que você escolheu no menu de controles do jogo."/>
-        <text name="rse_guide_welcome_5" text="Por enquanto o mod é só para um jogador. Achou um bug? Relate no GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_welcome_5" text="Por enquanto o mod é só para um jogador. Achou um bug? Relate no GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_guide_title_tools" text="Você só recebe chamados que consegue terminar"/>
         <text name="rse_guide_tools_1" text="É uma regra firme: se a sua fazenda não tem o que um trabalho exige, esse chamado nem chega. Antes de cada chamado, a central confere cada veículo que você tem ou aluga, então se o pager toca, você tem o necessário."/>
         <text name="rse_guide_tools_2" text="Sem nada: cervos, javalis, ovelhas, porcos e cabras na estrada, que você arrasta com as mãos, e conduzir um rebanho, o que dá para fazer a pé."/>

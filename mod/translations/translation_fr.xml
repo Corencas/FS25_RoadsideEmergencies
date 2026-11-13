@@ -57,7 +57,7 @@
         <text name="rse_welcome_subtitle" text="Le central du comté vous appelle quand quelque chose tourne mal sur la route."/>
         <text name="rse_welcome_body" text="Les appels arrivent d'eux-mêmes pendant que vous cultivez. Acceptez, rendez-vous sur place et dégagez la route : animaux, épaves, chargements renversés, une ligne électrique tombée, un troupeau à parquer.&#10;&#10;Un appel n'arrive que si votre ferme a ce qu'il faut pour le travail. Un pick-up suffit pour les petits travaux ; les épaves lourdes demandent une dépanneuse plateau ou un gros camion.&#10;&#10;Le guide explique tout, et vous pouvez l'ouvrir à tout moment avec {key:RSE_SETTINGS} à pied."/>
         <text name="rse_welcome_pack" text="Il nécessite le DLC gratuit Emergency Pack, qui est installé."/>
-        <text name="rse_welcome_beta" text="Ceci est une bêta. Un bug ? Signalez-le sur GitHub : github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_beta" text="Ceci est une bêta. Un bug ? Signalez-le sur GitHub : github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_welcome_start" text="Commencer"/>
         <text name="rse_welcome_guide" text="Guide"/>
         <text name="rse_action_tooHeavyShort" text="Trop lourd"/>
@@ -382,7 +382,7 @@
         <text name="rse_guide_welcome_2" text="Roadside Emergencies nécessite le DLC gratuit Emergency Pack. Quand vous lancez une partie, la liste des mods du jeu propose de le sélectionner pour vous. Sans lui, aucun appel n'arrive."/>
         <text name="rse_guide_welcome_3" text="Ouvrez ce guide à tout moment : appuyez sur {key:RSE_SETTINGS} à pied et choisissez « Ouvrir le guide ». Le même menu contient tous les réglages."/>
         <text name="rse_guide_welcome_4" text="Chaque ligne de ce mod dans l'aide F1 commence par « RSE: », et ses textes nomment les touches que vous avez choisies dans le menu des commandes du jeu."/>
-        <text name="rse_guide_welcome_5" text="Le mod est pour l'instant en solo uniquement. Un bug ? Signalez-le sur GitHub : github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_welcome_5" text="Le mod est pour l'instant en solo uniquement. Un bug ? Signalez-le sur GitHub : github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_guide_title_tools" text="Seulement des appels que vous pouvez terminer"/>
         <text name="rse_guide_tools_1" text="C'est une règle stricte : si votre ferme n'a pas ce qu'il faut pour une intervention, cet appel n'arrive pas du tout. Le central vérifie chaque véhicule que vous possédez ou louez avant chaque appel : si le bipeur sonne, vous avez ce qu'il faut."/>
         <text name="rse_guide_tools_2" text="Sans rien du tout : chevreuils, sangliers, moutons, cochons et chèvres sur la route, que vous traînez à la main, et la conduite d'un troupeau, possible à pied."/>

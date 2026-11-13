@@ -57,7 +57,7 @@
         <text name="rse_welcome_subtitle" text="La central del condado te llama cuando algo sale mal en la carretera."/>
         <text name="rse_welcome_body" text="Los avisos llegan solos mientras trabajas en la granja. Acepta, ve allí y despeja la carretera: animales, vehículos siniestrados, cargas derramadas, una línea eléctrica caída, un rebaño que encerrar.&#10;&#10;Solo llega un aviso si tu granja tiene lo que hace falta para el trabajo. Una pickup basta para los trabajos pequeños; los vehículos pesados necesitan una grúa plataforma o un camión grande.&#10;&#10;La guía lo explica todo, y puedes abrirla en cualquier momento con {key:RSE_SETTINGS} a pie."/>
         <text name="rse_welcome_pack" text="Necesita el DLC gratuito Emergency Pack, que está instalado."/>
-        <text name="rse_welcome_beta" text="Esto es una beta. ¿Has encontrado un error? Infórmalo en GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_welcome_beta" text="Esto es una beta. ¿Has encontrado un error? Infórmalo en GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_welcome_start" text="Empezar"/>
         <text name="rse_welcome_guide" text="Guía"/>
         <text name="rse_action_tooHeavyShort" text="Demasiado pesado"/>
@@ -382,7 +382,7 @@
         <text name="rse_guide_welcome_2" text="Roadside Emergencies necesita el DLC gratuito Emergency Pack. Al empezar una partida, la lista de mods del juego ofrece seleccionarlo por ti. Sin él, no llega ningún aviso."/>
         <text name="rse_guide_welcome_3" text="Abre esta guía en cualquier momento: pulsa {key:RSE_SETTINGS} a pie y elige «Abrir la guía». El mismo menú tiene todos los ajustes."/>
         <text name="rse_guide_welcome_4" text="Cada línea de este mod en la ayuda F1 empieza por «RSE:», y sus textos nombran las teclas que has elegido en el menú de controles del juego."/>
-        <text name="rse_guide_welcome_5" text="Por ahora el mod es solo para un jugador. ¿Has encontrado un error? Infórmalo en GitHub: github.com/Corencas/FS25_RoadsideEmergencies/issues"/>
+        <text name="rse_guide_welcome_5" text="Por ahora el mod es solo para un jugador. ¿Has encontrado un error? Infórmalo en GitHub: github.com/zeyadrabie/FS25_RoadsideEmergencies/issues"/>
         <text name="rse_guide_title_tools" text="Solo recibes avisos que puedes terminar"/>
         <text name="rse_guide_tools_1" text="Es una regla firme: si tu granja no tiene lo que hace falta para un trabajo, ese aviso no llega nunca. La central revisa cada vehículo que tienes en propiedad o en alquiler antes de cada aviso, así que si el buscapersonas pregunta, tienes lo necesario."/>
         <text name="rse_guide_tools_2" text="Sin nada: corzos, jabalíes, ovejas, cerdos y cabras en la carretera, que arrastras a mano, y guiar un rebaño, que puedes hacer a pie."/>
